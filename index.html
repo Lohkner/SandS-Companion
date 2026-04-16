@@ -1900,7 +1900,11 @@ const app = {
     this.showScreen('app');
     this.unlockApp();
     this.goToPage(0);
-    // Abrir todas las secciones en edición para flujo de creación
+    this._pageScrolls = {}; // limpiar posiciones guardadas obsoletas
+    // Abrir todas las secciones en edición para flujo de creación.
+    // _bulkEditing suprime el scrollIntoView de combat/equipment para que
+    // el goToPage(0) de arriba no pierda la carrera contra el RAF.
+    this._bulkEditing = true;
     this.editSection('personal');
     this.editSection('identity');
     this.editSection('stats');
@@ -1908,6 +1912,7 @@ const app = {
     this.editSection('skills');
     this.editSection('combat');
     this.editSection('equipment');
+    this._bulkEditing = false;
     this._charLoading = false;
     // Clear header label for fresh character
     const lbl = document.getElementById('last_saved_lbl');
@@ -2361,8 +2366,10 @@ const app = {
       // Show panel header only while in edit mode for identity
       if (sec === 'identity') ev?.closest('.panel')?.classList.add('identity-editing');
       if (sec === 'equipment') { this.updateDbSelect(); this.renderInventory(); }
-      // Scroll al panel en page_3 para que sea visible al expandirse
-      if (sec === 'combat' || sec === 'equipment') {
+      // Scroll al panel en page_3 para que sea visible al expandirse.
+      // Omitido durante resets en masa (_bulkEditing) para evitar que el RAF
+      // se ejecute después de goToPage(0) y desincronice el pages-track.
+      if ((sec === 'combat' || sec === 'equipment') && !this._bulkEditing) {
         requestAnimationFrame(() => {
           const panel = ev?.closest('.panel');
           if (panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
@@ -4718,8 +4725,15 @@ const app = {
     this._confirm('¿Resetear hoja?', 'Se borrarán todos los datos del personaje actual.', '✓ Resetear', () => {
       this.clearCharData();
       if (this.DB.descriptors) this.unlockApp();
+      // Anclar la vista en página 0 ANTES de abrir secciones en masa.
+      // Sin esto el requestAnimationFrame de editSection('combat'/'equipment')
+      // gana la carrera a goToPage y desplaza el pages-track a página 3.
+      this.goToPage(0);
+      this._pageScrolls = {}; // limpiar posiciones guardadas obsoletas
+      this._bulkEditing = true;
       this.editSection('personal');
       ['identity','stats','saves','skills','combat','equipment'].forEach(s=>this.editSection(s));
+      this._bulkEditing = false;
       this.toast('Hoja reseteada','ok');
     });
   },
