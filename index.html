@@ -2189,19 +2189,27 @@ const app = {
     let lastX=0, lastT=0, vel=0;
     let dragging=false, locked=false;
 
-    // Ghost-click suppression: after a real horizontal drag, swallow the
-    // synthetic click that touch browsers fire on touchend.
+    // ── Ghost-input suppression ──────────────────────────────────────────────
+    // After a horizontal drag the browser fires a synthetic event sequence:
+    //   touchend → (pointerup) → mousedown → mouseup → click
+    // Simply blocking 'click' is not enough: stat-box buttons also respond to
+    // 'touchstart' / 'pointerdown' that arrive before the click.  We therefore
+    // suppress ALL of those event types at capture phase for a short window.
     let _suppressClicks = false;
-    const suppressFor = (ms = 350) => {
+    const SWIPE_SUPPRESS_EVENTS = ['touchstart','pointerdown','mousedown','click'];
+    const _swipeGuard = (e) => {
+      if (_suppressClicks) { e.stopPropagation(); e.preventDefault(); }
+    };
+    SWIPE_SUPPRESS_EVENTS.forEach(type =>
+      w.addEventListener(type, _swipeGuard, {capture:true, passive:false})
+    );
+
+    const suppressFor = (ms = 420) => {
       _suppressClicks = true;
       setTimeout(() => { _suppressClicks = false; }, ms);
     };
-    // Capture-phase listener on the wrapper — fires before any child handler
-    w.addEventListener('click', e => {
-      if (_suppressClicks) { e.stopPropagation(); e.preventDefault(); }
-    }, true);
-    // Also suppress pointerdown visual feedback during an active drag
-    w.addEventListener('pointerdown', () => {}, {passive:true}); // keeps pointer capture honest
+    // Keep pointer-capture honest (no-op touch that satisfies some browsers)
+    w.addEventListener('pointerdown', () => {}, {passive:true});
 
     const pageW = () => w.clientWidth || window.innerWidth;
 
@@ -2257,8 +2265,9 @@ const app = {
     }, {passive:false});
 
     const endSwipe = (clientX) => {
-      track.classList.remove('is-dragging');
-      if (!dragging) { dragging=false; locked=false; vel=0; return; }
+      if (!dragging) { dragging=false; locked=false; vel=0;
+        // Still remove is-dragging in case it got stuck
+        track.classList.remove('is-dragging'); return; }
       dragging = false; locked = false;
 
       const dx    = clientX - startX;
@@ -2272,15 +2281,19 @@ const app = {
       else if (ratio < -0.24 && this.currentPage < this.totalPages-1)   target = this.currentPage + 1;
       else if (ratio >  0.24 && this.currentPage > 0)                   target = this.currentPage - 1;
 
-      // Suppress the ghost click that fires after touchend on mobile
-      suppressFor(380);
+      // Suppress ALL synthetic input events (touchstart, pointerdown, mousedown,
+      // click) that fire after touchend, AND keep is-dragging active so
+      // pointer-events:none on children blocks visual feedback for the same window.
+      const SUPPRESS_MS = 420;
+      suppressFor(SUPPRESS_MS);
+      setTimeout(() => track.classList.remove('is-dragging'), SUPPRESS_MS);
       this.goToPage(target);
     };
 
     w.addEventListener('touchend',    e => endSwipe(e.changedTouches[0].clientX), {passive:true});
     w.addEventListener('touchcancel', e => {
       track.classList.remove('is-dragging');
-      dragging = false; locked = false;
+      dragging = false; locked = false; vel = 0;
       this.goToPage(this.currentPage);
     }, {passive:true});
 
