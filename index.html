@@ -575,7 +575,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   transition:border-color .15s,box-shadow .15s,transform .08s;
   position:relative;overflow:hidden;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
-  min-height:74px;display:flex;flex-direction:column;
+  height:74px;min-height:74px;
+  display:flex;flex-direction:column;
   align-items:center;justify-content:center;
 }
 .sbox::after{
@@ -603,6 +604,7 @@ input[type=radio]:checked::after{transform:scale(1)}
   display:flex;flex-direction:column;min-width:0;
   transition:border-color .15s,box-shadow .15s;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+  min-height:54px;
 }
 .fbox.cl{cursor:pointer}
 .fbox.cl:hover{border-color:rgba(200,169,110,.35);box-shadow:0 0 0 1px rgba(200,169,110,.08)}
@@ -621,6 +623,7 @@ input[type=radio]:checked::after{transform:scale(1)}
   color:var(--bright);padding:4px;
   -webkit-user-select:none;user-select:none;
   overflow:visible;
+  min-height:36px;
 }
 .fin{
   border:none!important;background:transparent!important;
@@ -640,7 +643,7 @@ input[type=radio]:checked::after{transform:scale(1)}
 /* ══════════════════════════════════════
    RESOURCE BOXES
 ══════════════════════════════════════ */
-.res-box{border-radius:var(--rl);padding:8px 5px;text-align:center}
+.res-box{border-radius:var(--rl);padding:8px 5px;text-align:center;height:100%;box-sizing:border-box}
 .res-box-pv{
   background:rgba(110,21,37,.1);
   border:1px solid rgba(168,42,58,.3);
@@ -701,6 +704,7 @@ input[type=radio]:checked::after{transform:scale(1)}
   background:var(--raised);border:1px solid rgba(61,50,84,.55);
   border-radius:var(--rl);padding:7px 4px;text-align:center;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+  min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
 .sc-clickable{
   background:var(--raised);border:1px solid rgba(61,50,84,.55);
@@ -776,8 +780,10 @@ input[type=radio]:checked::after{transform:scale(1)}
 ══════════════════════════════════════ */
 .skill-area{
   background:var(--deep);border:1px solid var(--rim);
-  border-radius:var(--r);padding:4px 6px;max-height:160px;
+  border-radius:var(--r);padding:4px 6px;max-height:200px;
   overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  /* Ensure vertical scroll is handled natively — prevents swipe from hijacking */
+  touch-action:pan-y;
 }
 .skill-opt{
   display:flex;align-items:center;gap:7px;cursor:pointer;
@@ -3019,7 +3025,7 @@ const app = {
       const atStart = this.currentPage === 0 && rawDx > 0;
       const atEnd   = this.currentPage === this.totalPages - 1 && rawDx < 0;
       // Resistance factor 0.10 — tight enough to signal edge, not sticky
-      const x = (atStart || atEnd) ? base + rawDx * 0.10 : base + rawDx;
+      const x = (atStart || atEnd) ? base + rawDx * 0.07 : base + rawDx;
       track.style.transition = 'none';
       track.style.transform = `translateX(${x}px)`;
     };
@@ -3040,15 +3046,17 @@ const app = {
     // ── Touch move ──
     w.addEventListener('touchmove', e => {
       if (!e.cancelable || e.touches.length > 1) return;
+      // Don't steal touch from scrollable children (skill-area, etc.)
+      if (!locked && e.target.closest('.skill-area, .tms, .dbs, .tmct, .dbct, [data-scroll]')) return;
       const t = e.touches[0];
       const dx = t.clientX - startX;
       const dy = t.clientY - startY;
 
       if (!locked) {
         // Commit direction after 8px — reduces accidental horizontal locks
-        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
-        // Ratio 1.4 — prefer vertical scroll when ambiguous
-        if (Math.abs(dx) > Math.abs(dy) * 1.4) {
+        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
+        // Ratio 1.8 — strong vertical bias, prevents accidental page swipes
+        if (Math.abs(dx) > Math.abs(dy) * 1.8) {
           locked = true; dragging = true;
           track.style.transition = 'none';
           track.classList.add('is-dragging');
@@ -3062,8 +3070,8 @@ const app = {
         const now = Date.now();
         const dt  = Math.max(now - lastT, 1);
         const instantVel = (t.clientX - lastX) / dt;
-        // EMA alpha 0.35 — smooth but still responsive to quick flicks
-        velEMA = velEMA * 0.65 + instantVel * 0.35;
+        // EMA alpha 0.4 — slightly more responsive to direction changes
+        velEMA = velEMA * 0.60 + instantVel * 0.40;
         lastX = t.clientX; lastT = now;
         setLive(dx);
       }
@@ -3073,9 +3081,9 @@ const app = {
     // Uses momentum projection: if the finger is still moving fast, project
     // where it would land (px/ms × remaining time budget) and use that to
     // decide direction — feels much more natural than pure threshold.
-    const FLICK_VEL   = 0.22;  // px/ms — lower = more sensitive to quick flicks
-    const DRAG_RATIO  = 0.22;  // fraction of page width to commit on slow drag
-    const PROJ_MS     = 80;    // ms to project momentum forward
+    const FLICK_VEL   = 0.18;  // px/ms — lower = more sensitive to quick flicks
+    const DRAG_RATIO  = 0.28;  // fraction of page width to commit on slow drag
+    const PROJ_MS     = 90;    // ms to project momentum forward
 
     const endSwipe = (clientX) => {
       if (!dragging) {
@@ -3183,9 +3191,9 @@ const app = {
     const w = document.getElementById('pages_wrapper');
     const track = document.getElementById('pages_track');
     const pageW = w ? w.clientWidth : window.innerWidth;
-    // Easing: cubic-bezier(.15,.85,.3,1) — arranca rápido, desacelera con peso.
-    // Duración base 340ms; se percibe ágil en flicks y asentado en drags lentos.
-    track.style.transition = 'transform .34s cubic-bezier(.15,.85,.3,1)';
+    // Easing: cubic-bezier(.1,.9,.25,1) — snap rápido con deceleration suave
+    // Duración 280ms — más ágil sin perder sensación de peso
+    track.style.transition = 'transform .28s cubic-bezier(.1,.9,.25,1)';
     track.style.transform  = `translateX(-${n * pageW}px)`;
     document.querySelectorAll('.nbtn').forEach((b,i) => b.classList.toggle('active', i===n));
     if (n === 4) this.buildDetailPage();
