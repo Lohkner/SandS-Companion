@@ -218,8 +218,10 @@ body{
   content:'';position:absolute;top:0;left:0;right:0;height:1px;
   background:var(--line-gold);opacity:0;transition:opacity .22s;
 }
-.char-card:hover{border-color:rgba(200,169,110,.35);box-shadow:0 4px 24px rgba(0,0,0,.5)}
-.char-card:hover::before{opacity:1}
+
+@media(hover:hover){.char-card:hover{border-color:rgba(200,169,110,.35);box-shadow:0 4px 24px rgba(0,0,0,.5)}}
+
+@media(hover:hover){.char-card:hover::before{opacity:1}}
 @keyframes cardSlideIn{from{opacity:0;transform:translateX(-10px) scale(.99)}to{opacity:1;transform:none}}
 
 /* APP SHELL */
@@ -257,7 +259,8 @@ body{
   flex-shrink:0;font-weight:700;letter-spacing:-.02em;
   touch-action:manipulation;
 }
-.app-hdr-back:hover{border-color:rgba(200,169,110,.4);color:var(--gold);background:rgba(200,169,110,.05)}
+
+@media(hover:hover){.app-hdr-back:hover{border-color:rgba(200,169,110,.4);color:var(--gold);background:rgba(200,169,110,.05)}}
 .app-hdr-back:active{transform:scale(.9)}
 
 .app-hdr-center{flex:1;text-align:center;min-width:0}
@@ -286,10 +289,11 @@ body{
   flex-shrink:0;min-height:34px;
   box-shadow:inset 0 1px 0 rgba(200,169,110,.07);
 }
-.app-hdr-save:hover{
+
+@media(hover:hover){.app-hdr-save:hover{
   background:rgba(200,169,110,.08);border-color:var(--goldb);
   box-shadow:0 0 16px rgba(200,169,110,.12);
-}
+}}
 .app-hdr-save:active{transform:scale(.93)}
 .app-hdr-save:disabled{opacity:.4;cursor:not-allowed}
 
@@ -302,7 +306,8 @@ body{
   display:flex;align-items:center;justify-content:center;
   transition:border-color .18s,color .18s,background .18s;
 }
-.sdial-btn:hover,.sdial-btn.open{border-color:rgba(200,169,110,.5);color:var(--gold);background:var(--raised)}
+.sdial-btn.open{border-color:rgba(200,169,110,.5);color:var(--gold);background:var(--raised)}
+@media(hover:hover){.sdial-btn:hover{border-color:rgba(200,169,110,.5);color:var(--gold);background:var(--raised)}}
 .sdial-btn:active{transform:scale(.9)}
 .sdial-menu{
   position:absolute;top:calc(100% + 8px);right:0;
@@ -320,9 +325,11 @@ body{
   box-shadow:0 6px 20px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.05);
   -webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
-.sdial-item:hover{border-color:rgba(200,169,110,.6);color:var(--goldb);background:var(--panel);box-shadow:0 4px 18px rgba(0,0,0,.65),0 0 14px rgba(200,169,110,.12),inset 0 1px 0 rgba(255,255,255,.07)}
+
+@media(hover:hover){.sdial-item:hover{border-color:rgba(200,169,110,.6);color:var(--goldb);background:var(--panel);box-shadow:0 4px 18px rgba(0,0,0,.65),0 0 14px rgba(200,169,110,.12),inset 0 1px 0 rgba(255,255,255,.07)}}
 .sdial-item:active{transform:scale(.88)}
-.sdial-danger:hover{border-color:rgba(168,42,58,.7);color:#f08090;background:var(--panel);box-shadow:0 4px 18px rgba(0,0,0,.65),0 0 14px rgba(168,42,58,.18),inset 0 1px 0 rgba(255,255,255,.04)}
+
+@media(hover:hover){.sdial-danger:hover{border-color:rgba(168,42,58,.7);color:#f08090;background:var(--panel);box-shadow:0 4px 18px rgba(0,0,0,.65),0 0 14px rgba(168,42,58,.18),inset 0 1px 0 rgba(255,255,255,.04)}}
 
 /* PAGES + NAV */
 .pages-wrapper{flex:1;overflow:hidden;position:relative;min-height:0;touch-action:pan-y}
@@ -368,7 +375,8 @@ body{
   animation:tabIn .2s forwards;
 }
 @keyframes tabIn{from{opacity:0;transform:scaleX(.3)}to{opacity:1;transform:scaleX(1)}}
-.nbtn:hover:not(.active){color:var(--dim)}
+
+@media(hover:hover){.nbtn:hover:not(.active){color:var(--dim)}}
 .nico{font-size:1.1rem;line-height:1;display:flex;align-items:center;justify-content:center}
 .nlbl{font-size:.46rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
 
@@ -411,7 +419,8 @@ body{
   opacity:.4;transition:opacity .25s;pointer-events:none;
 }
 .port-hint span{font-family:var(--fm);font-size:.56rem;color:var(--gold);letter-spacing:.22em;text-transform:uppercase}
-.port-card-edit:hover .port-hint{opacity:1}
+
+@media(hover:hover){.port-card-edit:hover .port-hint{opacity:1}}
 .port-card{
   position:relative;width:287px;max-width:100%;height:410px;
   overflow:hidden;border-radius:var(--rl);
@@ -428,8 +437,10 @@ body{
   transition:border-color .22s,box-shadow .22s;
   box-shadow:0 4px 20px rgba(0,0,0,.4);
 }
-.port-card-edit:hover{border-color:rgba(200,169,110,.6);border-style:solid;box-shadow:0 8px 32px rgba(0,0,0,.5)}
-.port-card-edit:hover img{transform:scale(1.02)}
+
+@media(hover:hover){.port-card-edit:hover{border-color:rgba(200,169,110,.6);border-style:solid;box-shadow:0 8px 32px rgba(0,0,0,.5)}}
+
+@media(hover:hover){.port-card-edit:hover img{transform:scale(1.02)}}
 .port-card-edit img{display:block;width:100%;height:100%;object-fit:cover;background:var(--raised);transition:transform .3s ease}
 .port-identity{width:287px;max-width:100%;text-align:center;padding:12px 0 4px}
 .port-name{font-family:var(--fd);font-size:1rem;color:var(--goldb);letter-spacing:.06em}
@@ -490,7 +501,8 @@ input[type=radio],input[type=checkbox]{
   vertical-align:middle;flex-shrink:0;transition:all .15s;position:relative;
 }
 input[type=radio]{border-radius:50%}input[type=checkbox]{border-radius:2px}
-input[type=radio]:hover,input[type=checkbox]:hover{border-color:var(--gold)}
+
+@media(hover:hover){input[type=radio]:hover,input[type=checkbox]:hover{border-color:var(--gold)}}
 input[type=radio]:checked,input[type=checkbox]:checked{background:var(--crimson);border-color:var(--blood)}
 input[type=checkbox]::after{
   content:'';position:absolute;left:4px;top:1px;
@@ -532,8 +544,10 @@ input[type=radio]:checked::after{transform:scale(1)}
   background:linear-gradient(90deg,transparent,rgba(200,169,110,.15),transparent);
   opacity:0;transition:opacity .2s;
 }
-.sbox:hover{border-color:rgba(200,169,110,.4);box-shadow:0 0 0 1px rgba(200,169,110,.1)}
-.sbox:hover::after{opacity:1}
+
+@media(hover:hover){.sbox:hover{border-color:rgba(200,169,110,.4);box-shadow:0 0 0 1px rgba(200,169,110,.1)}}
+
+@media(hover:hover){.sbox:hover::after{opacity:1}}
 .sbox:active{transform:scale(.87)}
 .sbox .mod{font-family:var(--fd);font-size:1.2rem;font-weight:700;color:var(--goldb);line-height:1;text-shadow:0 0 12px rgba(200,169,110,.3)}
 .sbox .val{font-family:var(--fm);font-size:.68rem;color:var(--dim);margin-top:3px;border-top:1px solid var(--rim);padding-top:2px}
@@ -552,7 +566,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   min-height:54px;
 }
 .fbox.cl{cursor:pointer}
-.fbox.cl:hover{border-color:rgba(200,169,110,.35);box-shadow:0 0 0 1px rgba(200,169,110,.08)}
+
+@media(hover:hover){.fbox.cl:hover{border-color:rgba(200,169,110,.35);box-shadow:0 0 0 1px rgba(200,169,110,.08)}}
 .fbox.cl:active{transform:scale(.95)}
 .flbl{
   font-family:var(--fd);font-size:.5rem;
@@ -634,13 +649,17 @@ input[type=radio]:checked::after{transform:scale(1)}
 }
 .res-btn:active{transform:scale(.82)}
 .res-btn-pv{border-color:rgba(168,42,58,.3);color:rgba(168,42,58,.65)}
-.res-btn-pv:hover{background:rgba(168,42,58,.12);border-color:var(--blood);color:var(--blood)}
+
+@media(hover:hover){.res-btn-pv:hover{background:rgba(168,42,58,.12);border-color:var(--blood);color:var(--blood)}}
 .res-btn-adr{border-color:rgba(63,160,108,.3);color:rgba(63,160,108,.65)}
-.res-btn-adr:hover{background:rgba(63,160,108,.12);border-color:var(--sage);color:var(--sage)}
+
+@media(hover:hover){.res-btn-adr:hover{background:rgba(63,160,108,.12);border-color:var(--sage);color:var(--sage)}}
 .res-btn-ing{border-color:rgba(61,143,194,.3);color:rgba(61,143,194,.65)}
-.res-btn-ing:hover{background:rgba(61,143,194,.12);border-color:var(--ice);color:var(--ice)}
+
+@media(hover:hover){.res-btn-ing:hover{background:rgba(61,143,194,.12);border-color:var(--ice);color:var(--ice)}}
 .res-btn-carne{border-color:rgba(160,104,58,.3);color:rgba(160,104,58,.65)}
-.res-btn-carne:hover{background:rgba(160,104,58,.12);border-color:#a0683a;color:#a0683a}
+
+@media(hover:hover){.res-btn-carne:hover{background:rgba(160,104,58,.12);border-color:#a0683a;color:#a0683a}}
 .sc{
   background:var(--raised);border:1px solid rgba(61,50,84,.55);
   border-radius:var(--rl);padding:7px 4px;text-align:center;
@@ -655,7 +674,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
 }
-.sc-clickable:hover{border-color:rgba(200,169,110,.35);box-shadow:0 0 0 1px rgba(200,169,110,.08)}
+
+@media(hover:hover){.sc-clickable:hover{border-color:rgba(200,169,110,.35);box-shadow:0 0 0 1px rgba(200,169,110,.08)}}
 .sc-clickable:active{transform:scale(.93);border-color:var(--gold)}
 .sc-lbl{font-family:var(--fd);font-size:.56rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:3px;font-weight:600}
 
@@ -726,7 +746,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   color:var(--text);transition:background .15s;
   -webkit-tap-highlight-color:transparent;min-height:44px;
 }
-.skill-opt:hover{background:rgba(200,169,110,.05);color:var(--bright)}
+
+@media(hover:hover){.skill-opt:hover{background:rgba(200,169,110,.05);color:var(--bright)}}
 
 .stag{
   display:inline-flex;padding:4px 11px;margin:2px;
@@ -736,7 +757,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   cursor:pointer;-webkit-user-select:none;user-select:none;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
 }
-.stag:hover{border-color:rgba(200,169,110,.4);color:var(--goldb)}
+
+@media(hover:hover){.stag:hover{border-color:rgba(200,169,110,.4);color:var(--goldb)}}
 .stag.g1{border-color:rgba(168,42,58,.4);color:#c06070;background:rgba(110,21,37,.15)}
 
 /* SAVES */
@@ -753,7 +775,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   touch-action:manipulation;
 }
 .svsbox:active{transform:scale(.9)}
-.svsbox:hover{border-color:rgba(200,169,110,.35)}
+
+@media(hover:hover){.svsbox:hover{border-color:rgba(200,169,110,.35)}}
 .svsbox.prof{color:var(--goldb);border-color:rgba(200,169,110,.4);box-shadow:0 0 0 1px rgba(200,169,110,.08),inset 0 1px 0 rgba(200,169,110,.05)}
 .svslbl{font-size:.52rem;font-family:var(--fd);color:var(--muted);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:1px}
 
@@ -767,7 +790,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   border-radius:var(--r);padding:6px 8px;min-width:0;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
 }
-.iitem:hover{border-color:rgba(200,169,110,.3)}
+
+@media(hover:hover){.iitem:hover{border-color:rgba(200,169,110,.3)}}
 .ityp{background:transparent;border:none;font-family:var(--fm);font-size:.55rem;color:var(--gold);cursor:pointer;appearance:none;text-transform:uppercase;letter-spacing:.06em;padding:0}
 .inm{background:transparent;border:none;border-bottom:1px dotted var(--rim);font-size:.8rem;color:var(--text);padding:1px 3px}
 .inm:focus{outline:none;border-bottom-color:var(--gold)}
@@ -779,7 +803,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   transition:color .15s,background .15s;padding:0;
   min-width:36px;min-height:36px;border-radius:var(--r);
 }
-.idel:hover{color:var(--blood);background:rgba(168,42,58,.08)}
+
+@media(hover:hover){.idel:hover{color:var(--blood);background:rgba(168,42,58,.08)}}
 .irow{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid var(--rim);font-size:.8rem;color:var(--text)}
 .irow:last-child{border-bottom:none}
 .coin{
@@ -801,7 +826,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   transition:border-color .18s,box-shadow .18s;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
 }
-.tc:hover{border-color:rgba(200,169,110,.4)}
+
+@media(hover:hover){.tc:hover{border-color:rgba(200,169,110,.4)}}
 .tc.sel{
   background:rgba(63,160,108,.08);
   border-color:rgba(63,160,108,.4);
@@ -828,7 +854,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   touch-action:manipulation;-webkit-tap-highlight-color:transparent;
   display:inline-flex;align-items:center;
 }
-.aopt:hover,.aopt.active{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.07)}
+
+@media(hover:hover){.aopt:hover,.aopt.active{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.07)}}
 .aopt.active{box-shadow:inset 0 1px 0 rgba(200,169,110,.1)}
 .tbadge{
   font-family:var(--fm);font-size:.64rem;color:#5aa8d8;
@@ -845,7 +872,8 @@ input[type=radio]:checked::after{transform:scale(1)}
 }
 .dc.open{border-color:rgba(200,169,110,.35)}
 .dch{display:flex;justify-content:space-between;align-items:center;padding:11px 13px;cursor:pointer;transition:background .12s}
-.dch:hover{background:rgba(200,169,110,.03)}
+
+@media(hover:hover){.dch:hover{background:rgba(200,169,110,.03)}}
 .dct{font-family:var(--fd);font-size:.76rem;color:var(--goldb);font-weight:600;letter-spacing:.04em}
 .dca{color:var(--muted);font-size:.62rem;transition:transform .2s}
 .dc.open .dca{transform:rotate(180deg)}
@@ -860,7 +888,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   position:relative;
 }
 .pc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,rgba(61,143,194,.45) 0%,transparent 60%)}
-.pc:hover{border-color:rgba(61,143,194,.35)}
+
+@media(hover:hover){.pc:hover{border-color:rgba(61,143,194,.35)}}
 .pch{display:flex;justify-content:space-between;align-items:center;padding:9px 13px}
 .pcn{font-family:var(--fd);font-size:.76rem;color:#5aa8d8;font-weight:600;letter-spacing:.04em}
 .pcb{padding:0 13px 10px;font-size:.75rem;color:var(--dim);line-height:1.5;display:none;border-top:1px solid rgba(61,50,84,.35)}
@@ -891,10 +920,12 @@ input[type=radio]:checked::after{transform:scale(1)}
   background:rgba(110,21,37,.6);border:1px solid rgba(168,42,58,.6);
   color:#ffe4e8;box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
 }
-.btn-p:hover{background:rgba(168,42,58,.7);border-color:var(--blood)}
+
+@media(hover:hover){.btn-p:hover{background:rgba(168,42,58,.7);border-color:var(--blood)}}
 .btn-p:active{box-shadow:none}
 .btn-g{background:transparent;border:1px solid var(--border);color:var(--dim)}
-.btn-g:hover{border-color:rgba(200,169,110,.4);color:var(--gold);background:rgba(200,169,110,.05)}
+
+@media(hover:hover){.btn-g:hover{border-color:rgba(200,169,110,.4);color:var(--gold);background:rgba(200,169,110,.05)}}
 .btn-g:active{background:rgba(200,169,110,.08)}
 .btn-gold{
   background:linear-gradient(135deg,rgba(200,169,110,.9),rgba(224,194,126,.95));
@@ -902,7 +933,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   box-shadow:0 2px 16px rgba(200,169,110,.22),inset 0 1px 0 rgba(255,255,255,.25);
   font-weight:700;text-shadow:0 1px 0 rgba(255,255,255,.2);
 }
-.btn-gold:hover{box-shadow:0 4px 24px rgba(200,169,110,.35);transform:translateY(-1px)}
+
+@media(hover:hover){.btn-gold:hover{box-shadow:0 4px 24px rgba(200,169,110,.35);transform:translateY(-1px)}}
 .btn-gold:active{transform:scale(.92);box-shadow:none}
 .bcnf{
   width:100%;
@@ -920,8 +952,10 @@ input[type=radio]:checked::after{transform:scale(1)}
   background:linear-gradient(90deg,transparent,rgba(200,169,110,.06),transparent);
   transition:left .4s ease;
 }
-.bcnf:hover{background:rgba(200,169,110,.06);border-color:rgba(200,169,110,.5)}
-.bcnf:hover::after{left:100%}
+
+@media(hover:hover){.bcnf:hover{background:rgba(200,169,110,.06);border-color:rgba(200,169,110,.5)}}
+
+@media(hover:hover){.bcnf:hover::after{left:100%}}
 .bcnf:active{transform:scale(.98);background:rgba(200,169,110,.1)}
 @keyframes bcnfSuccess{0%{background:transparent}40%{background:rgba(63,160,108,.15);border-color:var(--sage)}100%{background:transparent}}
 .bcnf.success{animation:bcnfSuccess .55s ease forwards}
@@ -934,7 +968,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   text-transform:uppercase;letter-spacing:.12em;
   -webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:34px;
 }
-.bedit:hover{border-color:rgba(200,169,110,.4);color:var(--gold);background:rgba(200,169,110,.05)}
+
+@media(hover:hover){.bedit:hover{border-color:rgba(200,169,110,.4);color:var(--gold);background:rgba(200,169,110,.05)}}
 .bedit:active{transform:scale(.95);background:rgba(200,169,110,.08)}
 .bmini{
   font-family:var(--fm);font-size:.6rem;padding:6px 10px;cursor:pointer;
@@ -943,11 +978,14 @@ input[type=radio]:checked::after{transform:scale(1)}
   -webkit-tap-highlight-color:transparent;display:inline-flex;align-items:center;justify-content:center;
 }
 .bmini.bl{background:rgba(61,143,194,.08);border-color:rgba(61,143,194,.35);color:var(--ice)}
-.bmini.bl:hover{background:rgba(61,143,194,.18);border-color:var(--ice);color:#fff}
+
+@media(hover:hover){.bmini.bl:hover{background:rgba(61,143,194,.18);border-color:var(--ice);color:#fff}}
 .bmini.br{background:rgba(168,42,58,.08);border-color:rgba(168,42,58,.35);color:#c06070}
-.bmini.br:hover{background:rgba(168,42,58,.18);border-color:var(--blood);color:#fff}
+
+@media(hover:hover){.bmini.br:hover{background:rgba(168,42,58,.18);border-color:var(--blood);color:#fff}}
 .bmini.bg{background:rgba(63,160,108,.08);border-color:rgba(63,160,108,.35);color:var(--sage)}
-.bmini.bg:hover{background:rgba(63,160,108,.18);border-color:var(--sage);color:#fff}
+
+@media(hover:hover){.bmini.bg:hover{background:rgba(63,160,108,.18);border-color:var(--sage);color:#fff}}
 .fs-btn{
   background:var(--raised);border:1px solid var(--rim);border-radius:var(--r);
   padding:7px 10px;cursor:pointer;color:var(--dim);font-family:var(--fd);
@@ -956,7 +994,8 @@ input[type=radio]:checked::after{transform:scale(1)}
   touch-action:manipulation;
 }
 .fs-btn.active{background:rgba(200,169,110,.1);border-color:rgba(200,169,110,.4);color:var(--gold)}
-.fs-btn:hover:not(.active){border-color:var(--border);color:var(--text)}
+
+@media(hover:hover){.fs-btn:hover:not(.active){border-color:var(--border);color:var(--text)}}
 .fs-btn:active{transform:scale(.92)}
 .toggle-btn{
   position:relative;flex-shrink:0;
@@ -1039,7 +1078,8 @@ dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
   display:flex;align-items:center;justify-content:center;
   transition:all .18s;font-weight:700;flex-shrink:0;
 }
-.bcls:hover{border-color:rgba(168,42,58,.5);color:var(--blood);background:rgba(110,21,37,.15);transform:rotate(90deg) scale(1.05)}
+
+@media(hover:hover){.bcls:hover{border-color:rgba(168,42,58,.5);color:var(--blood);background:rgba(110,21,37,.15);transform:rotate(90deg) scale(1.05)}}
 
 /* Talent modal */
 .tml{display:grid;grid-template-columns:170px 1fr;height:100%;overflow:hidden;padding:0}
@@ -1052,7 +1092,8 @@ dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
   letter-spacing:.06em;transition:background .15s,border-color .15s,color .15s;
   min-height:40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
 }
-.catbtn:hover{background:rgba(61,50,84,.4);border-color:rgba(61,50,84,.6);color:var(--text)}
+
+@media(hover:hover){.catbtn:hover{background:rgba(61,50,84,.4);border-color:rgba(61,50,84,.6);color:var(--text)}}
 .catbtn.active{background:rgba(61,50,84,.7);border-color:rgba(200,169,110,.3);color:var(--gold)}
 .tmft{padding:8px 14px;background:var(--surface);border-top:1px solid rgba(61,50,84,.4);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
 
@@ -1075,7 +1116,8 @@ dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
   border-radius:var(--r);margin-bottom:4px;font-size:.78rem;color:var(--text);
   transition:border-color .15s;
 }
-.dbitem:hover{border-color:rgba(200,169,110,.3)}
+
+@media(hover:hover){.dbitem:hover{border-color:rgba(200,169,110,.3)}}
 .dfl{font-family:var(--fd);font-size:.56rem;color:var(--dim);letter-spacing:.16em;text-transform:uppercase;display:block;margin:9px 0 3px}
 .dfl em{font-style:italic;font-family:var(--fb);text-transform:none;letter-spacing:0;font-size:.62rem;color:var(--muted);opacity:.75}
 
@@ -1165,7 +1207,8 @@ dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
 .dice-badge.crit{background:rgba(200,169,110,.1);border:1px solid rgba(200,169,110,.35);color:var(--goldb)}
 .dice-badge.fail{background:rgba(168,42,58,.1);border:1px solid rgba(168,42,58,.35);color:var(--blood)}
 .dice-close-btn{font-family:var(--fd);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 20px;border-radius:2px;cursor:pointer;margin-top:4px;transition:all .18s;opacity:0;pointer-events:none}
-.dice-close-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+@media(hover:hover){.dice-close-btn:hover{border-color:var(--gold);color:var(--gold)}}
 #dice-overlay.active .dice-close-btn.show{opacity:1;pointer-events:auto}
 
 /* CROPPER */
@@ -1184,17 +1227,20 @@ dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
 .crsd{flex:0 0 auto;background:var(--deep);border-top:1px solid var(--border);padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom,10px));display:flex;flex-direction:column;gap:8px;overflow:visible}
 .cr-ctrl-row{display:flex;align-items:center;gap:6px}
 .cr-zoom-btn{width:40px;height:40px;border-radius:var(--r);background:var(--raised);border:1px solid var(--rim);color:var(--dim);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;line-height:1;-webkit-user-select:none;touch-action:manipulation}
-.cr-zoom-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+@media(hover:hover){.cr-zoom-btn:hover{border-color:var(--gold);color:var(--gold)}}
 .cr-zoom-btn:active{transform:scale(.88)}
 input[type=range]{flex:1;accent-color:var(--gold);cursor:pointer;min-width:0;height:22px}
 .cr-zoom-lbl{font-family:var(--fm);font-size:.6rem;color:var(--muted);min-width:38px;text-align:right;flex-shrink:0}
 .cr-actions{display:flex;gap:6px;justify-content:center;width:100%}
 .cr-rot-btn,.cr-fit-btn{flex:1;max-width:110px;height:40px;padding:0 8px;border-radius:var(--r);background:var(--raised);border:1px solid var(--rim);color:var(--dim);font-size:.68rem;font-family:var(--fd);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap;transition:all .15s;touch-action:manipulation}
-.cr-rot-btn:hover{border-color:rgba(61,143,194,.5);color:var(--ice)}
+
+@media(hover:hover){.cr-rot-btn:hover{border-color:rgba(61,143,194,.5);color:var(--ice)}}
 .cr-rot-btn:active,.cr-fit-btn:active{transform:scale(.94)}
 .cr-apply-row{display:flex}
 .bsave{flex:1;background:linear-gradient(135deg,var(--crimson),var(--blood));color:#fff;border:none;height:48px;cursor:pointer;border-radius:var(--r);font-family:var(--fd);font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;transition:all .18s;white-space:nowrap;touch-action:manipulation;box-shadow:0 2px 16px rgba(110,21,37,.4)}
-.bsave:hover{box-shadow:var(--gb)}
+
+@media(hover:hover){.bsave:hover{box-shadow:var(--gb)}}
 .bsave:active{transform:scale(.98);opacity:.9}
 
 /* MISC */
@@ -1202,7 +1248,8 @@ input[type=range]{flex:1;accent-color:var(--gold);cursor:pointer;min-width:0;hei
 .dvdr::before,.dvdr::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--rim),transparent)}
 h3.sub{font-family:var(--fd);font-size:.7rem;color:var(--gold);letter-spacing:.08em;margin-bottom:4px}
 details>summary{cursor:pointer;font-family:var(--fm);font-size:.6rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;list-style:none;outline:none;padding:3px 0;display:flex;align-items:center;gap:4px;transition:color .15s}
-details>summary:hover{color:var(--dim)}
+
+@media(hover:hover){details>summary:hover{color:var(--dim)}}
 details>summary::-webkit-details-marker{display:none}
 details>summary::before{content:'▸';color:var(--gold);font-size:.52rem;transition:transform .2s}
 details[open]>summary::before{content:'▾'}
@@ -1230,9 +1277,11 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .apt-empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:24px 12px;text-align:center}
 .apt-empty p{color:var(--muted);font-size:.78rem;font-style:italic;line-height:1.6}
 .apt-card{background:var(--raised);border:1px solid rgba(61,50,84,.5);border-radius:var(--r);padding:7px 10px;cursor:pointer;transition:border-color .18s,box-shadow .18s}
-.apt-card:hover{border-color:rgba(200,169,110,.35);box-shadow:0 0 0 1px rgba(200,169,110,.08)}
+
+@media(hover:hover){.apt-card:hover{border-color:rgba(200,169,110,.35);box-shadow:0 0 0 1px rgba(200,169,110,.08)}}
 .apt-card--sel{background:rgba(61,143,194,.07);border-color:rgba(61,143,194,.35)}
-.apt-card--sel:hover{border-color:rgba(168,42,58,.4)}
+
+@media(hover:hover){.apt-card--sel:hover{border-color:rgba(168,42,58,.4)}}
 .apt-card__name{font-family:var(--fd);font-size:.74rem;color:var(--gold);font-weight:600}
 .apt-card--sel .apt-card__name{color:var(--ice)}
 .apt-card__badge{font-family:var(--fm);font-size:.58rem;padding:1px 7px;border-radius:2px;background:rgba(200,169,110,.08);color:var(--muted);white-space:nowrap;flex-shrink:0}
@@ -1278,7 +1327,8 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .db-section-sep{font-family:var(--fd);font-size:.54rem;color:rgba(200,169,110,.5);text-transform:uppercase;letter-spacing:.2em;padding:10px 0 5px;border-bottom:1px solid rgba(61,50,84,.28);margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .db-section-sep::before{content:'';flex:0 0 3px;height:3px;border-radius:50%;background:rgba(200,169,110,.5)}
 #db_sidebar .btn-g{font-size:.6rem;color:var(--dim);border-color:rgba(61,50,84,.45)}
-#db_sidebar .btn-g:hover{color:var(--gold);border-color:rgba(200,169,110,.35);background:rgba(200,169,110,.04)}
+
+@media(hover:hover){#db_sidebar .btn-g:hover{color:var(--gold);border-color:rgba(200,169,110,.35);background:rgba(200,169,110,.04)}}
 #db_sidebar hr{border:none;border-top:1px solid rgba(61,50,84,.3);margin:6px 4px}
 .cat-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sage);margin-left:6px;vertical-align:middle;flex-shrink:0;box-shadow:0 0 4px rgba(63,160,108,.5)}
 .identity-edit-header{display:none}
@@ -2382,7 +2432,7 @@ const TIMING = {
   /** Swipe ghost-click suppression window */
   SWIPE_SUPPRESS:    380,
   /** Swipe snap transition */
-  SWIPE_SNAP:        260,
+  SWIPE_SNAP:        240,
   /** Crop spring transition */
   CROP_SPRING:       340,
   /** Long-press initial threshold */
@@ -2819,193 +2869,168 @@ const app = {
   },
 
   setupSwipe() {
-    const w = document.getElementById('pages_wrapper');
+    const w     = document.getElementById('pages_wrapper');
     const track = document.getElementById('pages_track');
-    let startX=0, startY=0, startT=0;
-    let lastX=0, lastT=0;
-    // Exponential moving average velocity — más estable que la instantánea
-    let velEMA = 0;
-    let dragging=false, locked=false;
 
-    // ── Ghost-input suppression ──────────────────────────────────────────────
-    // After a horizontal drag the browser fires a synthetic event sequence:
-    //   touchend → (pointerup) → mousedown → mouseup → click
-    // Suppress ALL of those at capture phase so stat-box buttons don't fire.
-    let _suppressClicks = false;
-    const SWIPE_SUPPRESS_EVENTS = ['touchstart','pointerdown','mousedown','click'];
-    const _swipeGuard = (e) => {
-      if (_suppressClicks) { e.stopPropagation(); e.preventDefault(); }
-    };
-    SWIPE_SUPPRESS_EVENTS.forEach(type =>
-      w.addEventListener(type, _swipeGuard, {capture:true, passive:false})
-    );
+    // ── State ──
+    let startX=0, startY=0, startT=0, lastX=0, lastT=0;
+    let velEMA=0, dragging=false, locked=false;
+
+    // ── Constants — tuned for natural feel ──
+    const FLICK_VEL   = 0.14;   // px/ms  — lower = more responsive flick
+    const DRAG_RATIO  = 0.25;   // page % — needed for slow-drag commit
+    const PROJ_MS     = 100;    // ms     — momentum projection window
+    const LOCK_PX     = 5;      // px     — distance before direction locks
+    const V_BIAS      = 1.6;    // ratio  — vertical preference (lower = easier swipe)
+    const RUBBER      = 0.06;   // 0–1    — edge resistance
+    const EMA_ALPHA   = 0.45;   // 0–1    — velocity smoothing (higher = snappier)
+    const SNAP_MS     = 240;    // ms     — snap animation duration
+    const SNAP_EASE   = 'cubic-bezier(.08,.92,.22,1)';  // quick out, soft landing
+
+    // ── Scrollable children — don't steal touch from these ──
+    const SCROLL_SEL = '.skill-area,.tms,.dbs,.tmct,.dbct,.mbd,[data-scroll]';
+
+    // ── Ghost-click suppression after horizontal drag ──
+    let _suppress = false;
+    const GUARD_EVENTS = ['touchstart','pointerdown','mousedown','click'];
+    const _guard = e => { if (_suppress) { e.stopPropagation(); e.preventDefault(); } };
+    GUARD_EVENTS.forEach(t => w.addEventListener(t, _guard, {capture:true, passive:false}));
     const suppressFor = (ms = TIMING.SWIPE_SUPPRESS) => {
-      _suppressClicks = true;
-      setTimeout(() => { _suppressClicks = false; }, ms);
+      _suppress = true;
+      setTimeout(() => { _suppress = false; }, ms);
     };
-    w.addEventListener('pointerdown', () => {}, {passive:true});
 
     const pageW = () => w.clientWidth || window.innerWidth;
 
-    // ── Live drag position with rubber-band at edges ──
-    const setLive = (rawDx) => {
-      const base = -this.currentPage * pageW();
-      const atStart = this.currentPage === 0 && rawDx > 0;
-      const atEnd   = this.currentPage === this.totalPages - 1 && rawDx < 0;
-      // Resistance factor 0.10 — tight enough to signal edge, not sticky
-      const x = (atStart || atEnd) ? base + rawDx * 0.07 : base + rawDx;
+    // ── Rubber-band edge resistance ──
+    const setLive = rawDx => {
+      const base   = -this.currentPage * pageW();
+      const atEdge = (this.currentPage === 0 && rawDx > 0) ||
+                     (this.currentPage === this.totalPages - 1 && rawDx < 0);
       track.style.transition = 'none';
-      track.style.transform = `translateX(${x}px)`;
+      track.style.transform  = `translateX(${base + (atEdge ? rawDx * RUBBER : rawDx)}px)`;
     };
 
-    // ── Touch start ──
-    w.addEventListener('touchstart', e => {
-      if (e.touches.length > 1) return; // ignore multi-touch
-      const t = e.touches[0];
-      startX = lastX = t.clientX;
-      startY = t.clientY;
-      startT = lastT = Date.now();
-      dragging = false; locked = false; velEMA = 0;
-      // Blur any focused child so :focus-visible gold border doesn't linger
-      const focused = w.querySelector(':focus');
-      if (focused) focused.blur();
-    }, {passive:true});
-
-    // ── Touch move ──
-    w.addEventListener('touchmove', e => {
-      if (!e.cancelable || e.touches.length > 1) return;
-      // Don't steal touch from scrollable children (skill-area, etc.)
-      if (!locked && e.target.closest('.skill-area, .tms, .dbs, .tmct, .dbct, [data-scroll]')) return;
-      const t = e.touches[0];
-      const dx = t.clientX - startX;
-      const dy = t.clientY - startY;
-
-      if (!locked) {
-        // Commit direction after 8px — reduces accidental horizontal locks
-        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-        // Ratio 1.8 — strong vertical bias, prevents accidental page swipes
-        if (Math.abs(dx) > Math.abs(dy) * 1.8) {
-          locked = true; dragging = true;
-          track.style.transition = 'none';
-          track.classList.add('is-dragging');
-        } else {
-          locked = true; // vertical — hand back to native scroll
-        }
-      }
-
-      if (dragging) {
-        e.preventDefault();
-        const now = Date.now();
-        const dt  = Math.max(now - lastT, 1);
-        const instantVel = (t.clientX - lastX) / dt;
-        // EMA alpha 0.4 — slightly more responsive to direction changes
-        velEMA = velEMA * 0.60 + instantVel * 0.40;
-        lastX = t.clientX; lastT = now;
-        setLive(dx);
-      }
-    }, {passive:false});
-
-    // ── Snap decision ──
-    // Uses momentum projection: if the finger is still moving fast, project
-    // where it would land (px/ms × remaining time budget) and use that to
-    // decide direction — feels much more natural than pure threshold.
-    const FLICK_VEL   = 0.18;  // px/ms — lower = more sensitive to quick flicks
-    const DRAG_RATIO  = 0.28;  // fraction of page width to commit on slow drag
-    const PROJ_MS     = 90;    // ms to project momentum forward
-
-    const endSwipe = (clientX) => {
-      if (!dragging) {
-        dragging = false; locked = false; velEMA = 0;
-        track.classList.remove('is-dragging');
-        return;
-      }
-      dragging = false; locked = false;
-
-      const dx       = clientX - startX;
-      const pW       = pageW();
-      const ratio    = dx / pW;
-      const absVel   = Math.abs(velEMA);
-      const isFlick  = absVel > FLICK_VEL;
-      // Projected displacement: where would the finger end up in PROJ_MS more?
-      const projected = dx + velEMA * PROJ_MS;
-      const projRatio = projected / pW;
-
-      let target = this.currentPage;
-      if (isFlick && velEMA < 0 && this.currentPage < this.totalPages - 1) {
-        target = this.currentPage + 1;
-      } else if (isFlick && velEMA > 0 && this.currentPage > 0) {
-        target = this.currentPage - 1;
-      } else if (projRatio < -DRAG_RATIO && this.currentPage < this.totalPages - 1) {
-        target = this.currentPage + 1;
-      } else if (projRatio > DRAG_RATIO && this.currentPage > 0) {
-        target = this.currentPage - 1;
-      }
-
-      // Suppress ghost events; keep is-dragging alive for the same window
-      suppressFor(TIMING.SWIPE_SUPPRESS);
+    // ── Snap to target page ──
+    const snapTo = target => {
+      suppressFor();
       setTimeout(() => track.classList.remove('is-dragging'), TIMING.SWIPE_SUPPRESS);
       this.goToPage(target);
     };
 
-    w.addEventListener('touchend',    e => endSwipe(e.changedTouches[0].clientX), {passive:true});
+    // ── Decide target from velocity + projection ──
+    const decide = (dx, vel) => {
+      const pW       = pageW();
+      const projected = dx + vel * PROJ_MS;
+      const projR    = projected / pW;
+      const isFlick  = Math.abs(vel) > FLICK_VEL;
+      const cur      = this.currentPage;
+      const max      = this.totalPages - 1;
+
+      if      (isFlick && vel < 0 && cur < max) return cur + 1;
+      else if (isFlick && vel > 0 && cur > 0)   return cur - 1;
+      else if (projR < -DRAG_RATIO && cur < max) return cur + 1;
+      else if (projR >  DRAG_RATIO && cur > 0)   return cur - 1;
+      return cur;
+    };
+
+    // ══ TOUCH ══
+    w.addEventListener('touchstart', e => {
+      if (e.touches.length > 1) return;
+      const t = e.touches[0];
+      startX = lastX = t.clientX;
+      startY = t.clientY;
+      startT = lastT = Date.now();
+      velEMA = 0; dragging = false; locked = false;
+      // Pre-snap track position so rubber-band starts from correct base
+      track.style.transition = 'none';
+      // Blur focused inputs so focus ring doesn't linger
+      w.querySelector(':focus')?.blur();
+    }, {passive:true});
+
+    w.addEventListener('touchmove', e => {
+      if (!e.cancelable || e.touches.length > 1) return;
+      const t  = e.touches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+
+      if (!locked) {
+        // Skip if inside a scrollable child
+        if (e.target.closest(SCROLL_SEL)) { locked = true; return; }
+        // Wait for minimum movement before committing direction
+        if (Math.abs(dx) < LOCK_PX && Math.abs(dy) < LOCK_PX) return;
+        if (Math.abs(dx) > Math.abs(dy) * V_BIAS) {
+          locked = true; dragging = true;
+          track.classList.add('is-dragging');
+        } else {
+          locked = true; // vertical — release to native scroll
+          return;
+        }
+      }
+
+      if (!dragging) return;
+      e.preventDefault();
+
+      const now = Date.now();
+      const dt  = Math.max(now - lastT, 1);
+      velEMA    = velEMA * (1 - EMA_ALPHA) + (t.clientX - lastX) / dt * EMA_ALPHA;
+      lastX     = t.clientX;
+      lastT     = now;
+      setLive(dx);
+    }, {passive:false});
+
+    w.addEventListener('touchend', e => {
+      if (!dragging) { dragging = false; locked = false; velEMA = 0; return; }
+      track.classList.remove('is-dragging');
+      const dx = e.changedTouches[0].clientX - startX;
+      dragging = false; locked = false;
+      snapTo(decide(dx, velEMA));
+    }, {passive:true});
+
     w.addEventListener('touchcancel', () => {
       track.classList.remove('is-dragging');
       dragging = false; locked = false; velEMA = 0;
       this.goToPage(this.currentPage);
     }, {passive:true});
 
-    // ── Desktop mouse drag ──
-    let mStart = null;
+    // ══ MOUSE (desktop) ══
+    let ms = null;
     w.addEventListener('mousedown', e => {
       if (e.target.closest('input,select,textarea,button,label')) return;
-      mStart = {x:e.clientX, lastX:e.clientX, lastT:Date.now(), velEMA:0, dragging:false};
+      ms = {x:e.clientX, lx:e.clientX, lt:Date.now(), v:0, drag:false};
       track.style.transition = 'none';
     });
     w.addEventListener('mousemove', e => {
-      if (!mStart) return;
-      if (!mStart.dragging && Math.abs(e.clientX - mStart.x) > 10) {
-        mStart.dragging = true;
-        track.classList.add('is-dragging');
+      if (!ms) return;
+      if (!ms.drag && Math.abs(e.clientX - ms.x) > 8) {
+        ms.drag = true; track.classList.add('is-dragging');
       }
-      if (mStart.dragging) {
-        const now = Date.now(), dt = Math.max(now - mStart.lastT, 1);
-        const iv = (e.clientX - mStart.lastX) / dt;
-        mStart.velEMA = mStart.velEMA * 0.65 + iv * 0.35;
-        mStart.lastX = e.clientX; mStart.lastT = now;
-        setLive(e.clientX - mStart.x);
+      if (ms.drag) {
+        const dt = Math.max(Date.now() - ms.lt, 1);
+        ms.v  = ms.v * (1 - EMA_ALPHA) + (e.clientX - ms.lx) / dt * EMA_ALPHA;
+        ms.lx = e.clientX; ms.lt = Date.now();
+        setLive(e.clientX - ms.x);
       }
     });
-    const endMouse = (clientX) => {
+    const endMouse = cx => {
       track.classList.remove('is-dragging');
-      if (!mStart) return;
-      const {x, dragging: was, velEMA: v} = mStart;
-      mStart = null;
-      if (!was) return;
-      const dx = clientX - x, pW = pageW();
-      const projected = dx + v * PROJ_MS;
-      const projRatio = projected / pW;
-      const isFlick = Math.abs(v) > FLICK_VEL;
-      let target = this.currentPage;
-      if      (isFlick && v < 0 && this.currentPage < this.totalPages-1) target = this.currentPage + 1;
-      else if (isFlick && v > 0 && this.currentPage > 0)                 target = this.currentPage - 1;
-      else if (projRatio < -DRAG_RATIO && this.currentPage < this.totalPages-1) target = this.currentPage + 1;
-      else if (projRatio > DRAG_RATIO && this.currentPage > 0)                  target = this.currentPage - 1;
-      this.goToPage(target);
+      if (!ms) return;
+      const {x, drag, v} = ms; ms = null;
+      if (!drag) return;
+      snapTo(decide(cx - x, v));
     };
     w.addEventListener('mouseup',    e => endMouse(e.clientX));
     w.addEventListener('mouseleave', e => endMouse(e.clientX));
 
-    // Re-snap on resize / orientation change so the track doesn't get stuck mid-slide
-    const _snapOnResize = this._debounce(() => {
+    // ══ RESIZE / ROTATION ══
+    const _reSnap = this._debounce(() => {
       if (document.getElementById('app-screen')?.classList.contains('hidden')) return;
-      // Immediate snap without transition for instant re-layout
       track.style.transition = 'none';
-      track.style.transform = `translateX(-${this.currentPage * (w.clientWidth || window.innerWidth)}px)`;
-    }, 120);
-    window.addEventListener('resize', _snapOnResize, {passive:true});
-    window.addEventListener('orientationchange', _snapOnResize, {passive:true});
+      track.style.transform  = `translateX(-${this.currentPage * pageW()}px)`;
+    }, 100);
+    window.addEventListener('resize',            _reSnap, {passive:true});
+    window.addEventListener('orientationchange', _reSnap, {passive:true});
   },
-
   goToPage(n) {
     if (n !== this.currentPage && navigator.vibrate) navigator.vibrate(4);
 
