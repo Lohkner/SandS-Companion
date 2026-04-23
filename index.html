@@ -136,7 +136,7 @@ html{padding-top:env(safe-area-inset-top,0px);box-sizing:border-box}
 .leth-summary-badge[data-tier="1"]{color:var(--blood);border-color:rgba(176,48,64,.35);background:rgba(176,48,64,.08)}
 .leth-summary-badge[data-tier="2"]{color:var(--goldb);border-color:rgba(200,169,110,.35);background:rgba(200,169,110,.08)}
 .leth-summary-badge[data-tier="3"]{color:var(--sage);border-color:rgba(76,175,125,.35);background:rgba(76,175,125,.08)}
-.fs-btn{background:var(--raised);border:1px solid var(--rim);border-radius:var(--r);padding:5px 10px;cursor:pointer;color:var(--dim);font-family:var(--fd);transition:all .15s;line-height:1;min-width:32px;text-align:center}
+.fs-btn{background:var(--raised);border:1px solid var(--rim);border-radius:6px;padding:7px 10px;cursor:pointer;color:var(--dim);font-family:var(--fd);transition:all .15s;line-height:1;min-width:36px;min-height:36px;text-align:center;display:inline-flex;align-items:center;justify-content:center;touch-action:manipulation}
 .fs-btn.active{background:rgba(200,169,110,.18);border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 1px rgba(200,169,110,.25),0 2px 6px rgba(0,0,0,.3)}
 .fs-btn:hover:not(.active){border-color:var(--border);color:var(--text);background:var(--panel)}
 .fs-btn:active{transform:scale(.92)}
@@ -222,7 +222,7 @@ body{font-family:var(--fb);background:var(--void);color:var(--text);min-height:-
   border-bottom:1px solid rgba(74,63,94,.35);
   z-index:10;backdrop-filter:blur(20px);
   box-shadow:0 1px 0 rgba(200,169,110,.05),0 2px 20px rgba(0,0,0,.5)}
-.app-hdr-back{background:linear-gradient(135deg,rgba(200,169,110,.06),transparent);border:1px solid rgba(200,169,110,.3);color:var(--dim);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:.88rem;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04);letter-spacing:-.02em;font-weight:700}
+.app-hdr-back{background:linear-gradient(135deg,rgba(200,169,110,.06),transparent);border:1px solid rgba(200,169,110,.3);color:var(--dim);width:40px;height:40px;border-radius:9px;cursor:pointer;font-size:.88rem;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04);letter-spacing:-.02em;font-weight:700}
 .app-hdr-back:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.1);box-shadow:0 0 0 1px rgba(200,169,110,.2),0 2px 8px rgba(0,0,0,.4)}
 .app-hdr-back:active{transform:scale(.92)}
 .app-hdr-ttl{font-family:var(--ft);font-size:.82rem;color:var(--gold);letter-spacing:.12em;flex:1;text-align:center;text-shadow:0 0 20px rgba(200,169,110,.3)}
@@ -238,12 +238,12 @@ body{font-family:var(--fb);background:var(--void);color:var(--text);min-height:-
 .app-hdr-save:active{transform:scale(.93)}
 .app-hdr-save:disabled{opacity:.45;cursor:not-allowed}
 .sdial{position:relative;flex-shrink:0}
-.sdial-btn{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,rgba(138,122,158,.08),transparent);border:1px solid rgba(138,122,158,.3);color:var(--muted);font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;box-shadow:0 1px 4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04)}
+.sdial-btn{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,rgba(138,122,158,.08),transparent);border:1px solid rgba(138,122,158,.3);color:var(--muted);font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;box-shadow:0 1px 4px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.04)}
 .sdial-btn:hover,.sdial-btn.open{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.1);box-shadow:0 0 0 1px rgba(200,169,110,.2),0 2px 8px rgba(0,0,0,.4)}
 .sdial-btn:active{transform:scale(.92)}
 .sdial-menu{position:absolute;top:calc(100% + 8px);right:0;display:flex;flex-direction:column;gap:6px;opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .18s,transform .18s;z-index:100}
 .sdial-menu.open{opacity:1;pointer-events:auto;transform:translateY(0)}
-.sdial-item{width:34px;height:34px;border-radius:10px;background-color:#2a2337;border:1px solid #4a3f5e;color:#a899be;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background-color .15s,border-color .15s,color .15s,transform .1s,box-shadow .15s;box-shadow:0 4px 12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.05);-webkit-tap-highlight-color:transparent}
+.sdial-item{width:40px;height:40px;border-radius:11px;background-color:#2a2337;border:1px solid #4a3f5e;color:#a899be;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background-color .15s,border-color .15s,color .15s,transform .1s,box-shadow .15s;box-shadow:0 4px 14px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.06);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .sdial-item:hover{border-color:#c8a96e;color:#c8a96e;background-color:#3d3020;box-shadow:0 0 0 1px rgba(200,169,110,.25),0 4px 14px rgba(0,0,0,.5)}
 .sdial-item:active{transform:scale(.88);background-color:#4a3a18;border-color:#c8a96e;color:#e8c97e;box-shadow:none}
 .sdial-danger:hover{border-color:#b03040;color:#b03040;background-color:#3a1a1e}
@@ -456,7 +456,7 @@ input[type=radio]:checked::after{transform:scale(1)}
 /* ══ IDENTITY ══ */
 .ibadge{display:inline-flex;align-items:center;gap:4px;font-family:var(--fd);font-size:.72rem;color:var(--goldb);background:rgba(200,169,110,.12);border:1px solid rgba(200,169,110,.32);border-radius:20px;padding:5px 14px;margin:2px;box-shadow:0 2px 8px rgba(0,0,0,.3),inset 0 1px 0 rgba(200,169,110,.08)}
 .asel{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
-.aopt{padding:3px 8px;border:1px solid var(--border);border-radius:20px;font-family:var(--fm);font-size:.67rem;color:var(--dim);cursor:pointer;transition:all .15s;background:transparent}
+.aopt{padding:6px 12px;border:1px solid var(--border);border-radius:20px;font-family:var(--fm);font-size:.67rem;color:var(--dim);cursor:pointer;transition:all .15s;background:transparent;min-height:34px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;display:inline-flex;align-items:center}
 .aopt:hover,.aopt.active{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.08)}.aopt.active{box-shadow:0 0 0 1px rgba(200,169,110,.2);background:rgba(200,169,110,.1)}
 .tbadge{font-family:var(--fm);font-size:.67rem;color:#6ab8e0;background:rgba(74,158,202,.12);border:1px solid rgba(74,158,202,.35);border-radius:20px;padding:3px 10px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 /* ══ DETAIL CARDS ══ */
@@ -529,7 +529,7 @@ input[type=radio]:checked::after{transform:scale(1)}
 }
 .toggle-btn{
   position:relative;flex-shrink:0;
-  width:40px;height:22px;
+  width:44px;height:24px;
   background:var(--raised);
   border:1px solid var(--rim);
   border-radius:11px;
@@ -540,7 +540,7 @@ input[type=radio]:checked::after{transform:scale(1)}
 .toggle-btn::after{
   content:'';
   position:absolute;top:2px;left:2px;
-  width:16px;height:16px;
+  width:18px;height:18px;
   border-radius:50%;
   background:var(--muted);
   transition:transform .22s cubic-bezier(.34,1.56,.64,1),background .22s;
@@ -552,7 +552,7 @@ input[type=radio]:checked::after{transform:scale(1)}
   box-shadow:0 0 0 1px rgba(200,169,110,.2);
 }
 .toggle-btn[aria-pressed="true"]::after{
-  transform:translateX(18px);
+  transform:translateX(20px);
   background:var(--gold);
 }
 .identity-edit-header{display:none}
@@ -581,10 +581,10 @@ input[type=radio]:checked::after{transform:scale(1)}
 }
 .bedit:hover{border-color:rgba(200,169,110,.5);color:var(--gold);background:rgba(200,169,110,.06);box-shadow:0 2px 10px rgba(0,0,0,.3),0 0 0 1px rgba(200,169,110,.12)}
 .bedit:active{transform:scale(.95);background:rgba(200,169,110,.1);box-shadow:none}
-.bmini{font-family:var(--fm);font-size:.6rem;padding:3px 7px;cursor:pointer;border-radius:2px;border:1px solid;letter-spacing:.05em;text-transform:uppercase;transition:all .15s}
-.bmini.bl{background:rgba(29,78,143,.18);border-color:var(--ice);color:var(--ice)}.bmini.bl:hover{background:rgba(74,158,202,.3);color:#fff}
-.bmini.br{background:rgba(125,28,42,.18);border-color:var(--crimson);color:var(--ember)}.bmini.br:hover{background:var(--crimson);color:#fff}
-.bmini.bg{background:rgba(26,107,58,.18);border-color:var(--sage);color:var(--sage)}.bmini.bg:hover{background:rgba(76,175,125,.3);color:#fff}
+.bmini{font-family:var(--fm);font-size:.6rem;padding:6px 10px;cursor:pointer;border-radius:5px;border:1px solid;letter-spacing:.05em;text-transform:uppercase;transition:all .15s;min-height:32px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;display:inline-flex;align-items:center;justify-content:center}
+.bmini.bl{background:rgba(74,158,202,.1);border-color:rgba(74,158,202,.45);color:var(--ice)}.bmini.bl:hover{background:rgba(74,158,202,.22);border-color:var(--ice);color:#fff}
+.bmini.br{background:rgba(176,48,64,.1);border-color:rgba(176,48,64,.45);color:#e07080}.bmini.br:hover{background:rgba(176,48,64,.22);border-color:var(--blood);color:#fff}
+.bmini.bg{background:rgba(76,175,125,.1);border-color:rgba(76,175,125,.45);color:var(--sage)}.bmini.bg:hover{background:rgba(76,175,125,.22);border-color:var(--sage);color:#fff}
 /* ══ MODALS ══ */
 dialog.modal{
   background:linear-gradient(165deg,var(--surface) 0%,rgba(13,10,20,.98) 100%);
@@ -611,16 +611,20 @@ dialog::backdrop{background:rgba(0,0,0,.78);backdrop-filter:blur(12px)}
 .tml{display:grid;grid-template-columns:170px 1fr;height:100%;overflow:hidden;padding:0}
 .tms{background:var(--void);padding:8px;border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;gap:3px}
 .tmct{padding:10px;overflow-y:auto;background:var(--surface)}
-.catbtn{display:block;width:100%;text-align:left;padding:6px 10px;background:transparent;border:1px solid transparent;border-radius:var(--r);cursor:pointer;font-family:var(--fd);font-size:.76rem;color:var(--dim);letter-spacing:.05em;transition:all .15s}
-.catbtn:hover{background:var(--surface);border-color:var(--rim);color:var(--text)}.catbtn.active{background:var(--panel);border-color:rgba(200,169,110,.3);color:var(--gold)}
+.catbtn{display:block;width:100%;text-align:left;padding:8px 12px;background:transparent;border:1px solid transparent;border-radius:6px;cursor:pointer;font-family:var(--fd);font-size:.76rem;color:var(--dim);letter-spacing:.05em;transition:background .15s,border-color .15s,color .15s;min-height:40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.catbtn:hover{background:rgba(42,35,55,.6);border-color:rgba(74,63,94,.6);color:var(--text)}.catbtn.active{background:rgba(42,35,55,.9);border-color:rgba(200,169,110,.35);color:var(--gold);box-shadow:inset 0 1px 0 rgba(200,169,110,.06)}
 .tmft{padding:8px 14px;background:var(--surface);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
 /* ══ DB EDITOR ══ */
-.dbl{display:grid;grid-template-columns:155px 1fr;height:100%;overflow:hidden}
-.dbs{background:var(--void);padding:8px;border-right:1px solid var(--border)}
-.dbct{padding:12px;overflow-y:auto}
-.dbitem{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:var(--raised);border:1px solid var(--rim);border-radius:var(--r);margin-bottom:3px;font-size:.8rem;color:var(--text)}
-.dbitem:hover{border-color:var(--border)}
-.dfl{font-family:var(--fd);font-size:.63rem;color:var(--dim);letter-spacing:.1em;text-transform:uppercase;display:block;margin:6px 0 2px}
+.dbl{display:grid;grid-template-columns:172px 1fr;height:100%;overflow:hidden}
+.dbs{background:var(--void);padding:8px;border-right:1px solid rgba(74,63,94,.4);overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.dbct{padding:14px;overflow-y:auto;background:linear-gradient(160deg,var(--surface) 0%,rgba(15,12,22,.98) 100%)}
+.dbitem{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;background:linear-gradient(135deg,var(--raised),var(--deep));border:1px solid rgba(74,63,94,.5);border-radius:7px;margin-bottom:4px;font-size:.8rem;color:var(--text);transition:border-color .15s,box-shadow .15s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.dbitem:hover{border-color:rgba(200,169,110,.35);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.dfl{font-family:var(--fd);font-size:.58rem;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;display:block;margin:9px 0 3px}
+.dfl em{font-style:italic;font-family:var(--fb);text-transform:none;letter-spacing:0;font-size:.62rem;color:var(--muted);opacity:.8}
+/* DB form section divider */
+.db-section-sep{font-family:var(--fd);font-size:.55rem;color:rgba(200,169,110,.5);text-transform:uppercase;letter-spacing:.18em;padding:10px 0 5px;border-bottom:1px solid rgba(74,63,94,.3);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.db-section-sep::before{content:'';flex:0 0 4px;height:4px;border-radius:50%;background:var(--gold);opacity:.6}
 /* ══ CROP ══ */
 /* Override base dialog constraints — crop needs full viewport on mobile */
 #crop_modal{
@@ -877,7 +881,9 @@ details>summary::before{content:'▸';color:var(--gold);font-size:.56rem;transit
   dialog.modal:not(#crop_modal){width:100vw;height:100dvh;max-height:100dvh;border-radius:0;border:none;inset:0;margin:0;padding-top:env(safe-area-inset-top,0px)}
   dialog.modal:not(#crop_modal) .mhd{padding-top:10px}
   .dbl{grid-template-columns:1fr;grid-template-rows:auto 1fr}
-  .dbs{border-right:none;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:4px}
+  .dbs{border-right:none;border-bottom:1px solid rgba(74,63,94,.4);display:flex;flex-wrap:wrap;gap:4px;overflow-y:visible;max-height:none;padding:8px 10px}
+  .dbs .catbtn{width:auto;padding:7px 12px;font-size:.7rem;flex:0 0 auto}
+  #db_sidebar>div:first-child{display:none}
 }
 @media(max-width:400px){.g6{grid-template-columns:repeat(2,1fr)}.saves-grid{grid-template-columns:repeat(3,1fr)}.home-title{font-size:1.4rem;letter-spacing:.08em}}
 /* ══ FOCUS-VISIBLE (keyboard navigation) ══ */
@@ -930,6 +936,57 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .js-res-formula{text-align:center;border-radius:var(--r);padding:6px}
 .js-res-formula-lbl{font-family:var(--fm);font-size:.56rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
 .js-res-formula-val{font-family:var(--fd);font-size:.82rem;color:var(--bright);font-weight:700}
+
+/* ══ DB EDITOR ENHANCEMENTS ══ */
+.dbs{scrollbar-width:thin;scrollbar-color:var(--rim) transparent}
+#db_list_container{min-height:120px}
+/* Subtle separator between list and form */
+#db_form_container{
+  background:linear-gradient(160deg,rgba(20,16,30,.6) 0%,transparent 100%);
+  border-radius:0 0 var(--rl) 0;
+  padding-top:14px!important;
+}
+/* DB editor form title */
+#db_form_container h3{
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(74,63,94,.3);
+  margin-bottom:12px;
+}
+/* Key input state */
+#db_key:not(:placeholder-shown){
+  border-color:rgba(74,158,202,.4);
+}
+/* DB item name ellipsis */
+.dbitem span:first-child{
+  max-width:calc(100% - 110px);
+}
+/* Export button in sidebar */
+#db_sidebar .btn-g{
+  font-size:.62rem;
+  color:var(--dim);
+  border-color:rgba(74,63,94,.5);
+}
+#db_sidebar .btn-g:hover{
+  color:var(--gold);
+  border-color:rgba(200,169,110,.4);
+  background:rgba(200,169,110,.05);
+}
+/* HR in sidebar */
+#db_sidebar hr{
+  border:none;
+  border-top:1px solid rgba(74,63,94,.35);
+  margin:8px 4px;
+}
+/* Category section header in talents */
+.db-cat-sub-hdr{
+  font-family:var(--fm);font-size:.58rem;
+  color:rgba(200,169,110,.65);
+  letter-spacing:.15em;text-transform:uppercase;
+  padding:6px 4px 4px;
+  border-bottom:1px solid rgba(74,63,94,.28);
+  margin:10px 0 5px;
+  display:flex;justify-content:space-between;align-items:center;
+}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -975,7 +1032,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
 <input type="file" id="img_input" accept="image/*" style="display:none" onchange="app.startCrop(this)">
 
 <!-- ══ APTITUDE MANAGER MODAL ══ -->
-<dialog id="apt_manager_modal" class="modal" style="max-width:min(960px,96vw);height:min(85dvh,calc(90svh - env(safe-area-inset-top,0px)))">
+<dialog id="apt_manager_modal" class="modal" aria-labelledby="apt_manager_title" style="max-width:min(960px,96vw);height:min(85dvh,calc(90svh - env(safe-area-inset-top,0px)))">
   <div class="mhd">
     <span class="mttl" id="apt_manager_title">Gestor de Trucos</span>
     <button class="bcls" onclick="app.closeAptManager()" aria-label="Cerrar gestor de aptitudes">✕</button>
@@ -1016,7 +1073,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
     <div id="home-roster"></div>
     <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--rim);display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
       <button class="btn btn-g" style="font-size:.68rem" onclick="document.getElementById('json_rules_input').click()" aria-label="Importar reglas desde archivo JSON">↑ Importar Reglas</button>
-      <button class="btn btn-g" style="font-size:.68rem" onclick="app.openDatabaseEditor()">⚙ Editor de Reglas</button>
+      <button class="btn btn-g" style="font-size:.68rem" onclick="app.openDatabaseEditor()">Editor de Reglas</button>
     </div>
   </div>
 </div>
@@ -1093,10 +1150,10 @@ input:focus-visible,textarea:focus-visible{outline:none}
             <div class="ph identity-edit-header"><span class="pt">Identidad &amp; Origen</span></div>
             <div id="identity_edit_view">
               <div class="g2">
-                <div><span class="fl">Linaje (Raza)</span><select id="sel_desc" onchange="app.updateOptions()"></select><div id="desc_info" class="infobox"></div></div>
-                <div><span class="fl">Arquetipo (Clase)</span><select id="sel_arq" onchange="app.updateOptions()"></select><div id="arq_info" class="infobox"></div><span class="fl" style="margin-top:6px">Filo</span><select id="sel_filo" onchange="app.calc()"></select></div>
+                <div><span class="fl">Linaje (Raza)</span><select id="sel_desc" aria-label="Linaje del personaje" onchange="app.updateOptions()"></select><div id="desc_info" class="infobox"></div></div>
+                <div><span class="fl">Arquetipo (Clase)</span><select id="sel_arq" aria-label="Arquetipo del personaje" onchange="app.updateOptions()"></select><div id="arq_info" class="infobox"></div><span class="fl" style="margin-top:6px">Filo</span><select id="sel_filo" aria-label="Filo del arquetipo" onchange="app.calc()"></select></div>
               </div>
-              <div style="margin-top:6px"><span class="fl">Trasfondo</span><select id="sel_bg" onchange="app.updateOptions()"></select><div id="bg_info" class="infobox"></div></div>
+              <div style="margin-top:6px"><span class="fl">Trasfondo</span><select id="sel_bg" aria-label="Trasfondo del personaje" onchange="app.updateOptions()"></select><div id="bg_info" class="infobox"></div></div>
               <button class="bcnf" onclick="app.confirmSection('identity')">✓ Confirmar</button>
             </div>
             <div id="identity_summary_view" style="display:none">
@@ -1186,7 +1243,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
               <div class="lbar"><div id="carga_bar" class="lfill"></div></div>
               <p id="carga_warn" style="display:none;color:var(--ember);font-size:.6rem;text-align:center;margin-top:2px;font-family:var(--fm)">⚠ SOBRECARGADO</p>
             </div>
-            <details style="margin-top:6px"><summary id="notes-summary">Notas Rápidas</summary><textarea id="char_notes" aria-labelledby="notes-summary" style="min-height:52px;margin-top:4px;font-size:.8rem" placeholder="Notas…"></textarea></details>
+            <details style="margin-top:6px"><summary id="notes-summary">Notas Rápidas</summary><textarea id="char_notes" aria-label="Notas rápidas del personaje" aria-labelledby="notes-summary" style="min-height:52px;margin-top:4px;font-size:.8rem" placeholder="Notas…"></textarea></details>
           </div>
 
           <!-- Ataques rápidos -->
@@ -1352,16 +1409,16 @@ input:focus-visible,textarea:focus-visible{outline:none}
             <div class="ph"><span class="pt">Equipo de Combate</span></div>
             <div id="combat_edit_view">
               <div class="g2">
-                <div><span class="fl">Armadura</span><select id="sel_armor" onchange="app.calc()"></select>
+                <div><span class="fl">Armadura</span><select id="sel_armor" aria-label="Armadura equipada" onchange="app.calc()"></select>
                   <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-top:5px">
-                    <div><span class="fl" style="font-size:.55rem">Mod. CA Prim.</span><select id="ca_mod1" class="ap" onchange="app.calc()"><option value="DES">DES</option><option value="FUE">FUE</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option><option value="NONE">—</option></select></div>
-                    <div><span class="fl" style="font-size:.55rem">Mod. Extra 1</span><select id="ca_mod2" class="ap" onchange="app.calc()"><option value="NONE">—</option><option value="DES">DES</option><option value="FUE">FUE</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option></select></div>
-                    <div><span class="fl" style="font-size:.55rem">Mod. Extra 2</span><select id="ca_mod3" class="ap" onchange="app.calc()"><option value="NONE">—</option><option value="DES">DES</option><option value="FUE">FUE</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option></select></div>
+                    <div><span class="fl" style="font-size:.55rem">Mod. CA Prim.</span><select id="ca_mod1" aria-label="Modificador de CA principal" class="ap" onchange="app.calc()"><option value="DES">DES</option><option value="FUE">FUE</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option><option value="NONE">—</option></select></div>
+                    <div><span class="fl" style="font-size:.55rem">Mod. Extra 1</span><select id="ca_mod2" aria-label="Modificador de CA extra 1" class="ap" onchange="app.calc()"><option value="NONE">—</option><option value="DES">DES</option><option value="FUE">FUE</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option></select></div>
+                    <div><span class="fl" style="font-size:.55rem">Mod. Extra 2</span><select id="ca_mod3" aria-label="Modificador de CA extra 2" class="ap" onchange="app.calc()"><option value="NONE">—</option><option value="DES">DES</option><option value="FUE">FUE</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option></select></div>
                   </div>
                   <div class="ccard"><span class="clbl">CA Base</span><span class="cval" id="armor_base_val">—</span></div>
                   <div id="armor_desc" class="infobox"></div>
                 </div>
-                <div><span class="fl">Escudo</span><select id="sel_shield" onchange="app.calc()"></select>
+                <div><span class="fl">Escudo</span><select id="sel_shield" aria-label="Escudo equipado" onchange="app.calc()"></select>
                   <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:5px">
                     <div><span class="fl" style="font-size:.55rem">Bono Mágico</span><select id="sel_magic_bonus" class="ap" onchange="app.calc()"><option value="0">—</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3</option></select></div>
                     <div><span class="fl" style="font-size:.55rem">Otro Bono</span><select id="sel_ca_other" class="ap" onchange="app.calc()"><option value="0">—</option><option value="1">+1</option><option value="2">+2</option><option value="3">+3</option></select></div>
@@ -1369,14 +1426,14 @@ input:focus-visible,textarea:focus-visible{outline:none}
                 </div>
               </div>
               <div style="display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:end;margin-top:8px">
-                <div><span class="fl">Arma Principal</span><select id="sel_weapon" onchange="app.onWeaponChange('w1')"></select></div>
+                <div><span class="fl">Arma Principal</span><select id="sel_weapon" aria-label="Arma principal" onchange="app.onWeaponChange('w1')"></select></div>
                 <div><span class="fl" style="font-size:.58rem">Mod. Ataque</span><select id="w1_attr" class="ap" onchange="app.calc()"><option value="FUE">FUE</option><option value="DES">DES</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option><option value="NONE">—</option></select></div>
                 <div><span class="fl" style="font-size:.58rem">Mod. Daño</span><select id="w1_dmg_attr" class="ap" onchange="app.calc()"><option value="FUE">FUE</option><option value="DES">DES</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option><option value="NONE">—</option></select></div>
               </div>
               <div class="ccard"><div><span class="clbl">Ataque</span><div class="cval" id="w1_atk_val">—</div></div><div style="text-align:right"><span class="clbl">Daño</span><div class="cval" id="w1_dmg_val">—</div></div></div>
               <div class="calert" id="w1_alert"></div>
               <div style="display:grid;grid-template-columns:1fr auto auto;gap:6px;align-items:end;margin-top:6px">
-                <div><span class="fl">Arma Secundaria</span><select id="sel_weapon_sec" onchange="app.onWeaponChange('w2')"></select></div>
+                <div><span class="fl">Arma Secundaria</span><select id="sel_weapon_sec" aria-label="Arma secundaria" onchange="app.onWeaponChange('w2')"></select></div>
                 <div><span class="fl" style="font-size:.58rem">Mod. Ataque</span><select id="w2_attr" class="ap" onchange="app.calc()"><option value="FUE">FUE</option><option value="DES">DES</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option><option value="NONE">—</option></select></div>
                 <div><span class="fl" style="font-size:.58rem">Mod. Daño</span><select id="w2_dmg_attr" class="ap" onchange="app.calc()"><option value="FUE">FUE</option><option value="DES">DES</option><option value="CON">CON</option><option value="INT">INT</option><option value="SAB">SAB</option><option value="CAR">CAR</option><option value="NONE">—</option></select></div>
               </div>
@@ -1435,8 +1492,8 @@ input:focus-visible,textarea:focus-visible{outline:none}
             <div id="equipment_edit_view">
               <div style="background:var(--deep);border:1px solid var(--rim);border-radius:var(--r);padding:6px 8px;margin-bottom:8px">
                 <div style="display:grid;grid-template-columns:auto auto 1fr auto;gap:4px;align-items:end">
-                  <div><span class="fl">Categ.</span><select id="inv_db_category" onchange="app.updateDbSelect()" style="font-size:.75rem"><option value="weapons">Armas</option><option value="armors">Armaduras</option><option value="shields">Escudos</option><option value="misc">Misc.</option></select></div>
-                  <div><span class="fl">Objeto</span><select id="inv_db_item" style="font-size:.75rem"></select></div>
+                  <div><span class="fl">Categ.</span><select id="inv_db_category" aria-label="Categoría del objeto" onchange="app.updateDbSelect()" style="font-size:.75rem"><option value="weapons">Armas</option><option value="armors">Armaduras</option><option value="shields">Escudos</option><option value="misc">Misc.</option></select></div>
+                  <div><span class="fl">Objeto</span><select id="inv_db_item" aria-label="Objeto a añadir" style="font-size:.75rem"></select></div>
                   <div></div>
                   <button class="btn btn-p" style="font-size:.67rem;padding:6px 9px;align-self:end" onclick="app.addFromDB()">+ Añadir</button>
                 </div>
@@ -1521,8 +1578,8 @@ input:focus-visible,textarea:focus-visible{outline:none}
 </div><!-- /app-screen -->
 
 <!-- ══ SETTINGS MODAL ══ -->
-<dialog id="settings_modal" class="modal">
-  <div class="mhd"><span class="mttl">Ajustes &amp; Datos</span><button class="bcls" onclick="document.getElementById('settings_modal').close()" aria-label="Cerrar ajustes">✕</button></div>
+<dialog id="settings_modal" class="modal" aria-labelledby="settings_modal_title">
+  <div class="mhd"><span class="mttl" id="settings_modal_title">Ajustes &amp; Datos</span><button class="bcls" onclick="document.getElementById('settings_modal').close()" aria-label="Cerrar ajustes">✕</button></div>
   <div class="mbd" style="display:flex;flex-direction:column;gap:14px">
     <div><div class="dvdr">Interfaz</div>
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
@@ -1539,7 +1596,7 @@ input:focus-visible,textarea:focus-visible{outline:none}
           <span id="scroll_preserve_lbl" style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Activar recordar posición al volver</span>
           <div style="font-family:var(--fm);font-size:.6rem;color:var(--border);margin-top:2px">Mantiene el scroll de cada sección al cambiar de pestaña</div>
         </div>
-        <button id="scroll_preserve_btn" class="toggle-btn" onclick="app.toggleScrollPreserve()" aria-pressed="false" title="Activar/desactivar recordar posición de scroll"></button>
+        <button id="scroll_preserve_btn" class="toggle-btn" onclick="app.toggleScrollPreserve()" aria-pressed="false" title="Activar/desactivar recordar posición de scroll" aria-label="Activar recordar posición al volver"></button>
       </div>
     </div>
     <div><div class="dvdr">Reglas del Juego</div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn btn-g" style="width:100%" onclick="document.getElementById('json_rules_input').click()">↑ Importar Reglas (JSON)</button><button class="btn btn-gold" style="width:100%" onclick="app.openDatabaseEditor()">⚙ Editor de Base de Datos</button></div></div>
@@ -1549,28 +1606,60 @@ input:focus-visible,textarea:focus-visible{outline:none}
 </dialog>
 
 <!-- ══ DB EDITOR MODAL ══ -->
-<dialog id="db_editor_modal" class="modal" style="max-width:min(1000px,96vw);height:min(88dvh,calc(90svh - env(safe-area-inset-top,0px)))">
-  <div class="mhd" style="background:var(--panel)"><span class="mttl" style="color:var(--ice)">Editor de Base de Datos</span><button class="bcls" onclick="document.getElementById('db_editor_modal').close()" aria-label="Cerrar editor de base de datos">✕</button></div>
+<dialog id="db_editor_modal" class="modal" aria-labelledby="db_editor_title" style="max-width:min(1000px,96vw);height:min(88dvh,calc(90svh - env(safe-area-inset-top,0px)))">
+  <div class="mhd" style="background:var(--panel)">
+    <span class="mttl" style="color:var(--ice)" id="db_editor_title">Editor de Reglas</span>
+    <button class="bcls" onclick="document.getElementById('db_editor_modal').close()" aria-label="Cerrar editor de reglas">✕</button>
+  </div>
   <div class="mbd dbl" style="padding:0">
-    <div class="dbs">
-      <button class="catbtn" onclick="app.dbEditCategory('descriptors')">Linajes</button>
-      <button class="catbtn" onclick="app.dbEditCategory('archetypes')">Arquetipos</button>
-      <button class="catbtn" onclick="app.dbEditCategory('backgrounds')">Trasfondos</button>
-      <button class="catbtn" onclick="app.dbEditCategory('talents')">Talentos</button>
-      <button class="catbtn" onclick="app.dbEditCategory('weapons')">Armas</button>
-      <button class="catbtn" onclick="app.dbEditCategory('armors')">Armaduras</button>
-      <button class="catbtn" onclick="app.dbEditCategory('shields')">Escudos</button>
-      <button class="catbtn" onclick="app.dbEditCategory('spells')">Trucos / Conjuros</button>
-      <hr style="border-color:var(--rim);margin:8px 0">
-      <button class="btn btn-g" style="font-size:.66rem;padding:6px;width:100%" onclick="app.exportRulesDB()">↓ Exportar Reglas</button>
+    <!-- ── Sidebar ── -->
+    <div class="dbs" id="db_sidebar">
+      <div style="font-family:var(--fd);font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.18em;padding:4px 10px 6px;border-bottom:1px solid rgba(74,63,94,.3);margin-bottom:4px">Categorías</div>
+      <button class="catbtn" onclick="app.dbEditCategory('descriptors')" aria-label="Editar Linajes">
+        Linajes
+      </button>
+      <button class="catbtn" onclick="app.dbEditCategory('archetypes')" aria-label="Editar Arquetipos">
+        Arquetipos
+      </button>
+      <button class="catbtn" onclick="app.dbEditCategory('backgrounds')" aria-label="Editar Trasfondos">
+        Trasfondos
+      </button>
+      <button class="catbtn" onclick="app.dbEditCategory('talents')" aria-label="Editar Talentos">
+        Talentos
+      </button>
+      <button class="catbtn" onclick="app.dbEditCategory('weapons')" aria-label="Editar Armas">
+        Armas
+      </button>
+      <button class="catbtn" onclick="app.dbEditCategory('armors')" aria-label="Editar Armaduras">
+        Armaduras
+      </button>
+      <button class="catbtn" onclick="app.dbEditCategory('shields')" aria-label="Editar Escudos">
+        Escudos
+      </button>
+      <button class="catbtn" onclick="app.dbEditCategory('spells')" aria-label="Editar Trucos y Conjuros">
+        Trucos / Conjuros
+      </button>
+      <div style="flex:1"></div>
+      <hr style="border:none;border-top:1px solid rgba(74,63,94,.35);margin:6px 0">
+      <button class="btn btn-g" style="font-size:.64rem;padding:7px 6px;width:100%;justify-content:center" onclick="app.exportRulesDB()" aria-label="Exportar reglas como JSON">
+        ↓ Exportar Reglas
+      </button>
     </div>
-    <div class="dbct"><div id="db_list_container"><p style="color:var(--muted)">Selecciona una categoría.</p></div><div id="db_form_container" style="display:none;margin-top:12px;border-top:1px solid var(--border);padding-top:12px"></div></div>
+    <!-- ── Content area ── -->
+    <div class="dbct">
+      <div id="db_list_container">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:10px">
+          <p style="font-family:var(--fd);font-size:.72rem;color:var(--muted);letter-spacing:.06em">Selecciona una categoría</p>
+        </div>
+      </div>
+      <div id="db_form_container" style="display:none;margin-top:0;border-top:1px solid rgba(74,63,94,.4);padding-top:14px"></div>
+    </div>
   </div>
 </dialog>
 
 <!-- ══ TALENT MODAL ══ -->
-<dialog id="talent_modal" class="modal" style="max-width:min(960px,96vw);height:min(85dvh,calc(90svh - env(safe-area-inset-top,0px)))">
-  <div class="mhd"><span class="mttl">Gestor de Talentos</span><button class="bcls" onclick="app.closeTalentManager()" aria-label="Cerrar gestor de talentos">✕</button></div>
+<dialog id="talent_modal" class="modal" aria-labelledby="talent_modal_title" style="max-width:min(960px,96vw);height:min(85dvh,calc(90svh - env(safe-area-inset-top,0px)))">
+  <div class="mhd"><span class="mttl" id="talent_modal_title">Gestor de Talentos</span><button class="bcls" onclick="app.closeTalentManager()" aria-label="Cerrar gestor de talentos">✕</button></div>
   <div class="mbd tml" style="padding:0">
     <div class="tms" id="tm_categories"></div>
     <div class="tmct" id="tm_list"><p style="color:var(--muted);margin-top:28px;text-align:center">Selecciona una categoría.</p></div>
@@ -1585,10 +1674,10 @@ input:focus-visible,textarea:focus-visible{outline:none}
 </dialog>
 
 <!-- ══ CROP MODAL ══ -->
-<dialog id="crop_modal" class="modal">
+<dialog id="crop_modal" class="modal" aria-labelledby="crop_modal_title">
   <div class="crl">
     <div class="mhd">
-      <span class="mttl">✦ Ajustar Retrato</span>
+      <span class="mttl" id="crop_modal_title">✦ Ajustar Retrato</span>
       <button class="bcls" onclick="app.cancelCrop()" aria-label="Cancelar recorte de retrato">✕</button>
     </div>
     <div class="crws" id="crop_ws"
@@ -2451,6 +2540,16 @@ const app = {
     };
     cancelBtn.addEventListener('click', close);
     okBtn.addEventListener('click', () => { close(); onConfirm(); });
+    // Trap focus within dialog — Tab cycles between buttons
+    const focusable = [cancelBtn, okBtn];
+    overlay.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { close(); return; }
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const idx = focusable.indexOf(document.activeElement);
+        focusable[(idx + (e.shiftKey ? -1 : 1) + focusable.length) % focusable.length].focus();
+      }
+    });
     // Focus the cancel button by default — safer UX for destructive confirmations
     requestAnimationFrame(() => cancelBtn.focus());
   },
@@ -4180,7 +4279,7 @@ const app = {
 
     if (!allItems.length) {
       const label = sec === 'tricks' ? 'trucos' : 'conjuros';
-      availList.innerHTML = `<div class="apt-empty"><p>No hay ${label} en la base de datos.<br>Añádelos en el Editor de Reglas.</p><button class="btn btn-g" style="font-size:.68rem" onclick="document.getElementById('db_editor_modal').showModal()">⚙ Editor de Reglas</button></div>`;
+      availList.innerHTML = `<div class="apt-empty"><p>No hay ${label} en la base de datos.<br>Añádelos en el Editor de Reglas.</p><button class="btn btn-g" style="font-size:.68rem" onclick="document.getElementById('db_editor_modal').showModal()">Editor de Reglas</button></div>`;
     } else {
       notSel.forEach(k => availList.appendChild(makeCard(k, false)));
       if (!notSel.length) {
@@ -4223,11 +4322,53 @@ const app = {
     const src = this.DB[cat] || {};
     const labels = {descriptors:'Linajes',archetypes:'Arquetipos',backgrounds:'Trasfondos',talents:'Talentos',weapons:'Armas',armors:'Armaduras',shields:'Escudos',spells:'Trucos / Conjuros'};
     const catLabel = labels[cat] || cat;
-    lc.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 style="font-family:var(--fd);color:var(--gold);font-size:.86rem;text-transform:uppercase;letter-spacing:.08em">${catLabel}</h3><button class="btn btn-g" style="font-size:.7rem;padding:5px 9px" onclick="app.dbEditEntry('new')">+ Nuevo</button></div>`;
+    // Count items
+    let count = 0;
+    if (cat === 'talents') {
+      Object.values(src).forEach(arr => { count += (arr||[]).length; });
+    } else {
+      count = Object.keys(src).length;
+    }
+    // Update sidebar active state
+    document.querySelectorAll('#db_sidebar .catbtn').forEach(b => {
+      const isActive = b.getAttribute('aria-label') === ('Editar ' + catLabel) ||
+        b.textContent.trim().includes(catLabel);
+      b.classList.toggle('active', isActive);
+    });
+    lc.innerHTML = '';
+    // Header row
+    const hdr = document.createElement('div');
+    hdr.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(74,63,94,.4)';
+    const htitle = document.createElement('div');
+    htitle.style.cssText = 'display:flex;align-items:center;gap:6px';
+    const hlbl = document.createElement('h3');
+    hlbl.style.cssText = 'font-family:var(--fd);color:var(--gold);font-size:.84rem;text-transform:uppercase;letter-spacing:.1em';
+    hlbl.textContent = catLabel;
+    const hcount = document.createElement('span');
+    hcount.style.cssText = 'font-family:var(--fm);font-size:.6rem;color:var(--muted);background:var(--raised);border:1px solid var(--rim);border-radius:10px;padding:1px 7px;margin-left:4px';
+    hcount.textContent = count;
+    htitle.appendChild(hlbl); htitle.appendChild(hcount);
+    const hnew = document.createElement('button');
+    hnew.className = 'btn btn-p'; hnew.style.cssText = 'font-size:.66rem;padding:6px 11px;min-height:34px';
+    hnew.textContent = '+ Nuevo'; hnew.onclick = () => app.dbEditEntry('new');
+    hdr.appendChild(htitle); hdr.appendChild(hnew);
+    lc.appendChild(hdr);
+    if (!count) {
+      const empty = document.createElement('div');
+      empty.style.cssText = 'text-align:center;padding:30px 16px;color:var(--muted);font-size:.8rem;font-style:italic';
+      empty.textContent = 'Sin entradas. Crea la primera con "+ Nuevo".';
+      lc.appendChild(empty);
+      return;
+    }
     if (cat === 'talents') {
       Object.keys(src).forEach(sub => {
-        const h = document.createElement('div'); h.style.cssText='font-family:var(--fm);font-size:.6rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;padding:4px 0;border-bottom:1px solid var(--rim);margin:8px 0 4px'; h.textContent=sub; lc.appendChild(h);
-        src[sub].forEach((item,i) => this._dbListItem(lc, item.name, `${sub}|${i}`));
+        const h = document.createElement('div');
+        h.style.cssText = 'font-family:var(--fm);font-size:.58rem;color:rgba(200,169,110,.7);letter-spacing:.15em;text-transform:uppercase;padding:6px 4px 4px;border-bottom:1px solid rgba(74,63,94,.3);margin:10px 0 5px;display:flex;justify-content:space-between;align-items:center';
+        const hl = document.createElement('span'); hl.textContent = sub;
+        const hc = document.createElement('span'); hc.style.cssText = 'color:var(--muted);font-size:.55rem'; hc.textContent = (src[sub]||[]).length + ' talentos';
+        h.appendChild(hl); h.appendChild(hc);
+        lc.appendChild(h);
+        (src[sub]||[]).forEach((item,i) => this._dbListItem(lc, item.name, `${sub}|${i}`));
       });
     } else {
       Object.entries(src).forEach(([k,v]) => this._dbListItem(lc, v.name||k, k));
@@ -4236,12 +4377,14 @@ const app = {
 
   _dbListItem(container, name, key) {
     const row = document.createElement('div'); row.className='dbitem';
-    const nm = document.createElement('span'); nm.style.fontSize='.82rem'; nm.textContent = String(name||'');
-    const acts = document.createElement('div'); acts.style.cssText='display:flex;gap:4px';
-    const editBtn = document.createElement('button'); editBtn.className='bmini bl'; editBtn.textContent='Editar';
+    const nm = document.createElement('span');
+    nm.style.cssText = 'font-size:.8rem;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px';
+    nm.textContent = String(name||'—');
+    const acts = document.createElement('div'); acts.style.cssText='display:flex;gap:5px;flex-shrink:0';
+    const editBtn = document.createElement('button'); editBtn.className='bmini bl'; editBtn.textContent='✎ Editar';
     editBtn.setAttribute('aria-label', 'Editar '+String(name||''));
     editBtn.addEventListener('click', () => this.dbEditEntry(key));
-    const delBtn = document.createElement('button'); delBtn.className='bmini br'; delBtn.textContent='×';
+    const delBtn = document.createElement('button'); delBtn.className='bmini br'; delBtn.textContent='✕';
     delBtn.setAttribute('aria-label', 'Eliminar '+String(name||''));
     delBtn.addEventListener('click', () => this.dbDeleteEntry(key));
     acts.appendChild(editBtn); acts.appendChild(delBtn);
@@ -4365,15 +4508,35 @@ const app = {
       <div style="margin-bottom:6px"><span class="dfl">Descripción</span><textarea id="db_txt" style="min-height:56px">${_e(existing?.desc)}</textarea></div>`;
     }
 
-    formHtml += `<div style="display:flex;gap:8px;margin-top:12px">
-      <button class="btn btn-g" style="flex:1" onclick="document.getElementById('db_form_container').style.display='none'">Cancelar</button>
-      <button class="btn btn-p" style="flex:1" id="db_save_btn">✓ Guardar</button>
+    formHtml += `<div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-g" style="flex:1;min-height:40px" onclick="document.getElementById('db_form_container').style.display='none';document.getElementById('db_list_container').scrollIntoView({behavior:'smooth',block:'start'})">✕ Cancelar</button>
+      <button class="btn btn-p" style="flex:1;min-height:40px" id="db_save_btn">✓ Guardar</button>
     </div>`;
     fc.innerHTML = formHtml;
-    // Attach save handler via addEventListener (avoids any attribute-injection risk from key values)
+    // Attach save handler via addEventListener
     const saveBtn = fc.querySelector('#db_save_btn');
     if (saveBtn) saveBtn.addEventListener('click', () => this.dbSaveEntry(key));
-    fc.scrollIntoView({behavior:'smooth',block:'nearest'});
+    // Live key normalization preview
+    const keyInput = fc.querySelector('#db_key');
+    if (keyInput) {
+      keyInput.addEventListener('input', () => {
+        const normalized = keyInput.value.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_áéíóúüñ]/g,'');
+        if (keyInput.value !== normalized && keyInput.value.trim()) {
+          keyInput.style.color = 'var(--ember)';
+          keyInput.title = 'Se guardará como: ' + normalized;
+        } else {
+          keyInput.style.color = '';
+          keyInput.title = '';
+        }
+      });
+    }
+    // Smooth scroll to form
+    requestAnimationFrame(() => fc.scrollIntoView({behavior:'smooth',block:'nearest'}));
+    // Auto-focus first text input
+    requestAnimationFrame(() => {
+      const firstInput = fc.querySelector('input[type="text"]');
+      if (firstInput) firstInput.focus();
+    });
   },
 
   dbSaveEntry(oldKey) {
@@ -4446,7 +4609,12 @@ const app = {
     document.getElementById('db_form_container').style.display = 'none';
     this.dbEditCategory(cat);
     this.unlockApp();
-    this.toast('Guardado','ok');
+    // Scroll list container to top after save
+    requestAnimationFrame(() => {
+      const lc = document.getElementById('db_list_container');
+      if (lc) lc.scrollTop = 0;
+    });
+    this.toast('Entrada guardada','ok');
   },
 
   dbDeleteEntry(key) {
