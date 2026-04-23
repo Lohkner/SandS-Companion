@@ -750,9 +750,11 @@ input:focus-visible,textarea:focus-visible{outline:none}
 <!-- Fonts injected via JS so they never block window.load or app init -->
 <script>
 (function(){
-  var l=document.createElement('link');
-  l.rel='stylesheet';l.media='print';l.onload=function(){this.media='all'};
-  l.href='https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap';
+  const l = document.createElement('link');
+  l.rel = 'stylesheet';
+  l.media = 'print';
+  l.onload = function(){ this.media = 'all'; };
+  l.href = 'https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Spectral:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;600&display=swap';
   document.head.appendChild(l);
 })();
 </script>
@@ -1844,6 +1846,42 @@ const MAX_PORTRAIT_W = 600;
 /** Max JSON import size (bytes) */
 const MAX_JSON_BYTES = 2 * 1024 * 1024;
 
+/* ── UI Timing constants (ms) ────────────────────────
+   Centralising these avoids scattered magic numbers and
+   makes animation tuning a single-location change.      */
+const TIMING = {
+  /** Loader fade-out after init */
+  LOADER_DISMISS:    300,
+  /** Safety-net loader timeout */
+  LOADER_TIMEOUT:   5000,
+  /** Toast visible duration */
+  TOAST_VISIBLE:    3500,
+  /** Toast fade-out duration */
+  TOAST_FADE:        300,
+  /** Section confirm-button success flash */
+  CONFIRM_FLASH:     560,
+  /** Skill-limit flash red duration */
+  SKILL_FLASH:       400,
+  /** Dice overlay close animation */
+  DICE_CLOSE:        220,
+  /** Resource colour-flash after adjust */
+  RES_FLASH:         300,
+  /** Save-guard: max wait for confirm dialog */
+  SAVE_GUARD:      10000,
+  /** Saved-label "fresh" highlight */
+  SAVED_FRESH:      4000,
+  /** Swipe ghost-click suppression window */
+  SWIPE_SUPPRESS:    380,
+  /** Swipe snap transition */
+  SWIPE_SNAP:        260,
+  /** Crop spring transition */
+  CROP_SPRING:       340,
+  /** Long-press initial threshold */
+  LONGPRESS_HOLD:    420,
+  /** Long-press minimum repeat interval */
+  LONGPRESS_MIN:      60,
+};
+
 /* ══════════════════════════════════════════
    STORAGE MODULE
    Versioned persistence with migration support
@@ -1862,16 +1900,19 @@ const STORAGE = {
   loadRules() {
     try {
       const raw = localStorage.getItem(this.KEYS.rules);
-      if (!raw) return JSON.parse(JSON.stringify(DEFAULT_DB));
+      if (!raw) return structuredClone(DEFAULT_DB);
       const parsed = JSON.parse(raw);
-      return (parsed && typeof parsed === 'object') ? parsed : JSON.parse(JSON.stringify(DEFAULT_DB));
-    } catch { return JSON.parse(JSON.stringify(DEFAULT_DB)); }
+      return (parsed && typeof parsed === 'object') ? parsed : structuredClone(DEFAULT_DB);
+    } catch (err) {
+      console.warn('[STORAGE] loadRules failed, using defaults:', err);
+      return structuredClone(DEFAULT_DB);
+    }
   },
 
   /** Save rules DB – handles storage quota */
   saveRules(db) {
     try { localStorage.setItem(this.KEYS.rules, JSON.stringify(db)); return true; }
-    catch { return false; }
+    catch (err) { console.warn('[STORAGE] saveRules failed (quota?):', err); return false; }
   },
 
   /** Load entire roster */
@@ -1881,13 +1922,16 @@ const STORAGE = {
       if (!raw) return {};
       const parsed = JSON.parse(raw);
       return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
-    } catch { return {}; }
+    } catch (err) {
+      console.warn('[STORAGE] loadRoster failed:', err);
+      return {};
+    }
   },
 
   /** Save entire roster – returns false on quota error */
   saveRoster(roster) {
     try { localStorage.setItem(this.KEYS.roster, JSON.stringify(roster)); return true; }
-    catch { return false; }
+    catch (err) { console.warn('[STORAGE] saveRoster failed (quota?):', err); return false; }
   },
 
   /** Load a single character from roster */
@@ -1933,10 +1977,10 @@ const app = {
     try {
       this.DB = STORAGE.loadRules();
     } catch(e) {
-      this.DB = JSON.parse(JSON.stringify(DEFAULT_DB));
+      this.DB = structuredClone(DEFAULT_DB);
     }
     // Debounced calc — prevents cascading recalculations during rapid input
-    this._debouncedCalc = this._debounce(this.calc.bind(this), 80);
+    this._debouncedCalc = this._debounce(this.calc, 80);
     // Build home screen
     this.renderHome();
     // Setup alignment for app
@@ -2065,7 +2109,7 @@ const app = {
       const delBtn = document.createElement('div');
       delBtn.className = 'char-card-delete';
       delBtn.innerHTML = `<span class="del-icon">🗑</span><span>Borrar</span>`;
-      delBtn.onclick = (e) => { e.stopPropagation(); this.deleteChar(name); };
+      delBtn.addEventListener('click', (e) => { e.stopPropagation(); this.deleteChar(name); });
 
       const card = document.createElement('div');
       card.className = 'char-card';
@@ -2076,7 +2120,7 @@ const app = {
           <div class="char-cs">${this._esc(desc||'—')} · ${this._esc(arq)}${bg ? ' · '+this._esc(bg) : ''}</div>
           <div style="margin-top:3px"><span class="char-lvl-badge">Nivel ${this._esc(lvl)}</span></div>
         </div>`;
-      card.onclick = () => { if (!card._swiped) this.loadCharToApp(name); };
+      card.addEventListener('click', () => { if (!card._swiped) this.loadCharToApp(name); });
 
       // Swipe logic
       let startX = 0, startY = 0, dx = 0, revealed = false, locked = false, moved = false;
@@ -2118,7 +2162,7 @@ const app = {
             card.style.transform = 'translateX(0)';
             delBtn.style.transform = 'translateX(100%)';
             revealed = false;
-            setTimeout(() => { card._swiped = false; }, 260);
+            setTimeout(() => { card._swiped = false; }, TIMING.SWIPE_SNAP);
           } else {
             // Snap back to open
             card.style.transition = 'transform .25s ease';
@@ -2142,7 +2186,7 @@ const app = {
             card.style.transform = 'translateX(0)';
             delBtn.style.transform = 'translateX(100%)';
             revealed = false;
-            setTimeout(() => { card._swiped = false; }, 260);
+            setTimeout(() => { card._swiped = false; }, TIMING.SWIPE_SNAP);
           }
         }
       };
@@ -2169,7 +2213,7 @@ const app = {
           if (db) db.style.transition = 'transform .25s ease';
           c.style.transform = 'translateX(0)';
           if (db) db.style.transform = 'translateX(100%)';
-          setTimeout(() => { c._swiped = false; }, 260);
+          setTimeout(() => { c._swiped = false; }, TIMING.SWIPE_SNAP);
         }
       });
     };
@@ -2215,8 +2259,8 @@ const app = {
       overlay.remove();
       if (isInDialog && prevPosition === 'static') container.style.position = prevPosition;
     };
-    cancelBtn.onclick = close;
-    okBtn.onclick = () => { close(); onConfirm(); };
+    cancelBtn.addEventListener('click', close);
+    okBtn.addEventListener('click', () => { close(); onConfirm(); });
     // Focus the cancel button by default — safer UX for destructive confirmations
     requestAnimationFrame(() => cancelBtn.focus());
   },
@@ -2280,7 +2324,7 @@ const app = {
     SWIPE_SUPPRESS_EVENTS.forEach(type =>
       w.addEventListener(type, _swipeGuard, {capture:true, passive:false})
     );
-    const suppressFor = (ms = 380) => {
+    const suppressFor = (ms = TIMING.SWIPE_SUPPRESS) => {
       _suppressClicks = true;
       setTimeout(() => { _suppressClicks = false; }, ms);
     };
@@ -2381,9 +2425,8 @@ const app = {
       }
 
       // Suppress ghost events; keep is-dragging alive for the same window
-      const SUPPRESS_MS = 380;
-      suppressFor(SUPPRESS_MS);
-      setTimeout(() => track.classList.remove('is-dragging'), SUPPRESS_MS);
+      suppressFor(TIMING.SWIPE_SUPPRESS);
+      setTimeout(() => track.classList.remove('is-dragging'), TIMING.SWIPE_SUPPRESS);
       this.goToPage(target);
     };
 
@@ -2459,7 +2502,7 @@ const app = {
 
     const destPage = document.getElementById('page_' + n);
     if (destPage) {
-      if (this.scrollPreserve && this._pageScrolls[n] != null) {
+      if (this.scrollPreserve && this._pageScrolls[n] !== null && this._pageScrolls[n] !== undefined) {
         // Restore saved scroll position after the transition settles
         const saved = this._pageScrolls[n];
         requestAnimationFrame(() => { destPage.scrollTop = saved; });
@@ -2524,7 +2567,7 @@ const app = {
     if (!btn) return;
     btn.classList.add('success');
     if (navigator.vibrate) navigator.vibrate([6, 40, 10]);
-    setTimeout(() => btn.classList.remove('success'), 560);
+    setTimeout(() => btn.classList.remove('success'), TIMING.CONFIRM_FLASH);
   },
 
   confirmSection(sec) {
@@ -2566,21 +2609,21 @@ const app = {
     const descMods = this.DB.descriptors?.[descKey]?.mods || {};
 
     const makeBox = s => {
-      const base   = parseInt(document.getElementById('base_'+s)?.value) || 8;
+      const base   = parseInt(this._el('base_'+s)?.value) || 8;
       const dm     = descMods[s] || 0;
       const final  = base + dm;
       const mod    = this.getMod(final);
       const modStr = (mod >= 0 ? '+' : '') + mod;
       const box = document.createElement('div');
       box.className = 'sbox';
-      box.onclick = () => this.rollCheck(s, mod);
+      box.addEventListener('click', () => this.rollCheck(s, mod));
       box.innerHTML = `<div class="lbl">${s}</div><div class="mod">${modStr}</div><div class="val">${final}</div>`;
       return box;
     };
 
     // Render to both the edit-section summary and the live stats display
     ['stats_summary_boxes', 'stats_boxes_display'].forEach(id => {
-      const c = document.getElementById(id);
+      const c = this._el(id);
       if (!c) return;
       c.innerHTML = '';
       STATS.forEach(s => c.appendChild(makeBox(s)));
@@ -2590,13 +2633,13 @@ const app = {
   _buildSavesSummary() {
     const common   = document.querySelector('input[name="save_common"]:checked')?.value;
     const uncommon = document.querySelector('input[name="save_uncommon"]:checked')?.value;
-    const prof     = parseInt(document.getElementById('res_prof')?.textContent) || 2;
+    const prof     = parseInt(this._el('res_prof')?.textContent) || 2;
 
     // Compute save totals once — shared across both container renders
-    const descKey  = document.getElementById('sel_desc')?.value || '';
+    const descKey  = this._el('sel_desc')?.value || '';
     const descMods = this.DB.descriptors?.[descKey]?.mods || {};
     const saveData = STATS.map(s => {
-      const base   = parseInt(document.getElementById('base_'+s)?.value) || 8;
+      const base   = parseInt(this._el('base_'+s)?.value) || 8;
       const final  = base + (descMods[s] || 0);
       const mod    = this.getMod(final);
       const isProf = (s === common || s === uncommon);
@@ -2605,13 +2648,13 @@ const app = {
     });
 
     ['saves_display', 'saves_summary_text'].forEach(id => {
-      const c = document.getElementById(id);
+      const c = this._el(id);
       if (!c) return;
       c.innerHTML = '';
       saveData.forEach(({ s, total, isProf }) => {
         const box = document.createElement('div');
         box.className = 'svsbox' + (isProf ? ' prof' : '');
-        box.onclick = () => this.rollCheck('Salvación ' + s, total);
+        box.addEventListener('click', () => this.rollCheck('Salvación ' + s, total));
         box.innerHTML = `<span class="svslbl">${s}</span>${total >= 0 ? '+' : ''}${total}`;
         c.appendChild(box);
       });
@@ -2619,9 +2662,9 @@ const app = {
   },
 
   _buildSkillsSummary() {
-    const selected = Array.from(document.querySelectorAll('input[name="chk_arq"]:checked, input[name="chk_bg"]:checked')).map(el=>el.value);
+    const selected = Array.from(document.querySelectorAll('input[name="chk_arq"]:checked, input[name="chk_bg"]:checked')).map(el => el.value);
     const unique = [...new Set(selected)];
-    const c = document.getElementById('final_skills_list');
+    const c = this._el('final_skills_list');
     c.innerHTML = '';
     if (!unique.length) { c.innerHTML = '<span style="color:var(--muted);font-size:.8rem;font-style:italic">Sin habilidades.</span>'; return; }
     unique.forEach(sk => {
@@ -2633,31 +2676,28 @@ const app = {
   },
 
   _buildCombatSummary() {
-    const ca = document.getElementById('res_ca')?.textContent || '10';
-    const armorKey = document.getElementById('sel_armor')?.value || 'none';
-    const shieldKey = document.getElementById('sel_shield')?.value || 'none';
-    const sumAc = document.getElementById('sum_ac');
-    if (sumAc) sumAc.textContent = ca;
-    const armor = this._getInventoryItem(armorKey) || this.DB.armors?.[armorKey];
+    const ca       = this._el('res_ca')?.textContent || '10';
+    const armorKey = this._el('sel_armor')?.value    || 'none';
+    const shieldKey= this._el('sel_shield')?.value   || 'none';
+    this._tc('sum_ac', ca);
+    const armor  = this._getInventoryItem(armorKey)  || this.DB.armors?.[armorKey];
     const shield = this._getInventoryItem(shieldKey) || this.DB.shields?.[shieldKey];
-    const $ = id => document.getElementById(id);
-    const tc = (id, val) => { const el = $(id); if (el) el.textContent = val; };
-    tc('sum_armor_name', armor?.name || 'Sin Armadura');
-    tc('sum_armor_type', armor?.type ? ({none:'Sin armadura',light:'Ligera',medium:'Media',heavy:'Pesada'}[armor.type]||armor.type) : 'Sin armadura');
-    tc('sum_shield', shield?.name || 'Sin Escudo');
+    this._tc('sum_armor_name', armor?.name || 'Sin Armadura');
+    this._tc('sum_armor_type', armor?.type ? ({none:'Sin armadura',light:'Ligera',medium:'Media',heavy:'Pesada'}[armor.type]||armor.type) : 'Sin armadura');
+    this._tc('sum_shield', shield?.name || 'Sin Escudo');
     // Weapon summaries — read from calc-generated spans
-    const w1atk = $('w1_atk_val')?.textContent || '—';
-    const w1dmg = $('w1_dmg_val')?.textContent || '—';
-    const w2atk = $('w2_atk_val')?.textContent || '—';
-    const w2dmg = $('w2_dmg_val')?.textContent || '—';
-    tc('sum_wep1_name', $('atk_name_1')?.textContent || '—');
-    tc('sum_wep1_stats', `Ataque: ${w1atk} / Daño: ${w1dmg}`);
-    tc('sum_atk1_bonus', w1atk.replace(/[^+\-\d]/g,'') || '+0');
-    tc('sum_atk1_dmg', w1dmg);
-    tc('sum_wep2_name', $('atk_name_2')?.textContent || '—');
-    tc('sum_wep2_stats', `Ataque: ${w2atk} / Daño: ${w2dmg}`);
-    tc('sum_atk2_bonus', w2atk.replace(/[^+\-\d]/g,'') || '+0');
-    tc('sum_atk2_dmg', w2dmg);
+    const w1atk = this._el('w1_atk_val')?.textContent || '—';
+    const w1dmg = this._el('w1_dmg_val')?.textContent || '—';
+    const w2atk = this._el('w2_atk_val')?.textContent || '—';
+    const w2dmg = this._el('w2_dmg_val')?.textContent || '—';
+    this._tc('sum_wep1_name', this._el('atk_name_1')?.textContent || '—');
+    this._tc('sum_wep1_stats', `Ataque: ${w1atk} / Daño: ${w1dmg}`);
+    this._tc('sum_atk1_bonus', w1atk.replace(/[^+\-\d]/g,'') || '+0');
+    this._tc('sum_atk1_dmg', w1dmg);
+    this._tc('sum_wep2_name', this._el('atk_name_2')?.textContent || '—');
+    this._tc('sum_wep2_stats', `Ataque: ${w2atk} / Daño: ${w2dmg}`);
+    this._tc('sum_atk2_bonus', w2atk.replace(/[^+\-\d]/g,'') || '+0');
+    this._tc('sum_atk2_dmg', w2dmg);
   },
 
   _getInventoryItem(uid) {
@@ -2665,6 +2705,12 @@ const app = {
   },
 
   /* ── HELPERS ── */
+  /** Shorthand for document.getElementById — used throughout for brevity. */
+  _el(id) { return document.getElementById(id); },
+
+  /** Set textContent of element by id, safely no-ops if element is missing. */
+  _tc(id, val) { const el = this._el(id); if (el) el.textContent = val; },
+
   fillSelect(id, data) {
     const s = document.getElementById(id);
     if (!s) return;
@@ -2714,10 +2760,10 @@ const app = {
       // preventDefault en mousedown evita que el botón robe el foco
       // y que el outline dorado de :focus-visible aparezca en el campo anterior
       btn.addEventListener('mousedown', e => e.preventDefault());
-      btn.onclick = () => {
+      btn.addEventListener('click', () => {
         this.alignment = a;
         this._syncAlignmentUI();
-      };
+      });
       c.appendChild(btn);
     });
   },
@@ -2827,7 +2873,7 @@ const app = {
       if (lbl) {
         lbl.style.transition = 'background .1s';
         lbl.style.background = 'rgba(176,48,64,.18)';
-        setTimeout(() => { lbl.style.background = ''; }, 400);
+        setTimeout(() => { lbl.style.background = ''; }, TIMING.SKILL_FLASH);
       }
       this.toast(`Máximo ${limit} habilidades`,'err');
     }
@@ -2836,9 +2882,8 @@ const app = {
   /* ── CALC ── */
   /** Recalculates all derived stats and updates the DOM. Called on any input change. */
   calc() {
-    // STATS is defined as a top-level constant
-    // Cache DOM refs used multiple times in this call
-    const $  = id => document.getElementById(id);
+    // Local alias for readability within this dense function (mirrors this._el)
+    const $ = id => document.getElementById(id);
     // Read base stat values
     const raw = {};
     STATS.forEach(s => raw[s] = parseInt($('base_'+s)?.value)||8);
@@ -3008,7 +3053,7 @@ const app = {
 
     // Damage mod from chosen attribute (NONE = 0)
     const dmgMod = (dmgAttr && dmgAttr !== 'NONE') ? (mods[dmgAttr] || 0) : 0;
-    const dmgModStr = dmgMod !== 0 ? (dmgMod > 0 ? `+${dmgMod}` : `${dmgMod}`) : '';
+    const dmgModStr = dmgMod > 0 ? `+${dmgMod}` : dmgMod < 0 ? `${dmgMod}` : '';
     const baseDmg = wData.dmg || '1d4';
     if (dmgEl) dmgEl.textContent = baseDmg + dmgModStr;
 
@@ -3102,7 +3147,7 @@ const app = {
           <button class="btn btn-p" style="flex:1" onclick="app.saveCustomItem()">✓ Guardar</button>
         </div>
       </div>`;
-    overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
     document.body.appendChild(overlay);
   },
 
@@ -3137,8 +3182,11 @@ const app = {
     this.calc();
   },
   syncGold(src) {
-    if (src==='edit') this.gold = parseInt(document.getElementById('gold_coins_edit').value)||0;
-    this.renderInventory();
+    if (src === 'edit') this.gold = parseInt(document.getElementById('gold_coins_edit').value) || 0;
+    // Update only the gold display elements — no need to re-render the full inventory list
+    const gd = document.getElementById('gold_coins_display'); if (gd) gd.textContent = this.gold;
+    const ge = document.getElementById('gold_coins_edit');
+    if (ge && document.activeElement !== ge) ge.value = this.gold;
     this.calc();
   },
 
@@ -3154,19 +3202,27 @@ const app = {
         const selEl = document.createElement('select'); selEl.className = 'ityp';
         selEl.setAttribute('aria-label', 'Tipo de ítem');
         typeOpts.forEach(o => { const op = document.createElement('option'); op.value = o.v; op.textContent = o.l; if(item.type===o.v) op.selected = true; selEl.appendChild(op); });
-        selEl.onchange = () => this.updateInvItem(i, 'type', selEl.value);
+        selEl.addEventListener('change', () => this.updateInvItem(i, 'type', selEl.value));
         // Name input (safe: value, not innerHTML)
         const nameIn = document.createElement('input'); nameIn.type = 'text'; nameIn.className = 'inm';
         nameIn.value = String(item.name || ''); nameIn.setAttribute('aria-label', 'Nombre del ítem');
-        nameIn.onchange = () => this.updateInvItem(i, 'name', nameIn.value);
+        nameIn.addEventListener('change', () => this.updateInvItem(i, 'name', nameIn.value));
         // Slots input
         const slotsIn = document.createElement('input'); slotsIn.type = 'number'; slotsIn.className = 'isl';
         slotsIn.value = item.slots || 0; slotsIn.min = 0; slotsIn.max = 20;
         slotsIn.setAttribute('aria-label', 'Espacios del ítem');
-        slotsIn.onchange = () => this.updateInvItem(i, 'slots', slotsIn.value);
+        slotsIn.addEventListener('change', () => this.updateInvItem(i, 'slots', slotsIn.value));
         // Action buttons
         const isFirst = i === 0, isLast = i === this.inventory.length - 1;
-        const mkBtn = (txt, label, fn, style='') => { const b = document.createElement('button'); b.className = 'idel'; b.textContent = txt; b.setAttribute('aria-label', label); if(style) b.style.cssText = style; b.onclick = fn; return b; };
+        const mkBtn = (txt, label, fn, style = '') => {
+          const b = document.createElement('button');
+          b.className = 'idel';
+          b.textContent = txt;
+          b.setAttribute('aria-label', label);
+          if (style) b.style.cssText = style;
+          b.addEventListener('click', fn);
+          return b;
+        };
         const upBtn   = mkBtn('↑','Mover arriba', () => this.moveInvItem(i,-1), `color:var(--muted);font-size:.7rem;opacity:${isFirst?'0.2':'1'}`);
         const dnBtn   = mkBtn('↓','Mover abajo',  () => this.moveInvItem(i, 1), `color:var(--muted);font-size:.7rem;opacity:${isLast?'0.2':'1'}`);
         const editBtn = mkBtn('✎','Editar ítem',  () => this._openCustomItemForm(i), 'color:var(--dim);font-size:.78rem');
@@ -3263,7 +3319,9 @@ const app = {
     let total = 0;
     for (let i = 0; i < num; i++) { const r = Math.floor(Math.random() * die) + 1; rolls.push(r); total += r; }
     total += bonus;
-    const bonusStr = bonus > 0 ? `+${bonus}` : bonus < 0 ? String(bonus) : '';
+    let bonusStr = '';
+    if      (bonus > 0) bonusStr = `+${bonus}`;
+    else if (bonus < 0) bonusStr = String(bonus);
     // Format mirrors rollCheck: "2d6: [4 + 3]  (+2)"
     const rollsPart = num > 1 ? `[${rolls.join(' + ')}]` : `${rolls[0]}`;
     const detailTxt = `${num}d${die}: ${rollsPart}${bonusStr !== '' ? '  (' + bonusStr + ')' : ''}`;
@@ -3388,7 +3446,7 @@ const app = {
     const overlay = document.getElementById('dice-overlay');
     if (!overlay.classList.contains('active')) return;
     overlay.classList.add('closing');
-    setTimeout(() => overlay.classList.remove('active','closing'), 220);
+    setTimeout(() => overlay.classList.remove('active','closing'), TIMING.DICE_CLOSE);
   },
 
   _initDiceSwipe() {
@@ -3422,7 +3480,7 @@ const app = {
     // Flash feedback
     cur.style.transition = 'color .15s';
     cur.style.color = delta > 0 ? 'var(--sage)' : 'var(--blood)';
-    setTimeout(() => { cur.style.color = ''; }, 300);
+    setTimeout(() => { cur.style.color = ''; }, TIMING.RES_FLASH);
     // Haptic feedback on supported devices
     if (navigator.vibrate) navigator.vibrate(8);
   },
@@ -3450,10 +3508,10 @@ const app = {
         const tick = () => {
           if (!active) return;
           fire();
-          speed = Math.max(60, speed * 0.8); // accelerate: 350→280→224…→60
+          speed = Math.max(TIMING.LONGPRESS_MIN, speed * 0.8); // accelerate: 350→280→224…→60
           _t = setTimeout(tick, speed);
         };
-        _t = setTimeout(tick, 420); // hold threshold before repeat starts
+        _t = setTimeout(tick, TIMING.LONGPRESS_HOLD); // hold threshold before repeat starts
       };
 
       const stop = () => {
@@ -3507,8 +3565,8 @@ const app = {
       toast.style.opacity = '0';
       toast.style.transform = 'translateY(8px)';
       toast.style.transition = '.3s';
-      setTimeout(() => toast.remove(), 300);
-    }, 3500);
+      setTimeout(() => toast.remove(), TIMING.TOAST_FADE);
+    }, TIMING.TOAST_VISIBLE);
   },
 
   /* ── TALENTS ── */
@@ -3519,7 +3577,7 @@ const app = {
       const btn = document.createElement('button'); btn.className='catbtn'; btn.type='button';
       btn.setAttribute('data-cat', k);
       btn.textContent = k.charAt(0).toUpperCase()+k.slice(1);
-      btn.onclick = () => this.showTalentCategory(k, btn);
+      btn.addEventListener('click', () => this.showTalentCategory(k, btn));
       cc.appendChild(btn);
     });
   },
@@ -3570,7 +3628,12 @@ const app = {
         infoDiv.appendChild(sp);
       });
       card.appendChild(chkEl); card.appendChild(infoDiv);
-      card.onclick = e => { if(e.target.type==='checkbox')return; const chk=card.querySelector('input');chk.checked=!chk.checked;this.toggleTalent(chk,t.name,t.id||''); };
+      card.addEventListener('click', e => {
+        if (e.target.type === 'checkbox') return;
+        const chk = card.querySelector('input');
+        chk.checked = !chk.checked;
+        this.toggleTalent(chk, t.name, t.id || '');
+      });
       list.appendChild(card);
     });
   },
@@ -3746,7 +3809,7 @@ const app = {
       const card = document.createElement('div'); card.className='dc';
       // Header
       const dch = document.createElement('div'); dch.className='dch';
-      dch.onclick = () => card.classList.toggle('open');
+      dch.addEventListener('click', () => card.classList.toggle('open'));
       const dct = document.createElement('span'); dct.className='dct'; dct.textContent='✦ '+this._sanitize(String(h.value||''));
       const dca = document.createElement('span'); dca.className='dca'; dca.textContent='▾';
       dch.appendChild(dct); dch.appendChild(dca);
@@ -3814,7 +3877,7 @@ const app = {
       pch.appendChild(pcn); pch.appendChild(pcarr);
       const pcb=document.createElement('div'); pcb.className='pcb'; pcb.textContent=this._sanitize(String(s.txt||'Sin descripción.'));
       card.appendChild(pch); card.appendChild(pcb);
-      card.onclick = () => card.classList.toggle('open');
+      card.addEventListener('click', () => card.classList.toggle('open'));
       sumList.appendChild(card);
     });
   },
@@ -3871,27 +3934,24 @@ const app = {
         card.appendChild(desc);
       }
 
-      card.onclick = () => {
+      card.addEventListener('click', () => {
         const nowSelected = sel.has(k);
         if (nowSelected) {
           sel.delete(k);
           card.classList.remove('apt-card--sel');
           badge.textContent = '+ Añadir';
-          // Move card back to available list
           availList.insertBefore(card, availList.firstChild);
         } else {
           sel.add(k);
           card.classList.add('apt-card--sel');
           badge.textContent = '✓ Quitar';
-          // Move card to selected list
           selList.appendChild(card);
         }
-        // Update counters and summary without full re-render
         const count = selList.querySelectorAll('.apt-card').length;
         if (selCount) selCount.textContent = count;
         if (selEmpty) selEmpty.style.display = count ? 'none' : 'block';
         this._renderAptSummary(sec);
-      };
+      });
 
       return card;
     };
@@ -3957,10 +4017,10 @@ const app = {
     const acts = document.createElement('div'); acts.style.cssText='display:flex;gap:4px';
     const editBtn = document.createElement('button'); editBtn.className='bmini bl'; editBtn.textContent='Editar';
     editBtn.setAttribute('aria-label', 'Editar '+String(name||''));
-    editBtn.onclick = () => this.dbEditEntry(key);
+    editBtn.addEventListener('click', () => this.dbEditEntry(key));
     const delBtn = document.createElement('button'); delBtn.className='bmini br'; delBtn.textContent='×';
     delBtn.setAttribute('aria-label', 'Eliminar '+String(name||''));
-    delBtn.onclick = () => this.dbDeleteEntry(key);
+    delBtn.addEventListener('click', () => this.dbDeleteEntry(key));
     acts.appendChild(editBtn); acts.appendChild(delBtn);
     row.appendChild(nm); row.appendChild(acts);
     container.appendChild(row);
@@ -4084,9 +4144,12 @@ const app = {
 
     formHtml += `<div style="display:flex;gap:8px;margin-top:12px">
       <button class="btn btn-g" style="flex:1" onclick="document.getElementById('db_form_container').style.display='none'">Cancelar</button>
-      <button class="btn btn-p" style="flex:1" onclick="app.dbSaveEntry('${_e(key)}')">✓ Guardar</button>
+      <button class="btn btn-p" style="flex:1" id="db_save_btn">✓ Guardar</button>
     </div>`;
     fc.innerHTML = formHtml;
+    // Attach save handler via addEventListener (avoids any attribute-injection risk from key values)
+    const saveBtn = fc.querySelector('#db_save_btn');
+    if (saveBtn) saveBtn.addEventListener('click', () => this.dbSaveEntry(key));
     fc.scrollIntoView({behavior:'smooth',block:'nearest'});
   },
 
@@ -4268,8 +4331,8 @@ const app = {
     if (!cs.img) return;
     const img = document.getElementById('crop_preview');
     if (animated) {
-      img.style.transition = 'transform .32s cubic-bezier(.25,.46,.45,.94)';
-      setTimeout(() => { if (img) img.style.transition = ''; }, 340);
+      img.style.transition = `transform .${TIMING.CROP_SPRING}ms cubic-bezier(.25,.46,.45,.94)`;
+      setTimeout(() => { if (img) img.style.transition = ''; }, TIMING.CROP_SPRING + 8);
     } else {
       img.style.transition = '';
     }
@@ -4654,7 +4717,7 @@ const app = {
       // Also release if user cancels the dialog (cancelBtn path in _confirm)
       // _confirm doesn't expose a cancel callback, so use a short safety timeout
       // only as a fallback — long enough to not interfere with a slow confirm click.
-      setTimeout(releaseSaving, 10000);
+      setTimeout(releaseSaving, TIMING.SAVE_GUARD);
     } else {
       this._doSaveChar(name, roster);
       releaseSaving();
@@ -4684,7 +4747,7 @@ const app = {
         lbl.classList.remove('unsaved');
         lbl.textContent = `guardado ${ts}`;
         lbl.classList.add('fresh');
-        setTimeout(()=>lbl.classList.remove('fresh'), 4000);
+        setTimeout(()=>lbl.classList.remove('fresh'), TIMING.SAVED_FRESH);
       }
       this.toast('Personaje guardado','ok');
     } else {
@@ -5029,10 +5092,16 @@ const app = {
     this.toast('Personaje aleatorio listo','ok');
   },
 
-  /* ── DEBOUNCE HELPER ── */
+  /* ── DEBOUNCE HELPER ──
+   * Returns a debounced version of fn that delays invocation by ms.
+   * Uses an arrow function so it inherits the enclosing `this` from
+   * the app object — no .bind() needed at the call site.            */
   _debounce(fn, ms) {
     let timer;
-    return function(...args) { clearTimeout(timer); timer = setTimeout(() => fn.apply(this, args), ms); };
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), ms);
+    };
   }
 
 };
@@ -5046,7 +5115,7 @@ const app = {
     const l = document.getElementById('ss-loader');
     if (!l) return;
     l.classList.add('fade-out');
-    setTimeout(() => { if (l.parentNode) l.parentNode.removeChild(l); }, 520);
+    setTimeout(() => { if (l.parentNode) l.parentNode.removeChild(l); }, TIMING.LOADER_DISMISS * 2);
   }
 
   function startApp() {
@@ -5056,7 +5125,7 @@ const app = {
       console.error('S&S init error:', err);
     }
     // Dismiss loader after init — short delay so first paint is ready
-    setTimeout(dismissLoader, 300);
+    setTimeout(dismissLoader, TIMING.LOADER_DISMISS);
   }
 
   // Register SW independently (non-blocking, no relation to app init)
@@ -5073,7 +5142,7 @@ const app = {
   }
 
   // Safety net: if something hangs, dismiss loader after 5s regardless
-  setTimeout(dismissLoader, 5000);
+  setTimeout(dismissLoader, TIMING.LOADER_TIMEOUT);
 })();
 </script>
 </body>
