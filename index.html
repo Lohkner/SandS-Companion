@@ -36,6 +36,11 @@
   --res-btn-w:36px;--res-btn-h:44px;
   --line-gold:linear-gradient(90deg,transparent,var(--gold) 30%,var(--goldb) 50%,var(--gold) 70%,transparent);
   --line-dim:linear-gradient(90deg,transparent,var(--rim) 30%,var(--border) 50%,var(--rim) 70%,transparent);
+
+  /* ── Portrait settings ── */
+  --port-w:287px;--port-h:410px;
+  --port-r:var(--rl);
+  --port-clip:none;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
 ::selection{background:rgba(200,169,110,.18);color:var(--bright)}
@@ -422,16 +427,16 @@ body{
 
 @media(hover:hover){.port-card-edit:hover .port-hint{opacity:1}}
 .port-card{
-  position:relative;width:287px;max-width:100%;height:410px;
-  overflow:hidden;border-radius:var(--rl);
+  position:relative;width:var(--port-w);max-width:100%;height:var(--port-h);
+  overflow:hidden;border-radius:var(--port-r);
   border:1px solid rgba(200,169,110,.22);
   flex-shrink:0;
   box-shadow:0 8px 40px rgba(0,0,0,.6),0 0 0 1px rgba(200,169,110,.04);
 }
-.port-card img{display:block;width:100%;height:100%;object-fit:cover;background:var(--raised)}
+.port-card img,.port-card-edit img{display:block;width:100%;height:100%;object-fit:cover;background:var(--raised);clip-path:var(--port-clip)}
 .port-card-edit{
-  position:relative;width:287px;max-width:100%;height:410px;
-  overflow:hidden;border-radius:var(--rl);
+  position:relative;width:var(--port-w);max-width:100%;height:var(--port-h);
+  overflow:hidden;border-radius:var(--port-r);
   border:1px dashed rgba(200,169,110,.3);
   flex-shrink:0;cursor:pointer;
   transition:border-color .22s,box-shadow .22s;
@@ -442,7 +447,7 @@ body{
 
 @media(hover:hover){.port-card-edit:hover img{transform:scale(1.02)}}
 .port-card-edit img{display:block;width:100%;height:100%;object-fit:cover;background:var(--raised);transition:transform .3s ease}
-.port-identity{width:287px;max-width:100%;text-align:center;padding:12px 0 4px}
+.port-identity{width:var(--port-w);max-width:100%;text-align:center;padding:12px 0 4px}
 .port-name{font-family:var(--fd);font-size:1rem;color:var(--goldb);letter-spacing:.06em}
 .port-divider{width:50%;margin:10px auto 8px;height:1px;background:var(--line-gold)}
 .port-lvl{font-family:var(--fm);font-size:.56rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
@@ -1333,6 +1338,12 @@ input:focus-visible,textarea:focus-visible{outline:none}
 .cat-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--sage);margin-left:6px;vertical-align:middle;flex-shrink:0;box-shadow:0 0 4px rgba(63,160,108,.5)}
 .identity-edit-header{display:none}
 .panel.identity-editing .identity-edit-header{display:flex}
+
+/* Portrait settings buttons */
+.ps-btn,.psh-btn{
+  font-family:var(--fd);font-size:.58rem;letter-spacing:.06em;
+  min-height:36px;text-align:center;
+}
 </style>
 <!-- Fonts injected via JS so they never block window.load or app init -->
 <script>
@@ -1906,22 +1917,52 @@ input:focus-visible,textarea:focus-visible{outline:none}
 <dialog id="settings_modal" class="modal" aria-labelledby="settings_modal_title">
   <div class="mhd"><span class="mttl" id="settings_modal_title">Ajustes &amp; Datos</span><button class="bcls" onclick="document.getElementById('settings_modal').close()" aria-label="Cerrar ajustes">✕</button></div>
   <div class="mbd" style="display:flex;flex-direction:column;gap:14px">
-    <div><div class="dvdr">Interfaz</div>
+    <div>
+      <div class="dvdr">Interfaz</div>
+      <!-- Font size -->
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
         <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Tamaño de Fuente</span>
         <div style="display:flex;gap:5px;align-items:center">
-          <button class="fs-btn" id="fs_small" onclick="app.setFontSize('small')" title="Pequeño" style="font-size:11px">A</button>
-          <button class="fs-btn" id="fs_normal" onclick="app.setFontSize('normal')" title="Normal" style="font-size:14px">A</button>
-          <button class="fs-btn" id="fs_large" onclick="app.setFontSize('large')" title="Grande" style="font-size:17px">A</button>
+          <button class="fs-btn" id="fs_small"  onclick="app.setFontSize('small')"  title="Pequeño"    style="font-size:11px">A</button>
+          <button class="fs-btn" id="fs_normal" onclick="app.setFontSize('normal')" title="Normal"     style="font-size:14px">A</button>
+          <button class="fs-btn" id="fs_large"  onclick="app.setFontSize('large')"  title="Grande"     style="font-size:17px">A</button>
           <button class="fs-btn" id="fs_xlarge" onclick="app.setFontSize('xlarge')" title="Muy Grande" style="font-size:20px">A</button>
         </div>
       </div>
+      <!-- Scroll preserve -->
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px">
         <div>
-          <span id="scroll_preserve_lbl" style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Activar recordar posición al volver</span>
+          <span id="scroll_preserve_lbl" style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Recordar posición al volver</span>
           <div style="font-family:var(--fm);font-size:.6rem;color:var(--border);margin-top:2px">Mantiene el scroll de cada sección al cambiar de pestaña</div>
         </div>
         <button id="scroll_preserve_btn" class="toggle-btn" onclick="app.toggleScrollPreserve()" aria-pressed="false" title="Activar/desactivar recordar posición de scroll" aria-label="Activar recordar posición al volver"></button>
+      </div>
+    </div>
+    <!-- ── RETRATO ── -->
+    <div>
+      <div class="dvdr">Retrato</div>
+      <!-- Size -->
+      <div style="margin-bottom:10px">
+        <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:7px">Tamaño</span>
+        <div style="display:flex;gap:5px">
+          <button class="fs-btn ps-btn" data-size="xs" onclick="app.setPortraitSize('xs')" title="Muy pequeño"  style="font-size:.6rem;flex:1;padding:5px 2px">XS</button>
+          <button class="fs-btn ps-btn" data-size="s"  onclick="app.setPortraitSize('s')"  title="Pequeño"      style="font-size:.6rem;flex:1;padding:5px 2px">S</button>
+          <button class="fs-btn ps-btn active" data-size="m"  onclick="app.setPortraitSize('m')"  title="Mediano"      style="font-size:.6rem;flex:1;padding:5px 2px">M</button>
+          <button class="fs-btn ps-btn" data-size="l"  onclick="app.setPortraitSize('l')"  title="Grande"       style="font-size:.6rem;flex:1;padding:5px 2px">L</button>
+          <button class="fs-btn ps-btn" data-size="xl" onclick="app.setPortraitSize('xl')" title="Muy grande"   style="font-size:.6rem;flex:1;padding:5px 2px">XL</button>
+        </div>
+      </div>
+      <!-- Shape -->
+      <div>
+        <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:7px">Forma</span>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">
+          <button class="fs-btn psh-btn active" data-shape="rect"    onclick="app.setPortraitShape('rect')"    title="Rectangular">Rect</button>
+          <button class="fs-btn psh-btn"        data-shape="rounded" onclick="app.setPortraitShape('rounded')" title="Redondeado">Suave</button>
+          <button class="fs-btn psh-btn"        data-shape="arch"    onclick="app.setPortraitShape('arch')"    title="Arco superior">Arco</button>
+          <button class="fs-btn psh-btn"        data-shape="circle"  onclick="app.setPortraitShape('circle')"  title="Círculo">Círculo</button>
+          <button class="fs-btn psh-btn"        data-shape="shield"  onclick="app.setPortraitShape('shield')"  title="Escudo">Escudo</button>
+          <button class="fs-btn psh-btn"        data-shape="hex"     onclick="app.setPortraitShape('hex')"     title="Hexágono">Hex</button>
+        </div>
       </div>
     </div>
     <div><div class="dvdr">Reglas del Juego</div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn btn-g" style="width:100%" onclick="document.getElementById('json_rules_input').click()">↑ Importar Reglas (JSON)</button><button class="btn btn-gold" style="width:100%" onclick="app.openDatabaseEditor()">⚙ Editor de Base de Datos</button></div></div>
@@ -2452,6 +2493,8 @@ const STORAGE = {
     roster:         'sands_roster',
     font:           'ss_font_size',
     scrollPreserve: 'ss_scroll_preserve',
+    portSize:       'ss_port_size',
+    portShape:      'ss_port_shape',
     version:        'sands_schema_v'
   },
 
@@ -2552,6 +2595,7 @@ const app = {
     if (ws) ws.addEventListener('wheel', e => this._cropWheel(e), {passive:false});
     this._restoreFontSize();
     this._restoreScrollPreserve();
+    this._restorePortraitSettings();
     // Long-press repeat on resource +/- buttons
     this._initResLongPress();
   },
@@ -5489,6 +5533,59 @@ const app = {
   _restoreScrollPreserve() {
     this.scrollPreserve = localStorage.getItem(STORAGE.KEYS.scrollPreserve) === '1';
     this._syncScrollPreserveBtn();
+  },
+
+
+  /* ── PORTRAIT SIZE ── */
+  setPortraitSize(size) {
+    // size: 'xs'|'s'|'m'|'l'|'xl'
+    const map = {
+      xs: {w:'180px', h:'257px'},
+      s:  {w:'220px', h:'314px'},
+      m:  {w:'287px', h:'410px'},
+      l:  {w:'340px', h:'486px'},
+      xl: {w:'min(96%,400px)', h:'min(96%,571px)'}
+    };
+    const d = map[size] || map['m'];
+    const root = document.documentElement;
+    root.style.setProperty('--port-w', d.w);
+    root.style.setProperty('--port-h', d.h);
+    this._portSize = size;
+    // Sync UI buttons
+    document.querySelectorAll('.ps-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.size === size)
+    );
+    localStorage.setItem(STORAGE.KEYS.portSize, size);
+  },
+
+  /* ── PORTRAIT SHAPE ── */
+  setPortraitShape(shape) {
+    // shape: 'rect'|'rounded'|'circle'|'shield'|'hex'
+    const clips = {
+      rect:    {r:'var(--r)',   clip:'none'},
+      rounded: {r:'14px',       clip:'none'},
+      arch:    {r:'140px 140px 8px 8px / 160px 160px 8px 8px', clip:'none'},
+      circle:  {r:'50%',        clip:'none'},
+      shield:  {r:'var(--r)',   clip:'polygon(50% 0%,100% 15%,100% 70%,50% 100%,0% 70%,0% 15%)'},
+      hex:     {r:'var(--r)',   clip:'polygon(25% 0%,75% 0%,100% 50%,75% 100%,25% 100%,0% 50%)'}
+    };
+    const d = clips[shape] || clips['rect'];
+    const root = document.documentElement;
+    root.style.setProperty('--port-r', d.r);
+    root.style.setProperty('--port-clip', d.clip);
+    this._portShape = shape;
+    // Sync UI buttons
+    document.querySelectorAll('.psh-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.shape === shape)
+    );
+    localStorage.setItem(STORAGE.KEYS.portShape, shape);
+  },
+
+  _restorePortraitSettings() {
+    const size  = localStorage.getItem(STORAGE.KEYS.portSize)  || 'm';
+    const shape = localStorage.getItem(STORAGE.KEYS.portShape) || 'rect';
+    this.setPortraitSize(size);
+    this.setPortraitShape(shape);
   },
 
   toggleScrollPreserve() {
