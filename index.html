@@ -2,16 +2,19 @@
 <html lang="es" style="background:#07060a;color-scheme:dark">
 <head>
 <meta charset="UTF-8">
+<!-- CRITICAL: this inline style fires before any stylesheet and kills the iOS white flash -->
+<style>html,body{background:#07060a!important}*{box-sizing:border-box}</style>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#07060a">
+<meta name="background-color" content="#07060a">
 <title>S&amp;S Companion</title>
 <meta name="description" content="Hoja de personaje digital para Stars &amp; Sorcery RPG. Gestiona estadísticas, inventario, talentos y tiradas de dados.">
 <link rel="icon" type="image/webp" href="Bind_Pact_Weapon.webp">
 <link rel="apple-touch-icon" href="Bind_Pact_Weapon.webp">
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="S&amp;S Companion">
 <meta name="application-name" content="S&amp;S Companion">
 <meta name="msapplication-TileColor" content="#07060a">
@@ -145,8 +148,8 @@ body{
 
 /* ── Rune ring ── */
 .loader-ring-wrap{
-  position:relative;width:120px;height:120px;
-  margin-bottom:28px;flex-shrink:0;
+  position:relative;width:96px;height:96px;
+  margin-bottom:24px;flex-shrink:0;
   animation:lReveal .6s cubic-bezier(.16,.72,.34,1) .1s both;
 }
 .loader-ring{
@@ -189,7 +192,7 @@ body{
 .loader-glyph{
   position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:2rem;color:var(--gold);
+  font-size:1.6rem;color:var(--gold);
   text-shadow:0 0 30px rgba(200,169,110,.7),0 0 60px rgba(200,169,110,.2);
   animation:lPulse 2.8s ease-in-out infinite;
 }
@@ -205,11 +208,12 @@ body{
 }
 .loader-title{
   font-family:var(--ft);
-  font-size:2rem;                    /* Fixed rem — no vw, no Android jump */
+  font-size:1.55rem;               /* Fits comfortably on 375px iPhone with .18em tracking */
   color:var(--gold);
   letter-spacing:.18em;
   text-shadow:0 0 50px rgba(200,169,110,.55),0 0 110px rgba(200,169,110,.12),0 2px 6px rgba(0,0,0,.95);
   text-align:center;line-height:1.2;
+  max-width:min(320px,90vw);       /* Hard cap — never bleeds off screen */
   -webkit-text-size-adjust:100%;text-size-adjust:100%;
 }
 /* Decorative line under title */
