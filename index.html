@@ -148,123 +148,189 @@ body{
 }
 .screen.hidden{opacity:0;pointer-events:none;transform:scale(.97)}
 
-/* HOME SCREEN */
+/* ═══════════════════════════════════════════
+   HOME SCREEN
+   ═══════════════════════════════════════════ */
 #home-screen{
   overflow-y:auto;overflow-x:hidden;
-  padding:env(safe-area-inset-top,0px) 0 60px;
+  padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,40px);
   -webkit-overflow-scrolling:touch;
-  background-image:var(--bg-home,none);background-size:cover;background-position:center top;
+  background-image:var(--bg-home,none);
+  background-size:cover;background-position:center top;
+  overscroll-behavior-y:contain;
 }
 
-.home-hdr{
-  text-align:center;
-  padding:52px 24px 28px;
-  position:relative;
-}
-/* Corner ornaments */
-
-
-/* .home-hdr::after removed — orphaned rule */
-
+/* ── Header (title + deco unchanged) ── */
+.home-hdr{text-align:center;padding:clamp(36px,8vw,64px) 24px 24px;position:relative}
 .home-title{
-  font-family:var(--ft);
-  font-size:clamp(1.5rem,5.5vw,2.8rem);
-  color:var(--gold);letter-spacing:.14em;
+  font-family:var(--ft);font-size:clamp(1.5rem,5.5vw,2.8rem);
+  color:var(--gold);letter-spacing:.14em;line-height:1.15;
   text-shadow:0 0 60px rgba(200,169,110,.5),0 0 120px rgba(200,169,110,.12),0 2px 6px rgba(0,0,0,.95);
-  line-height:1.15;
 }
 .home-sub{
   font-family:var(--fd);font-size:.58rem;
-  color:var(--muted);letter-spacing:.5em;
-  text-transform:uppercase;margin-top:7px;
+  color:var(--muted);letter-spacing:.5em;text-transform:uppercase;margin-top:7px;
 }
 .home-deco{
-  width:180px;height:1px;
+  width:180px;height:1px;margin:16px auto 0;
   background:linear-gradient(90deg,transparent,rgba(200,169,110,.7) 25%,var(--goldb) 50%,rgba(200,169,110,.7) 75%,transparent);
-  margin:16px auto;
   box-shadow:0 0 8px rgba(200,169,110,.2);
 }
 
-.home-body{max-width:480px;margin:0 auto;padding:0 18px}
+/* ── Body layout ── */
+.home-body{max-width:480px;margin:0 auto;padding:20px 16px 0;display:flex;flex-direction:column;gap:10px}
 
-.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:28px}
-
-.roster-lbl{
-  font-family:var(--fd);font-size:.58rem;
-  color:var(--muted);text-transform:uppercase;
-  letter-spacing:.22em;margin-bottom:12px;padding-left:3px;
-  display:flex;align-items:center;gap:10px;
+/* ── Primary action buttons ── */
+.home-actions-primary{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.home-btn-new{
+  font-family:var(--fd);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:700;cursor:pointer;border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  min-height:52px;padding:0 12px;
+  background:linear-gradient(135deg,rgba(200,169,110,.88),rgba(224,194,126,.94));
+  border:1px solid rgba(224,194,126,.5);color:var(--void);
+  box-shadow:0 2px 18px rgba(200,169,110,.25),inset 0 1px 0 rgba(255,255,255,.25);
+  text-shadow:0 1px 0 rgba(255,255,255,.2);
+  transition:box-shadow .18s,transform .1s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
-.roster-lbl::after{content:'';flex:1;height:1px;background:var(--rim)}
+@media(hover:hover){.home-btn-new:hover{box-shadow:0 4px 28px rgba(200,169,110,.38);transform:translateY(-1px)}}
+.home-btn-new:active{transform:scale(.94);box-shadow:none}
 
-/* CHARACTER CARDS — ROSTER */
+.home-btn-import{
+  font-family:var(--fd);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:600;cursor:pointer;border-radius:var(--r);
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  min-height:52px;padding:0 12px;
+  background:rgba(16,14,24,.7);border:1px solid rgba(61,50,84,.75);color:var(--dim);
+  box-shadow:0 2px 12px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.03);
+  backdrop-filter:blur(10px);
+  transition:border-color .18s,color .18s,background .18s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+@media(hover:hover){.home-btn-import:hover{border-color:rgba(200,169,110,.4);color:var(--gold);background:rgba(200,169,110,.06)}}
+.home-btn-import:active{transform:scale(.94);background:rgba(200,169,110,.08)}
+
+/* ── Roster container ── */
+.home-roster-wrap{
+  background:rgba(7,5,12,.6);border:1px solid rgba(61,50,84,.35);
+  border-radius:var(--rl);overflow:hidden;backdrop-filter:blur(12px);
+}
+.home-roster-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;border-bottom:1px solid rgba(61,50,84,.3);
+}
+.home-roster-title{
+  font-family:var(--fd);font-size:.6rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.22em;
+  display:flex;align-items:center;gap:8px;
+}
+.home-roster-title::before{
+  content:'';width:4px;height:4px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 6px rgba(200,169,110,.5);flex-shrink:0;
+}
+.home-roster-hint{font-family:var(--fm);font-size:.52rem;color:var(--border);letter-spacing:.06em}
+.home-roster-body{padding:8px}
+
+/* ── Character cards ── */
 .char-port{
-  width:46px;height:60px;border-radius:3px;
+  width:42px;height:54px;border-radius:var(--r);
   object-fit:cover;flex-shrink:0;
-  border:1px solid rgba(200,169,110,.25);
-  background:var(--raised);
-  box-shadow:0 2px 10px rgba(0,0,0,.5);
+  border:1px solid rgba(200,169,110,.25);background:var(--raised);
+  box-shadow:0 2px 8px rgba(0,0,0,.5);
 }
 .char-port-ph{
-  width:46px;height:60px;border-radius:3px;
-  flex-shrink:0;border:1px solid var(--rim);
-  background:var(--raised);
+  width:42px;height:54px;border-radius:var(--r);
+  flex-shrink:0;border:1px solid var(--rim);background:var(--raised);
   display:flex;align-items:center;justify-content:center;
-  color:var(--border);font-size:1.1rem;
+  color:var(--border);font-size:1rem;
 }
 .char-ci{flex:1;min-width:0}
 .char-cn{
-  font-family:var(--fd);font-size:.88rem;
-  color:var(--bright);font-weight:600;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  letter-spacing:.03em;
+  font-family:var(--fd);font-size:.86rem;color:var(--bright);font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.03em;
 }
 .char-cs{
-  font-family:var(--fm);font-size:.58rem;
-  color:var(--muted);margin-top:3px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  letter-spacing:.04em;
-}
-.home-empty{
-  text-align:center;padding:48px 24px;
-  color:var(--muted);font-style:italic;font-size:.85rem;line-height:2;
+  font-family:var(--fm);font-size:.56rem;color:var(--muted);margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.04em;
 }
 .char-card-wrap{
-  position:relative;overflow:hidden;border-radius:var(--rl);margin-bottom:6px;
+  position:relative;overflow:hidden;border-radius:var(--r);margin-bottom:5px;
   animation:cardSlideIn .22s cubic-bezier(.22,.61,.36,1) forwards;opacity:0;
 }
+.char-card-wrap:last-child{margin-bottom:0}
 .char-card-delete{
-  position:absolute;right:0;top:0;bottom:0;width:68px;
-  background:var(--blood);
+  position:absolute;right:0;top:0;bottom:0;width:72px;background:var(--blood);
   display:flex;align-items:center;justify-content:center;
-  font-size:.65rem;font-family:var(--fd);color:#fff;
-  letter-spacing:.08em;text-transform:uppercase;
+  font-size:.6rem;font-family:var(--fd);color:#fff;letter-spacing:.08em;text-transform:uppercase;
   cursor:pointer;transform:translateX(100%);
-  border-radius:0 var(--rl) var(--rl) 0;
-  flex-direction:column;gap:3px;
+  border-radius:0 var(--r) var(--r) 0;flex-direction:column;gap:3px;
 }
-.char-card-delete .del-icon{font-size:1rem}
-
+.char-card-delete .del-icon{font-size:.95rem}
 .char-card{
-  background:var(--surface);
-  border:1px solid rgba(61,50,84,.6);
-  border-radius:var(--rl);
-  display:flex;align-items:center;gap:14px;
-  padding:11px 14px;cursor:pointer;
-  transition:border-color .22s,box-shadow .22s;
-  position:relative;overflow:hidden;width:100%;margin-bottom:0;
-  box-shadow:0 1px 0 rgba(255,255,255,.02) inset;
+  background:var(--surface);border:1px solid rgba(61,50,84,.55);border-radius:var(--r);
+  display:flex;align-items:center;gap:12px;padding:10px 12px;cursor:pointer;
+  transition:border-color .18s,background .18s;
+  position:relative;overflow:hidden;width:100%;
 }
-/* Gold top accent line on hover */
 .char-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:var(--line-gold);opacity:0;transition:opacity .22s;
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,var(--gold),rgba(200,169,110,.4));
+  opacity:0;transition:opacity .18s;
 }
+@media(hover:hover){
+  .char-card:hover{border-color:rgba(200,169,110,.35);background:rgba(200,169,110,.03)}
+  .char-card:hover::before{opacity:1}
+}
+.char-card:active{transform:scale(.98)}
+.char-card-arrow{color:var(--border);font-size:.75rem;flex-shrink:0;transition:color .18s,transform .18s}
+@media(hover:hover){.char-card:hover .char-card-arrow{color:var(--gold);transform:translateX(2px)}}
 
-@media(hover:hover){.char-card:hover{border-color:rgba(200,169,110,.35);box-shadow:0 4px 24px rgba(0,0,0,.5)}}
+/* ── Empty roster state ── */
+.home-empty{display:flex;flex-direction:column;align-items:center;padding:32px 20px;gap:10px;text-align:center}
+.home-empty-icon{font-size:2rem;opacity:.22}
+.home-empty-title{font-family:var(--fd);font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+.home-empty-sub{font-size:.72rem;color:var(--border);font-style:italic;line-height:1.6}
 
-@media(hover:hover){.char-card:hover::before{opacity:1}}
-@keyframes cardSlideIn{from{opacity:0;transform:translateX(-10px) scale(.99)}to{opacity:1;transform:none}}
+/* ── Footer tools ── */
+.home-footer{display:flex;justify-content:center;align-items:center;padding:4px 0 0;gap:2px}
+.home-footer-btn{
+  font-family:var(--fm);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--border);cursor:pointer;background:transparent;border:none;
+  display:flex;align-items:center;gap:5px;padding:8px 12px;border-radius:var(--r);
+  transition:color .15s,background .15s;-webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;min-height:36px;
+}
+@media(hover:hover){.home-footer-btn:hover{color:var(--muted);background:rgba(61,50,84,.25)}}
+.home-footer-btn:active{color:var(--dim);background:rgba(61,50,84,.3)}
+.home-footer-sep{width:1px;background:var(--rim);align-self:stretch;margin:6px 0}
+
+/* ── Settings button ── */
+.home-settings-btn{
+  width:100%;font-family:var(--fd);font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;
+  background:rgba(16,14,24,.5);border:1px solid rgba(61,50,84,.4);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 12px;border-radius:var(--r);
+  transition:border-color .18s,color .18s,background .18s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:42px;
+  backdrop-filter:blur(8px);
+}
+@media(hover:hover){.home-settings-btn:hover{border-color:rgba(61,50,84,.7);color:var(--dim);background:rgba(61,50,84,.3)}}
+.home-settings-btn:active{transform:scale(.97)}
+
+/* Keep legacy classes working */
+.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.roster-lbl{
+  font-family:var(--fd);font-size:.58rem;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.22em;margin-bottom:12px;padding-left:3px;display:flex;align-items:center;gap:10px;
+}
+.roster-lbl::after{content:'';flex:1;height:1px;background:var(--rim)}
+.home-panel{
+  background:rgba(7,5,12,.68);border:1px solid rgba(61,50,84,.35);border-radius:var(--rl);
+  padding:14px;backdrop-filter:blur(16px);box-shadow:0 4px 24px rgba(0,0,0,.5);
+}
+@keyframes cardSlideIn{from{opacity:0;transform:translateX(-12px) scale(.99)}to{opacity:1;transform:none}}
 
 /* APP SHELL */
 .app-shell{
@@ -1882,27 +1948,58 @@ body.port-border-none .port-card-edit{
 <input type="file" id="json_char_input" accept=".json" style="display:none" onchange="app.loadJSON(this)">
 <input type="file" id="json_rules_input" accept=".json" style="display:none" onchange="app.loadRulesFile(this)">
 <div id="home-screen" class="screen" role="main">
+  <!-- ── Header: title + deco (identidad visual preservada) ── -->
   <div class="home-hdr">
     <h1 class="home-title">Stars &amp; Sorcery</h1>
     <p class="home-sub">Companion</p>
     <div class="home-deco"></div>
   </div>
+
+  <!-- ── Body ── -->
   <div class="home-body">
-    <div class="home-panel" style="margin-bottom:14px">
-      <div class="home-actions" style="margin-bottom:8px">
-        <button class="btn btn-gold" onclick="app.newChar()" style="width:100%;padding:13px 8px;font-size:.76rem">✦ Nuevo Personaje</button>
-        <button class="btn btn-g" onclick="app.toast('Selecciona un archivo .json de personaje','info');setTimeout(()=>document.getElementById('json_char_input').click(),80)" style="width:100%;padding:13px 8px;font-size:.76rem">↑ Importar JSON</button>
+
+    <!-- Primary actions -->
+    <div class="home-actions-primary">
+      <button class="home-btn-new" onclick="app.newChar()" aria-label="Crear nuevo personaje">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nuevo Personaje
+      </button>
+      <button class="home-btn-import" onclick="app.toast('Selecciona un archivo .json de personaje','info');setTimeout(()=>document.getElementById('json_char_input').click(),80)" aria-label="Importar personaje JSON">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Importar
+      </button>
+    </div>
+
+    <!-- Settings button -->
+    <button class="home-settings-btn" onclick="document.getElementById('settings_modal').showModal()" aria-label="Abrir ajustes y datos">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Ajustes &amp; Datos
+    </button>
+
+    <!-- Roster -->
+    <div class="home-roster-wrap">
+      <div class="home-roster-hdr">
+        <span class="home-roster-title">Personajes</span>
+        <span class="home-roster-hint">← desliza para eliminar</span>
       </div>
-      <button class="btn btn-g" onclick="document.getElementById('settings_modal').showModal()" style="width:100%;padding:10px 8px;font-size:.72rem;background:rgba(16,14,24,.72)">⚙ Ajustes &amp; Datos</button>
+      <div class="home-roster-body">
+        <div id="home-roster"></div>
+      </div>
     </div>
-    <div class="home-panel">
-      <p style="font-family:var(--fm);font-size:.58rem;color:var(--muted);text-align:center;margin-bottom:10px;letter-spacing:.08em">← Desliza para eliminar</p>
-      <div id="home-roster"></div>
+
+    <!-- Footer tools -->
+    <div class="home-footer">
+      <button class="home-footer-btn" onclick="app.toast('Selecciona un archivo .json de reglas','info');setTimeout(()=>document.getElementById('json_rules_input').click(),80)" aria-label="Importar reglas">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Importar Reglas
+      </button>
+      <div class="home-footer-sep"></div>
+      <button class="home-footer-btn" onclick="app.openDatabaseEditor()" aria-label="Editor de base de datos">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+        Editor de Reglas
+      </button>
     </div>
-    <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--rim);display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-      <button class="btn btn-g" style="font-size:.68rem" onclick="app.toast('Selecciona un archivo .json de reglas','info');setTimeout(()=>document.getElementById('json_rules_input').click(),80)" aria-label="Importar reglas desde archivo JSON">↑ Importar Reglas</button>
-      <button class="btn btn-g" style="font-size:.68rem" onclick="app.openDatabaseEditor()">Editor de Reglas</button>
-    </div>
+
   </div>
 </div>
 <div id="app-screen" class="screen hidden">
@@ -3286,7 +3383,12 @@ const app = {
     const roster = STORAGE.loadRoster();
     const keys = Object.keys(roster);
     if (!keys.length) {
-      el.innerHTML = '<div class="home-empty">No hay personajes guardados.<br>¡Crea uno nuevo para comenzar!</div>';
+      el.innerHTML = `
+        <div class="home-empty">
+          <div class="home-empty-icon">⚔</div>
+          <div class="home-empty-title">Sin personajes guardados</div>
+          <div class="home-empty-sub">Crea uno nuevo o importa<br>un archivo JSON para comenzar.</div>
+        </div>`;
       return;
     }
     el.innerHTML = '';
@@ -3317,7 +3419,8 @@ const app = {
           <div class="char-cn">${this._esc(name)}</div>
           <div class="char-cs">${this._esc(desc||'—')} · ${this._esc(arq)}${bg ? ' · '+this._esc(bg) : ''}</div>
           <div style="margin-top:3px"><span class="char-lvl-badge">Nivel ${this._esc(lvl)}</span></div>
-        </div>`;
+        </div>
+        <span class="char-card-arrow">›</span>`;
       card.addEventListener('click', () => { if (!card._swiped) this.loadCharToApp(name); });
 
       // Swipe logic
