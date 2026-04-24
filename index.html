@@ -504,6 +504,9 @@ input[type=text],input[type=number],select,textarea{
   transition:border-color .2s,box-shadow .2s,background .2s;
   appearance:none;-moz-appearance:textfield;
   min-height:40px;
+  /* Guarantee text selection always works regardless of parent user-select */
+  -webkit-user-select:text;user-select:text;
+  touch-action:auto;
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
@@ -838,7 +841,7 @@ input[type=radio]:checked::after{transform:scale(1)}
 
 @media(hover:hover){.iitem:hover{border-color:rgba(200,169,110,.3)}}
 .ityp{background:transparent;border:none;font-family:var(--fm);font-size:.55rem;color:var(--gold);cursor:pointer;appearance:none;text-transform:uppercase;letter-spacing:.06em;padding:0}
-.inm{background:transparent;border:none;border-bottom:1px dotted var(--rim);font-size:.8rem;color:var(--text);padding:1px 3px}
+.inm{background:transparent;border:none;border-bottom:1px dotted var(--rim);font-size:.8rem;color:var(--text);padding:1px 3px;-webkit-user-select:text;user-select:text;touch-action:auto}
 .inm:focus{outline:none;border-bottom-color:var(--gold)}
 .isl{background:var(--deep);border:1px solid var(--rim);border-radius:2px;text-align:center;font-family:var(--fm);font-weight:600;font-size:.7rem;color:var(--gold);padding:2px;width:100%}
 .isl:focus{outline:none;border-color:var(--gold)}
@@ -1021,16 +1024,17 @@ input[type=radio]:checked::after{transform:scale(1)}
 @keyframes bcnfSuccess{0%{background:transparent}40%{background:rgba(63,160,108,.25);border-color:var(--sage)}100%{background:transparent}}
 .bcnf.success{animation:bcnfSuccess .55s ease forwards}
 .bedit{
-  display:flex;align-items:center;justify-content:center;gap:5px;
-  background:rgba(61,50,84,.2);border:1px solid rgba(61,50,84,.6);color:var(--dim);
-  font-family:var(--fm);font-size:.6rem;padding:7px 18px;cursor:pointer;
-  border-radius:var(--r);margin:8px auto 0;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  background:transparent;border:1px solid rgba(61,50,84,.5);color:var(--muted);
+  font-family:var(--fm);font-size:.58rem;padding:6px 16px;cursor:pointer;
+  border-radius:var(--r);margin:7px auto 0;
   transition:border-color .16s,color .16s,background .16s;
   text-transform:uppercase;letter-spacing:.12em;
-  -webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:36px;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;min-height:34px;
+  box-shadow:0 1px 4px rgba(0,0,0,.25);
 }
-@media(hover:hover){.bedit:hover{border-color:rgba(200,169,110,.45);color:var(--gold);background:rgba(200,169,110,.06)}}
-.bedit:active{transform:scale(.95);background:rgba(200,169,110,.09)}
+@media(hover:hover){.bedit:hover{border-color:rgba(200,169,110,.4);color:var(--gold);background:rgba(200,169,110,.05)}}
+.bedit:active{transform:scale(.95);background:rgba(200,169,110,.08)}
 .bmini{
   font-family:var(--fm);font-size:.6rem;padding:6px 10px;cursor:pointer;
   border-radius:var(--r);border:1px solid;letter-spacing:.06em;text-transform:uppercase;
@@ -3513,9 +3517,15 @@ const app = {
     let dragging=false, locked=false, totalDist=0;
 
     // ── Ghost-click suppression ──
+    // NOTE: inputs, textareas and selects are always excluded so the user
+    // can tap, select text, and position the cursor without interference.
     let _suppress = false;
     const GUARD_EVENTS = ['touchstart','pointerdown','mousedown','click'];
-    const _guard = e => { if (_suppress) { e.stopPropagation(); e.preventDefault(); } };
+    const _guard = e => {
+      if (!_suppress) return;
+      if (e.target.closest('input,textarea,select')) return; // never suppress text fields
+      e.stopPropagation(); e.preventDefault();
+    };
     GUARD_EVENTS.forEach(t => w.addEventListener(t, _guard, {capture:true,passive:false}));
     const suppressFor = (ms = TIMING.SWIPE_SUPPRESS) => {
       _suppress = true; setTimeout(() => { _suppress = false; }, ms);
@@ -3564,6 +3574,8 @@ const app = {
     // ══ TOUCH ══
     w.addEventListener('touchstart', e => {
       if (e.touches.length > 1) return;
+      // Never hijack touches that begin on a text field
+      if (e.target.closest('input,textarea,select')) return;
       const t = e.touches[0];
       startX = lastX = t.clientX;
       startY = t.clientY;
@@ -3574,7 +3586,9 @@ const app = {
       const cur = getComputedStyle(track).transform;
       track.style.transition = 'none';
       track.style.transform  = cur;
-      w.querySelector(':focus')?.blur();
+      // Only steal focus away from non-text elements (never blur inputs/textareas)
+      const focused = w.querySelector(':focus');
+      if (focused && !focused.matches('input,textarea,select')) focused.blur();
     }, {passive:true});
 
     w.addEventListener('touchmove', e => {
@@ -3584,6 +3598,8 @@ const app = {
       const dy = t.clientY - startY;
 
       if (!locked) {
+        // Never intercept swipes that started on a text field
+        if (e.target.closest('input,textarea,select')) { locked = true; return; }
         if (e.target.closest(SCROLL_SEL)) { locked = true; return; }
         if (Math.abs(dx) < DEAD_PX && Math.abs(dy) < DEAD_PX) return;
         if (Math.abs(dx) > Math.abs(dy) * V_BIAS) {
