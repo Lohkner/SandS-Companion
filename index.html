@@ -1055,55 +1055,231 @@ input[type=radio]:checked::after{transform:scale(1)}
 .leth-summary-badge[data-tier="2"]{color:var(--goldb);border-color:rgba(200,169,110,.3);background:rgba(200,169,110,.07)}
 .leth-summary-badge[data-tier="3"]{color:var(--sage);border-color:rgba(63,160,108,.3);background:rgba(63,160,108,.07)}
 
-/* MODALS */
+/* ═══════════════════════════════════════════════════
+   MODALS — Revamped UX (v2)
+   ═══════════════════════════════════════════════════ */
 dialog.modal{
   background:var(--surface);color:var(--text);
-  border:1px solid rgba(61,50,84,.6);border-radius:var(--rl);
+  border:1px solid rgba(61,50,84,.55);border-radius:var(--rl);
   width:min(96vw,920px);padding:0;
-  box-shadow:0 32px 100px rgba(0,0,0,.95),0 0 0 1px rgba(200,169,110,.04);
+  box-shadow:0 40px 120px rgba(0,0,0,.97),0 0 0 1px rgba(200,169,110,.06),0 0 60px rgba(0,0,0,.7);
   position:fixed;inset:0;margin:auto;
-  max-height:min(90svh,calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)));
+  max-height:min(90svh,calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px) - 16px));
   display:none;flex-direction:column;z-index:200;overflow:hidden;
 }
-dialog.modal[open]{display:flex;animation:popIn .26s cubic-bezier(.22,.61,.36,1) forwards}
+dialog.modal[open]{display:flex;animation:popIn .28s cubic-bezier(.16,.72,.34,1) forwards}
 #crop_modal{max-height:none}
-dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
-@keyframes popIn{from{opacity:0;transform:scale(.95) translateY(14px)}to{opacity:1;transform:none}}
-
-.mhd{
-  background:var(--raised);padding:12px 16px;
-  display:flex;justify-content:space-between;align-items:center;
-  border-bottom:1px solid rgba(61,50,84,.45);flex-shrink:0;
-  padding-top:max(12px,env(safe-area-inset-top,12px));
+dialog::backdrop{background:rgba(3,2,8,.88);backdrop-filter:blur(18px) saturate(.7)}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.93) translateY(20px)}
+  to  {opacity:1;transform:scale(1)   translateY(0)}
 }
-.mttl{font-family:var(--fd);font-size:.78rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase}
-.mbd{padding:14px;overflow-y:auto;flex:1;min-width:0;overscroll-behavior:contain}
+
+/* ── Modal Header ── */
+.mhd{
+  background:linear-gradient(180deg,var(--panel) 0%,var(--raised) 100%);
+  padding:0 16px;height:52px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid rgba(61,50,84,.5);flex-shrink:0;
+  padding-top:env(safe-area-inset-top,0px);
+  position:relative;
+}
+/* Gold accent line under header */
+.mhd::after{
+  content:'';position:absolute;bottom:-1px;left:8%;right:8%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(200,169,110,.18) 40%,rgba(200,169,110,.18) 60%,transparent);
+}
+.mhd-left{display:flex;align-items:center;gap:10px;min-width:0}
+.mhd-icon{
+  width:28px;height:28px;border-radius:var(--r);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;
+  background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.2);
+  color:var(--gold);
+}
+.mttl{
+  font-family:var(--fd);font-size:.76rem;color:var(--gold);
+  letter-spacing:.14em;text-transform:uppercase;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.mttl-sub{
+  font-family:var(--fm);font-size:.52rem;color:var(--muted);
+  letter-spacing:.06em;display:block;margin-top:1px;
+}
+.mhd-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+
+/* ── Modal Body ── */
+.mbd{padding:14px;overflow-y:auto;flex:1;min-width:0;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+
+/* ── Close button ── */
 .bcls{
   background:transparent;border:1px solid rgba(61,50,84,.5);color:var(--muted);
-  font-size:.7rem;cursor:pointer;width:30px;height:30px;border-radius:var(--r);
+  font-size:.62rem;cursor:pointer;width:30px;height:30px;border-radius:var(--r);
   display:flex;align-items:center;justify-content:center;
-  transition:all .18s;font-weight:700;flex-shrink:0;
+  transition:border-color .18s,color .18s,background .18s,transform .18s;
+  font-weight:700;flex-shrink:0;line-height:1;
+}
+@media(hover:hover){.bcls:hover{
+  border-color:rgba(168,42,58,.5);color:var(--blood);
+  background:rgba(110,21,37,.15);transform:rotate(90deg) scale(1.08);
+}}
+
+/* ── Modal Footer ── */
+.mft{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;
+  border-top:1px solid rgba(61,50,84,.4);
+  background:linear-gradient(0deg,var(--panel) 0%,var(--raised) 100%);
+  flex-shrink:0;
+  gap:8px;
+}
+.mft-info{
+  font-family:var(--fm);font-size:.68rem;color:var(--dim);
+  display:flex;align-items:center;gap:6px;
+}
+.mft-count{
+  color:var(--gold);font-weight:700;
+  background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.2);
+  border-radius:2px;padding:1px 8px;
 }
 
-@media(hover:hover){.bcls:hover{border-color:rgba(168,42,58,.5);color:var(--blood);background:rgba(110,21,37,.15);transform:rotate(90deg) scale(1.05)}}
-
-/* Talent modal */
+/* ══════════════════════════════════════════
+   TALENT MANAGER — revamped
+   ══════════════════════════════════════════ */
 .tml{display:grid;grid-template-columns:170px 1fr;height:100%;overflow:hidden;padding:0}
 .tms{background:var(--void);padding:8px;border-right:1px solid rgba(61,50,84,.4);overflow-y:auto;display:flex;flex-direction:column;gap:3px}
 .tmct{padding:10px;overflow-y:auto;background:var(--surface)}
 .catbtn{
-  display:block;width:100%;text-align:left;padding:8px 12px;
+  display:flex;align-items:center;gap:8px;width:100%;text-align:left;padding:8px 12px;
   background:transparent;border:1px solid transparent;border-radius:var(--r);
   cursor:pointer;font-family:var(--fd);font-size:.72rem;color:var(--dim);
   letter-spacing:.06em;transition:background .15s,border-color .15s,color .15s;
   min-height:40px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  position:relative;overflow:hidden;
+}
+.catbtn-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;
+  transition:background .15s,box-shadow .15s;
+}
+@media(hover:hover){.catbtn:hover{background:rgba(61,50,84,.4);border-color:rgba(61,50,84,.6);color:var(--text)}}
+.catbtn.active{
+  background:linear-gradient(90deg,rgba(200,169,110,.08),rgba(200,169,110,.03));
+  border-color:rgba(200,169,110,.3);color:var(--gold);
+}
+.catbtn.active .catbtn-dot{background:var(--gold);box-shadow:0 0 6px rgba(200,169,110,.5)}
+/* Active left accent */
+.catbtn.active::before{
+  content:'';position:absolute;left:0;top:4px;bottom:4px;width:2px;
+  background:var(--gold);border-radius:2px;
 }
 
-@media(hover:hover){.catbtn:hover{background:rgba(61,50,84,.4);border-color:rgba(61,50,84,.6);color:var(--text)}}
-.catbtn.active{background:rgba(61,50,84,.7);border-color:rgba(200,169,110,.3);color:var(--gold)}
-.tmft{padding:8px 14px;background:var(--surface);border-top:1px solid rgba(61,50,84,.4);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+/* Talent card revamp */
+.tc{
+  background:var(--raised);border:1px solid rgba(61,50,84,.5);
+  border-radius:var(--rl);padding:12px 14px;
+  display:flex;align-items:flex-start;gap:10px;cursor:pointer;
+  transition:border-color .18s,box-shadow .18s,transform .1s,background .18s;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+  position:relative;overflow:hidden;
+}
+.tc::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:transparent;transition:background .18s;border-radius:3px 0 0 3px;
+}
+@media(hover:hover){.tc:hover{border-color:rgba(200,169,110,.35);background:rgba(200,169,110,.03)}}
+.tc.sel{
+  background:rgba(63,160,108,.07);
+  border-color:rgba(63,160,108,.4);
+  box-shadow:0 0 0 1px rgba(63,160,108,.1),inset 0 1px 0 rgba(255,255,255,.03);
+}
+.tc.sel::before{background:var(--sage)}
+.tc h4{font-family:var(--fd);font-size:.78rem;color:var(--goldb);margin-bottom:3px;letter-spacing:.04em}
+.tc p{font-size:.73rem;color:var(--dim);line-height:1.5}
+.tc-check{
+  width:18px;height:18px;border-radius:50%;border:1px solid rgba(61,50,84,.6);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;
+  transition:all .18s;color:transparent;font-size:.6rem;font-weight:700;
+}
+.tc.sel .tc-check{
+  background:var(--sage);border-color:var(--sage);
+  color:#fff;box-shadow:0 0 8px rgba(63,160,108,.4);
+}
 
-/* DB Editor */
+/* ══════════════════════════════════════════
+   APT MANAGER (Trucos / Conjuros) — revamped
+   ══════════════════════════════════════════ */
+.apt-layout{
+  display:grid;grid-template-columns:1fr 1fr;
+  height:100%;overflow:hidden;
+}
+.apt-col{
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.apt-col-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;flex-shrink:0;
+  background:var(--void);
+  border-bottom:1px solid rgba(61,50,84,.4);
+}
+.apt-col-hdr-left{display:flex;align-items:center;gap:6px}
+.apt-col-title{font-family:var(--fd);font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.14em}
+.apt-col-title.active-col{color:var(--ice)}
+.apt-col-body{
+  flex:1;overflow-y:auto;padding:8px;
+  background:var(--void);
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+}
+.apt-col-body.selected-col{background:var(--surface);border-left:1px solid rgba(61,50,84,.35)}
+.apt-search{
+  width:100%;background:var(--deep);border:1px solid var(--rim);
+  border-radius:var(--r);padding:6px 10px;
+  color:var(--text);font-family:var(--fb);font-size:.78rem;
+  outline:none;transition:border-color .18s;
+}
+.apt-search:focus{border-color:rgba(61,143,194,.4)}
+.apt-search::placeholder{color:var(--border);font-style:italic}
+
+.apt-card{
+  background:var(--raised);border:1px solid rgba(61,50,84,.5);
+  border-radius:var(--r);padding:8px 10px;cursor:pointer;
+  transition:border-color .18s,box-shadow .18s,transform .1s,background .18s;
+  position:relative;overflow:hidden;
+}
+.apt-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:transparent;transition:background .18s;
+}
+@media(hover:hover){.apt-card:hover{border-color:rgba(61,143,194,.4);background:rgba(61,143,194,.04)}}
+.apt-card:active{transform:scale(.97)}
+.apt-card--sel{
+  background:rgba(61,143,194,.07);
+  border-color:rgba(61,143,194,.4);
+}
+.apt-card--sel::before{background:var(--ice)}
+@media(hover:hover){.apt-card--sel:hover{border-color:rgba(168,42,58,.4);background:rgba(168,42,58,.04)}}
+
+.apt-card__row{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.apt-card__name{font-family:var(--fd);font-size:.74rem;color:var(--gold);font-weight:600}
+.apt-card--sel .apt-card__name{color:var(--ice)}
+.apt-card__badge{
+  font-family:var(--fm);font-size:.52rem;padding:2px 7px;border-radius:2px;
+  background:rgba(200,169,110,.08);color:var(--muted);white-space:nowrap;flex-shrink:0;
+  border:1px solid rgba(61,50,84,.4);
+}
+.apt-card--sel .apt-card__badge{background:rgba(61,143,194,.15);color:var(--ice);border-color:rgba(61,143,194,.3)}
+.apt-card__desc{font-size:.7rem;color:var(--muted);margin-top:3px;line-height:1.4}
+.apt-card-action{
+  width:20px;height:20px;border-radius:50%;border:1px solid;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.58rem;font-weight:700;flex-shrink:0;transition:all .15s;
+  cursor:pointer;
+}
+.apt-card-action.add{border-color:rgba(61,143,194,.5);color:var(--ice);background:rgba(61,143,194,.08)}
+.apt-card-action.remove{border-color:rgba(168,42,58,.5);color:var(--blood);background:rgba(168,42,58,.08)}
+
+/* ══════════════════════════════════════════
+   DB EDITOR — revamped
+   ══════════════════════════════════════════ */
 .dbl{display:grid;grid-template-columns:160px 1fr;height:100%;overflow:hidden;min-height:0}
 .dbs{
   background:var(--void);padding:6px;
@@ -1112,26 +1288,72 @@ dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
   scrollbar-width:thin;scrollbar-color:var(--rim) transparent;
   min-width:0;
 }
+.dbs-section-label{
+  font-family:var(--fd);font-size:.5rem;color:rgba(200,169,110,.45);
+  text-transform:uppercase;letter-spacing:.22em;
+  padding:8px 10px 4px;margin-top:4px;
+  border-top:1px solid rgba(61,50,84,.25);
+  display:flex;align-items:center;gap:5px;
+}
+.dbs-section-label:first-child{margin-top:0;border-top:none}
+.dbs-section-label::before{content:'';flex:0 0 4px;height:4px;border-radius:50%;background:rgba(200,169,110,.4)}
+.catbtn.db-cat{
+  font-size:.7rem;padding:7px 10px;
+  border-radius:var(--r);
+  color:var(--dim);
+}
+.catbtn.db-cat.active{
+  background:linear-gradient(90deg,rgba(61,143,194,.1),rgba(61,143,194,.03));
+  border-color:rgba(61,143,194,.35);color:var(--ice);
+}
+.catbtn.db-cat.active .catbtn-dot{background:var(--ice);box-shadow:0 0 6px rgba(61,143,194,.5)}
+.catbtn.db-cat.active::before{background:var(--ice)}
+
 .dbct{
   padding:12px;overflow-y:auto;
   background:var(--surface);
   display:flex;flex-direction:column;
   min-height:0;
 }
-/* DB list scrollable, form sticks to bottom */
+.db-list-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:8px;
+}
+.db-list-title{font-family:var(--fd);font-size:.68rem;color:var(--ice);letter-spacing:.1em;text-transform:uppercase}
+.db-list-count{font-family:var(--fm);font-size:.6rem;color:var(--muted);background:var(--raised);border:1px solid var(--border);border-radius:2px;padding:1px 8px}
 #db_list_container{flex:1;overflow-y:auto;min-height:80px}
 #db_form_container{flex-shrink:0;max-height:65vh;overflow-y:auto}
 .dbitem{
   display:flex;justify-content:space-between;align-items:center;
-  padding:6px 10px;background:var(--raised);
+  padding:7px 10px;background:var(--raised);
   border:1px solid rgba(61,50,84,.45);
   border-radius:var(--r);margin-bottom:3px;font-size:.76rem;color:var(--text);
-  transition:border-color .15s;min-height:40px;
+  transition:border-color .15s,background .15s;min-height:40px;
+  cursor:pointer;position:relative;overflow:hidden;
 }
+.dbitem::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:transparent;transition:background .15s;
+}
+@media(hover:hover){.dbitem:hover{border-color:rgba(200,169,110,.3);background:rgba(200,169,110,.03)}}
+.dbitem:hover::before,.dbitem.active::before{background:var(--gold)}
+.dbitem.active{border-color:rgba(200,169,110,.35);background:rgba(200,169,110,.04)}
+.dbitem-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dbitem-actions{display:flex;gap:4px;flex-shrink:0}
 
-@media(hover:hover){.dbitem:hover{border-color:rgba(200,169,110,.3)}}
+/* DB form section separator */
 .dfl{font-family:var(--fd);font-size:.56rem;color:var(--dim);letter-spacing:.16em;text-transform:uppercase;display:block;margin:9px 0 3px}
 .dfl em{font-style:italic;font-family:var(--fb);text-transform:none;letter-spacing:0;font-size:.62rem;color:var(--muted);opacity:.75}
+
+/* DB empty state */
+.db-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:40px 20px;text-align:center;gap:10px;color:var(--muted);
+}
+.db-empty-icon{font-size:2rem;opacity:.3;margin-bottom:4px}
+.db-empty p{font-family:var(--fd);font-size:.72rem;letter-spacing:.06em;line-height:1.6}
+
+/* talent/db/apt legacy stubs — full styles now in MODALS block above */
 
 /* TOAST */
 #toast-ct,#toast-ct-err{
@@ -1339,11 +1561,20 @@ input:focus-visible,textarea:focus-visible{outline:none}
   .tms{border-right:none;border-bottom:1px solid rgba(61,50,84,.4);flex-direction:row;flex-wrap:wrap;gap:4px;padding:6px}
   .catbtn{width:auto;padding:6px 10px;font-size:.68rem}
   dialog.modal:not(#crop_modal){width:100vw;height:100dvh;max-height:100dvh;border-radius:0;border:none;inset:0;margin:0;padding-top:env(safe-area-inset-top,0px)}
-  dialog.modal:not(#crop_modal) .mhd{padding-top:10px}
+  dialog.modal:not(#crop_modal) .mhd{height:auto;padding:10px 12px}
+  dialog.modal:not(#crop_modal) .mttl-sub{display:none}
+  /* DB editor mobile: stack sidebar on top */
   .dbl{grid-template-columns:1fr;grid-template-rows:auto 1fr}
   .dbs{border-right:none;border-bottom:1px solid rgba(61,50,84,.4);display:flex;flex-wrap:wrap;gap:4px;overflow-y:visible;max-height:none;padding:8px 10px}
   .dbs .catbtn{width:auto;padding:7px 12px;font-size:.68rem;flex:0 0 auto}
-  #db_sidebar>div:first-child{display:none}
+  .dbs-section-label{display:none}
+  /* APT manager mobile: stack columns */
+  .apt-layout{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
+  .apt-col-body.selected-col{border-left:none;border-top:1px solid rgba(61,50,84,.35)}
+  /* Talent modal mobile */
+  .tml{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+  .tms{border-right:none;border-bottom:1px solid rgba(61,50,84,.4);flex-direction:row;flex-wrap:wrap;gap:4px;padding:6px;overflow-y:visible;max-height:none}
+  .catbtn.active::before{display:none}
   .home-title{font-size:1.4rem;letter-spacing:.08em}
 }
 @media(max-width:400px){.g6{grid-template-columns:repeat(2,1fr)}.saves-grid{grid-template-columns:repeat(3,1fr)}}
@@ -1494,24 +1725,58 @@ body.port-border-none .port-card-edit{
 <input type="file" id="img_input" accept="image/*" style="display:none" onchange="app.startCrop(this)">
 <dialog id="apt_manager_modal" class="modal" aria-labelledby="apt_manager_title" style="max-width:min(960px,96vw);height:min(85dvh,calc(90svh - env(safe-area-inset-top,0px)))">
   <div class="mhd">
-    <span class="mttl" id="apt_manager_title">Gestor de Trucos</span>
-    <button class="bcls" onclick="app.closeAptManager()" aria-label="Cerrar gestor de aptitudes">✕</button>
-  </div>
-  <div class="mbd tml" style="padding:0">
-    <!-- Left: all available -->
-    <div class="tms" style="min-width:0;flex:1;overflow-y:auto;background:var(--void);padding:10px;display:flex;flex-direction:column;gap:4px">
-      <div style="font-family:var(--fd);font-size:.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;padding-bottom:4px;border-bottom:1px solid var(--rim)">Disponibles</div>
-      <div id="apt_available_list" style="display:flex;flex-direction:column;gap:4px"></div>
+    <div class="mhd-left">
+      <div class="mhd-icon" id="apt_modal_icon">✦</div>
+      <div>
+        <span class="mttl" id="apt_manager_title">Gestor de Trucos</span>
+        <span class="mttl-sub" id="apt_manager_sub">Selecciona los trucos del personaje</span>
+      </div>
     </div>
-    <!-- Right: selected -->
-    <div class="tms" style="min-width:0;flex:1;overflow-y:auto;background:var(--surface);padding:10px;display:flex;flex-direction:column;gap:4px;border-left:1px solid var(--border)">
-      <div style="font-family:var(--fd);font-size:.6rem;color:var(--ice);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px;padding-bottom:4px;border-bottom:1px solid var(--rim)">Seleccionados <span id="apt_sel_count" style="color:var(--ice);font-weight:700">0</span></div>
-      <div id="apt_selected_list" style="display:flex;flex-direction:column;gap:4px"></div>
-      <p id="apt_selected_empty" class="txt-it-c" style="display:none">Ninguno seleccionado.<br>Toca un truco/conjuro para añadirlo.</p>
+    <div class="mhd-actions">
+      <button class="bcls" onclick="app.closeAptManager()" aria-label="Cerrar gestor">✕</button>
     </div>
   </div>
-  <div class="tmft" style="justify-content:flex-end">
-    <button class="btn btn-gold" onclick="app.closeAptManager()">✓ Listo</button>
+
+  <!-- Two-column layout: Available | Selected -->
+  <div class="apt-layout" style="flex:1;min-height:0">
+    <!-- LEFT: Available -->
+    <div class="apt-col">
+      <div class="apt-col-hdr">
+        <div class="apt-col-left" style="display:flex;flex-direction:column;gap:2px">
+          <span class="apt-col-title">Disponibles</span>
+        </div>
+      </div>
+      <!-- Search bar -->
+      <div style="padding:6px 8px;background:var(--void);border-bottom:1px solid rgba(61,50,84,.3)">
+        <input class="apt-search" id="apt_search" type="search" placeholder="Buscar…" autocomplete="off" spellcheck="false" oninput="app._aptFilter(this.value)">
+      </div>
+      <div class="apt-col-body" id="apt_available_list"></div>
+    </div>
+
+    <!-- RIGHT: Selected -->
+    <div class="apt-col">
+      <div class="apt-col-hdr" style="background:var(--surface)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="apt-col-title active-col">Seleccionados</span>
+          <span class="mft-count" id="apt_sel_count">0</span>
+        </div>
+        <button class="bmini br" style="font-size:.58rem;padding:3px 9px;min-height:26px" onclick="app._aptClearAll()" title="Quitar todos">✕ Limpiar</button>
+      </div>
+      <div class="apt-col-body selected-col" id="apt_selected_list">
+        <p id="apt_selected_empty" style="display:none;text-align:center;color:var(--muted);font-style:italic;font-size:.76rem;margin-top:24px;line-height:1.7">
+          Sin selección.<br>
+          <span style="font-size:.64rem;color:var(--border)">Toca un ítem para añadir.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="mft">
+    <div class="mft-info">
+      <span id="apt_type_label" style="color:var(--muted)">—</span>
+    </div>
+    <button class="btn btn-gold" onclick="app.closeAptManager()">✓ Confirmar</button>
   </div>
 </dialog>
 <input type="file" id="bg_home_input" accept="image/*" style="display:none" onchange="app.loadBgImage('home',this)">
@@ -2030,7 +2295,16 @@ body.port-border-none .port-card-edit{
   </div>
 </div><!-- /app-screen -->
 <dialog id="settings_modal" class="modal" aria-labelledby="settings_modal_title">
-  <div class="mhd"><span class="mttl" id="settings_modal_title">Ajustes &amp; Datos</span><button class="bcls" onclick="document.getElementById('settings_modal').close()" aria-label="Cerrar ajustes">✕</button></div>
+  <div class="mhd">
+    <div class="mhd-left">
+      <div class="mhd-icon">☰</div>
+      <div>
+        <span class="mttl" id="settings_modal_title">Ajustes &amp; Datos</span>
+        <span class="mttl-sub">Configuración del personaje y la app</span>
+      </div>
+    </div>
+    <button class="bcls" onclick="document.getElementById('settings_modal').close()" aria-label="Cerrar ajustes">✕</button>
+  </div>
   <div class="mbd" style="display:flex;flex-direction:column;gap:14px">
     <div>
       <div class="dvdr">Interfaz</div>
@@ -2128,47 +2402,58 @@ body.port-border-none .port-card-edit{
   </div>
 </dialog>
 <dialog id="db_editor_modal" class="modal" aria-labelledby="db_editor_title" style="max-width:min(1000px,96vw);height:min(94dvh,calc(95svh - env(safe-area-inset-top,0px)));max-height:none">
-  <div class="mhd" style="background:var(--panel)">
-    <span class="mttl" style="color:var(--ice)" id="db_editor_title">Editor de Reglas</span>
-    <button class="bcls" onclick="document.getElementById('db_editor_modal').close()" aria-label="Cerrar editor de reglas">✕</button>
+  <div class="mhd" style="background:linear-gradient(180deg,rgba(10,8,24,.97) 0%,var(--raised) 100%)">
+    <div class="mhd-left">
+      <div class="mhd-icon" style="background:rgba(61,143,194,.1);border-color:rgba(61,143,194,.3);color:var(--ice)">⚙</div>
+      <div>
+        <span class="mttl" style="color:var(--ice)" id="db_editor_title">Editor de Reglas</span>
+        <span class="mttl-sub">Base de datos del sistema de juego</span>
+      </div>
+    </div>
+    <div class="mhd-actions">
+      <button class="btn btn-g" style="font-size:.58rem;padding:5px 10px;min-height:28px;color:var(--dim)" onclick="app.exportRulesDB()" title="Exportar JSON" aria-label="Exportar reglas">↓ Exportar</button>
+      <button class="bcls" onclick="document.getElementById('db_editor_modal').close()" aria-label="Cerrar editor de reglas">✕</button>
+    </div>
   </div>
   <div class="mbd dbl" style="padding:0">
     <div class="dbs" id="db_sidebar">
-      <div style="font-family:var(--fd);font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.18em;padding:4px 10px 6px;border-bottom:1px solid rgba(74,63,94,.3);margin-bottom:4px">Categorías</div>
-      <button class="catbtn" onclick="app.dbEditCategory('descriptors')" aria-label="Editar Linajes">
-        Linajes
+      <!-- Personaje -->
+      <div class="dbs-section-label">Personaje</div>
+      <button class="catbtn db-cat" onclick="app.dbEditCategory('descriptors')" aria-label="Editar Linajes">
+        <span class="catbtn-dot"></span>Linajes
       </button>
-      <button class="catbtn" onclick="app.dbEditCategory('archetypes')" aria-label="Editar Arquetipos">
-        Arquetipos
+      <button class="catbtn db-cat" onclick="app.dbEditCategory('archetypes')" aria-label="Editar Arquetipos">
+        <span class="catbtn-dot"></span>Arquetipos
       </button>
-      <button class="catbtn" onclick="app.dbEditCategory('backgrounds')" aria-label="Editar Trasfondos">
-        Trasfondos
+      <button class="catbtn db-cat" onclick="app.dbEditCategory('backgrounds')" aria-label="Editar Trasfondos">
+        <span class="catbtn-dot"></span>Trasfondos
       </button>
-      <button class="catbtn" onclick="app.dbEditCategory('talents')" aria-label="Editar Talentos">
-        Talentos
+      <button class="catbtn db-cat" onclick="app.dbEditCategory('talents')" aria-label="Editar Talentos">
+        <span class="catbtn-dot"></span>Talentos
       </button>
-      <button class="catbtn" onclick="app.dbEditCategory('weapons')" aria-label="Editar Armas">
-        Armas
+      <!-- Equipo -->
+      <div class="dbs-section-label">Equipo</div>
+      <button class="catbtn db-cat" onclick="app.dbEditCategory('weapons')" aria-label="Editar Armas">
+        <span class="catbtn-dot"></span>Armas
       </button>
-      <button class="catbtn" onclick="app.dbEditCategory('armors')" aria-label="Editar Armaduras">
-        Armaduras
+      <button class="catbtn db-cat" onclick="app.dbEditCategory('armors')" aria-label="Editar Armaduras">
+        <span class="catbtn-dot"></span>Armaduras
       </button>
-      <button class="catbtn" onclick="app.dbEditCategory('shields')" aria-label="Editar Escudos">
-        Escudos
+      <button class="catbtn db-cat" onclick="app.dbEditCategory('shields')" aria-label="Editar Escudos">
+        <span class="catbtn-dot"></span>Escudos
       </button>
-      <button class="catbtn" onclick="app.dbEditCategory('spells')" aria-label="Editar Trucos y Conjuros">
-        Trucos / Conjuros
+      <!-- Magia -->
+      <div class="dbs-section-label">Magia</div>
+      <button class="catbtn db-cat" onclick="app.dbEditCategory('spells')" aria-label="Editar Trucos y Conjuros">
+        <span class="catbtn-dot"></span>Trucos / Conjuros
       </button>
       <div style="flex:1"></div>
-      <hr style="border:none;border-top:1px solid rgba(74,63,94,.35);margin:6px 0">
-      <button class="btn btn-g" style="font-size:.64rem;padding:7px 6px;width:100%;justify-content:center" onclick="app.exportRulesDB()" aria-label="Exportar reglas como JSON">
-        ↓ Exportar Reglas
-      </button>
     </div>
     <div class="dbct">
       <div id="db_list_container">
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;text-align:center;gap:10px">
-          <p style="font-family:var(--fd);font-size:.72rem;color:var(--muted);letter-spacing:.06em">Selecciona una categoría</p>
+        <div class="db-empty">
+          <div class="db-empty-icon">⚙</div>
+          <p>Selecciona una categoría<br>en el panel izquierdo</p>
         </div>
       </div>
       <div id="db_form_container" style="display:none;margin-top:0;border-top:1px solid rgba(74,63,94,.4);padding-top:14px"></div>
@@ -2176,17 +2461,34 @@ body.port-border-none .port-card-edit{
   </div>
 </dialog>
 <dialog id="talent_modal" class="modal" aria-labelledby="talent_modal_title" style="max-width:min(960px,96vw);height:min(85dvh,calc(90svh - env(safe-area-inset-top,0px)))">
-  <div class="mhd"><span class="mttl" id="talent_modal_title">Gestor de Talentos</span><button class="bcls" onclick="app.closeTalentManager()" aria-label="Cerrar gestor de talentos">✕</button></div>
-  <div class="mbd tml" style="padding:0">
-    <div class="tms" id="tm_categories"></div>
-    <div class="tmct" id="tm_list"><p style="color:var(--muted);margin-top:28px;text-align:center">Selecciona una categoría.</p></div>
-  </div>
-  <div class="tmft">
-    <button class="btn btn-g" style="font-size:.66rem;padding:5px 9px;color:var(--blood);border-color:var(--blood)" onclick="app.clearTalents()">Limpiar</button>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span style="font-family:var(--fm);font-size:.72rem;color:var(--dim)">Selecc.: <span id="talent_count_modal" style="color:var(--gold);font-weight:700">0</span>/3</span>
-      <button class="btn btn-gold" onclick="app.closeTalentManager()">✓ Listo</button>
+  <div class="mhd">
+    <div class="mhd-left">
+      <div class="mhd-icon" style="background:rgba(63,160,108,.1);border-color:rgba(63,160,108,.3);color:var(--sage)">★</div>
+      <div>
+        <span class="mttl" id="talent_modal_title">Gestor de Talentos</span>
+        <span class="mttl-sub">Elige hasta 3 talentos para el personaje</span>
+      </div>
     </div>
+    <div class="mhd-actions">
+      <button class="btn btn-g" style="font-size:.6rem;padding:5px 10px;min-height:28px;color:var(--blood);border-color:rgba(168,42,58,.4)" onclick="app.clearTalents()">✕ Limpiar</button>
+      <button class="bcls" onclick="app.closeTalentManager()" aria-label="Cerrar gestor de talentos">✕</button>
+    </div>
+  </div>
+
+  <!-- Body: sidebar + content -->
+  <div class="mbd tml" style="padding:0;flex:1;min-height:0">
+    <div class="tms" id="tm_categories" style="overflow-y:auto"></div>
+    <div class="tmct" id="tm_list">
+      <p style="color:var(--muted);margin-top:28px;text-align:center;font-style:italic;font-size:.8rem">Selecciona una categoría.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="mft">
+    <div class="mft-info">
+      Talentos: <span class="mft-count" id="talent_count_modal">0</span><span style="color:var(--border)">/3</span>
+    </div>
+    <button class="btn btn-gold" onclick="app.closeTalentManager()">✓ Confirmar</button>
   </div>
 </dialog>
 <dialog id="crop_modal" class="modal" aria-labelledby="crop_modal_title">
@@ -4674,11 +4976,53 @@ const app = {
     this._modalOpener = document.activeElement; // remember opener for focus restore
     const modal = document.getElementById('apt_manager_modal');
     const title = document.getElementById('apt_manager_title');
-    title.textContent = sec === 'tricks' ? 'Gestor de Trucos' : 'Gestor de Conjuros';
+    const sub   = document.getElementById('apt_manager_sub');
+    const icon  = document.getElementById('apt_modal_icon');
+    const typeLbl = document.getElementById('apt_type_label');
+    if (sec === 'tricks') {
+      title.textContent = 'Gestor de Trucos';
+      if (sub)  sub.textContent  = 'Selecciona los trucos del personaje';
+      if (icon) { icon.textContent = '✦'; icon.style.color='var(--gold)'; }
+      if (typeLbl) typeLbl.textContent = 'Trucos activos del personaje';
+    } else {
+      title.textContent = 'Gestor de Conjuros';
+      if (sub)  sub.textContent  = 'Selecciona los conjuros del personaje';
+      if (icon) { icon.textContent = '✧'; icon.style.color='var(--ice)'; }
+      if (typeLbl) typeLbl.textContent = 'Conjuros activos del personaje';
+    }
+    // Clear search
+    const srch = document.getElementById('apt_search');
+    if (srch) srch.value = '';
+    this._aptFilterQuery = '';
     this._renderAptManager();
     modal.showModal();
-    // Move focus to close button
-    requestAnimationFrame(() => { modal.querySelector('.bcls')?.focus(); });
+    // Move focus to search or close button
+    requestAnimationFrame(() => {
+      const s = modal.querySelector('#apt_search');
+      if (s) s.focus(); else modal.querySelector('.bcls')?.focus();
+    });
+  },
+
+  _aptFilter(query) {
+    this._aptFilterQuery = (query || '').toLowerCase().trim();
+    const avail = document.getElementById('apt_available_list');
+    if (!avail) return;
+    avail.querySelectorAll('.apt-card').forEach(card => {
+      const name = (card.querySelector('.apt-card__name')?.textContent || '').toLowerCase();
+      const desc = (card.querySelector('.apt-card__desc')?.textContent  || '').toLowerCase();
+      card.style.display = (!this._aptFilterQuery || name.includes(this._aptFilterQuery) || desc.includes(this._aptFilterQuery)) ? '' : 'none';
+    });
+  },
+
+  _aptClearAll() {
+    const sec = this._aptMode;
+    if (!this._aptSel[sec]) return;
+    this._aptSel[sec].clear();
+    this._renderAptManager();
+    // Clear search
+    const srch = document.getElementById('apt_search');
+    if (srch) srch.value = '';
+    this._aptFilterQuery = '';
   },
 
   _renderAptManager() {
@@ -4797,24 +5141,24 @@ const app = {
     } else {
       count = Object.keys(src).length;
     }
-    // Update sidebar active state
+    // Update sidebar active state (support both .catbtn.db-cat and legacy .catbtn)
     document.querySelectorAll('#db_sidebar .catbtn').forEach(b => {
       const isActive = b.getAttribute('aria-label') === ('Editar ' + catLabel) ||
         b.textContent.trim().includes(catLabel);
       b.classList.toggle('active', isActive);
     });
     lc.innerHTML = '';
-    // Header row
+    // Header row — revamped
     const hdr = document.createElement('div');
-    hdr.style.cssText = 'display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid rgba(74,63,94,.4)';
+    hdr.className = 'db-list-header';
     const htitle = document.createElement('div');
-    htitle.style.cssText = 'display:flex;align-items:center;gap:6px';
-    const hlbl = document.createElement('h3');
-    hlbl.style.cssText = 'font-family:var(--fd);color:var(--gold);font-size:.84rem;text-transform:uppercase;letter-spacing:.1em';
+    htitle.style.cssText = 'display:flex;align-items:center;gap:8px';
+    const hlbl = document.createElement('span');
+    hlbl.className = 'db-list-title';
     hlbl.textContent = catLabel;
     const hcount = document.createElement('span');
-    hcount.style.cssText = 'font-family:var(--fm);font-size:.6rem;color:var(--muted);background:var(--raised);border:1px solid var(--rim);border-radius:10px;padding:1px 7px;margin-left:4px';
-    hcount.textContent = count;
+    hcount.className = 'db-list-count';
+    hcount.textContent = count + ' entrada' + (count !== 1 ? 's' : '');
     htitle.appendChild(hlbl); htitle.appendChild(hcount);
     const hnew = document.createElement('button');
     hnew.className = 'btn btn-p'; hnew.style.cssText = 'font-size:.66rem;padding:6px 11px;min-height:34px';
@@ -4823,8 +5167,8 @@ const app = {
     lc.appendChild(hdr);
     if (!count) {
       const empty = document.createElement('div');
-      empty.style.cssText = 'text-align:center;padding:30px 16px;color:var(--muted);font-size:.8rem;font-style:italic';
-      empty.textContent = 'Sin entradas. Crea la primera con "+ Nuevo".';
+      empty.className = 'db-empty';
+      empty.innerHTML = `<div class="db-empty-icon">📂</div><p>Sin entradas en <strong>${catLabel}</strong>.<br>Crea la primera con "+ Nuevo".</p>`;
       lc.appendChild(empty);
       return;
     }
@@ -4844,15 +5188,31 @@ const app = {
   },
 
   _dbListItem(container, name, key) {
-    const row = document.createElement('div'); row.className='dbitem';
+    const row = document.createElement('div');
+    row.className = 'dbitem';
+    row.setAttribute('data-key', key);
+    row.title = 'Editar "' + String(name||'') + '"';
+    // Clicking anywhere on the row opens edit
+    row.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return; // let buttons handle themselves
+      container.querySelectorAll('.dbitem').forEach(r => r.classList.remove('active'));
+      row.classList.add('active');
+      this.dbEditEntry(key);
+    });
     const nm = document.createElement('span');
-    nm.style.cssText = 'font-size:.8rem;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px';
+    nm.className = 'dbitem-name';
     nm.textContent = String(name||'—');
-    const acts = document.createElement('div'); acts.style.cssText='display:flex;gap:5px;flex-shrink:0';
-    const editBtn = document.createElement('button'); editBtn.className='bmini bl'; editBtn.textContent='✎ Editar';
+    const acts = document.createElement('div'); acts.className = 'dbitem-actions';
+    const editBtn = document.createElement('button'); editBtn.className='bmini bl'; editBtn.textContent='✎';
+    editBtn.title = 'Editar ' + String(name||'');
     editBtn.setAttribute('aria-label', 'Editar '+String(name||''));
-    editBtn.addEventListener('click', () => this.dbEditEntry(key));
+    editBtn.addEventListener('click', () => {
+      container.querySelectorAll('.dbitem').forEach(r => r.classList.remove('active'));
+      row.classList.add('active');
+      this.dbEditEntry(key);
+    });
     const delBtn = document.createElement('button'); delBtn.className='bmini br'; delBtn.textContent='✕';
+    delBtn.title = 'Eliminar';
     delBtn.setAttribute('aria-label', 'Eliminar '+String(name||''));
     delBtn.addEventListener('click', () => this.dbDeleteEntry(key));
     acts.appendChild(editBtn); acts.appendChild(delBtn);
@@ -6227,11 +6587,6 @@ const app = {
   // Safety net: if something hangs, dismiss loader after 5s regardless
   setTimeout(dismissLoader, TIMING.LOADER_TIMEOUT);
 })();
-
-
-
-
-
 
 </script>
 </body>
