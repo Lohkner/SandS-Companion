@@ -225,7 +225,7 @@ body{
 @media(hover:hover){.char-card:hover{border-color:rgba(200,169,110,.35);box-shadow:0 4px 24px rgba(0,0,0,.5)}}
 
 @media(hover:hover){.char-card:hover::before{opacity:1}}
-@keyframes cardSlideIn{from{opacity:0;transform:translateX(-18px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes cardSlideIn{from{opacity:0;transform:translateX(-10px) scale(.99)}to{opacity:1;transform:none}}
 
 /* APP SHELL */
 .app-shell{
@@ -1062,7 +1062,7 @@ dialog.modal{
   width:min(96vw,920px);padding:0;
   box-shadow:0 32px 100px rgba(0,0,0,.95),0 0 0 1px rgba(200,169,110,.04);
   position:fixed;inset:0;margin:auto;
-  max-height:96dvh;
+  max-height:min(90svh,calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px)));
   display:none;flex-direction:column;z-index:200;overflow:hidden;
 }
 dialog.modal[open]{display:flex;animation:popIn .26s cubic-bezier(.22,.61,.36,1) forwards}
@@ -1077,7 +1077,7 @@ dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
   padding-top:max(12px,env(safe-area-inset-top,12px));
 }
 .mttl{font-family:var(--fd);font-size:.78rem;color:var(--gold);letter-spacing:.12em;text-transform:uppercase}
-.mbd{padding:14px;overflow-y:auto;flex:1 1 0;min-width:0;min-height:0;overscroll-behavior:contain}
+.mbd{padding:14px;overflow-y:auto;flex:1;min-width:0;overscroll-behavior:contain}
 .bcls{
   background:transparent;border:1px solid rgba(61,50,84,.5);color:var(--muted);
   font-size:.7rem;cursor:pointer;width:30px;height:30px;border-radius:var(--r);
@@ -1088,9 +1088,9 @@ dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(14px)}
 @media(hover:hover){.bcls:hover{border-color:rgba(168,42,58,.5);color:var(--blood);background:rgba(110,21,37,.15);transform:rotate(90deg) scale(1.05)}}
 
 /* Talent modal */
-.tml{display:grid;grid-template-columns:150px 1fr;height:100%;overflow:hidden;padding:0;min-height:0}
+.tml{display:grid;grid-template-columns:170px 1fr;height:100%;overflow:hidden;padding:0}
 .tms{background:var(--void);padding:8px;border-right:1px solid rgba(61,50,84,.4);overflow-y:auto;display:flex;flex-direction:column;gap:3px}
-.tmct{padding:10px;overflow-y:auto;background:var(--surface);min-height:0}
+.tmct{padding:10px;overflow-y:auto;background:var(--surface)}
 .catbtn{
   display:block;width:100%;text-align:left;padding:8px 12px;
   background:transparent;border:1px solid transparent;border-radius:var(--r);
@@ -1407,6 +1407,18 @@ body.port-border-none .port-card-edit{
   border:1px dashed rgba(200,169,110,.15);
 }
 
+/* Home screen button enhancements */
+.home-actions .btn{
+  box-shadow:0 2px 12px rgba(0,0,0,.55),0 1px 3px rgba(0,0,0,.4);
+  backdrop-filter:blur(8px);
+}
+.home-actions .btn-gold{
+  box-shadow:0 2px 14px rgba(200,169,110,.25),0 2px 8px rgba(0,0,0,.5);
+}
+.home-actions .btn-g{
+  background:rgba(16,14,24,.72);
+  border-color:rgba(61,50,84,.8);
+}
 /* Panel backdrop for home body */
 .home-panel{
   background:rgba(7,5,12,.68);
@@ -1440,50 +1452,6 @@ body.port-border-none .port-card-edit{
 .res-lbl-pv{color:var(--blood);text-shadow:0 0 8px rgba(168,42,58,.4)}
 .res-lbl-adr{color:var(--sage);text-shadow:0 0 8px rgba(63,160,108,.4)}
 .res-lbl-ing{color:var(--ice);text-shadow:0 0 8px rgba(61,143,194,.4)}
-
-.char-card-wrap:nth-child(1){animation-delay:.04s}
-.char-card-wrap:nth-child(2){animation-delay:.09s}
-.char-card-wrap:nth-child(3){animation-delay:.14s}
-.char-card-wrap:nth-child(4){animation-delay:.19s}
-.char-card-wrap:nth-child(5){animation-delay:.24s}
-.char-card-wrap:nth-child(n+6){animation-delay:.28s}
-
-/* ── Settings modal layout ── */
-.stg-section{
-  border-bottom:1px solid rgba(61,50,84,.35);
-  padding:0;
-}
-.stg-section:last-of-type{border-bottom:none}
-.stg-hdr{
-  font-family:var(--fd);font-size:.58rem;
-  color:var(--muted);text-transform:uppercase;
-  letter-spacing:.18em;
-  padding:10px 14px 7px;
-  background:rgba(0,0,0,.12);
-  display:flex;align-items:center;
-}
-.stg-item{
-  display:flex;align-items:center;
-  justify-content:space-between;
-  gap:12px;padding:9px 14px;
-  border-top:1px solid rgba(61,50,84,.2);
-  min-height:46px;
-}
-.stg-item--col{
-  flex-direction:column;
-  align-items:flex-start;
-  padding-bottom:12px;
-}
-.stg-lbl{
-  font-family:var(--fd);font-size:.68rem;
-  color:var(--text);letter-spacing:.04em;
-  flex-shrink:0;
-}
-.stg-row{
-  display:grid;grid-template-columns:1fr 1fr;
-  gap:6px;padding:10px 14px;
-}
-.stg-btn{font-size:.66rem;padding:8px 6px;width:100%}
 </style>
 <!-- Fonts injected via JS so they never block window.load or app init -->
 <script>
@@ -1524,7 +1492,7 @@ body.port-border-none .port-card-edit{
   </div>
 </div>
 <input type="file" id="img_input" accept="image/*" style="display:none" onchange="app.startCrop(this)">
-<dialog id="apt_manager_modal" class="modal" aria-labelledby="apt_manager_title" style="max-width:min(960px,96vw);height:min(92dvh,calc(94svh - env(safe-area-inset-top,0px)))">
+<dialog id="apt_manager_modal" class="modal" aria-labelledby="apt_manager_title" style="max-width:min(960px,96vw);height:min(85dvh,calc(90svh - env(safe-area-inset-top,0px)))">
   <div class="mhd">
     <span class="mttl" id="apt_manager_title">Gestor de Trucos</span>
     <button class="bcls" onclick="app.closeAptManager()" aria-label="Cerrar gestor de aptitudes">✕</button>
@@ -1557,13 +1525,17 @@ body.port-border-none .port-card-edit{
     <div class="home-deco"></div>
   </div>
   <div class="home-body">
-    <div class="home-actions">
-      <button class="btn btn-gold" onclick="app.newChar()" style="width:100%;padding:13px 8px;font-size:.76rem">✦ Nuevo Personaje</button>
-      <button class="btn btn-g" onclick="app.toast('Selecciona un archivo .json de personaje','info');setTimeout(()=>document.getElementById('json_char_input').click(),80)" style="width:100%;padding:13px 8px;font-size:.76rem">↑ Importar JSON</button>
+    <div class="home-panel" style="margin-bottom:14px">
+      <div class="home-actions" style="margin-bottom:8px">
+        <button class="btn btn-gold" onclick="app.newChar()" style="width:100%;padding:13px 8px;font-size:.76rem">✦ Nuevo Personaje</button>
+        <button class="btn btn-g" onclick="app.toast('Selecciona un archivo .json de personaje','info');setTimeout(()=>document.getElementById('json_char_input').click(),80)" style="width:100%;padding:13px 8px;font-size:.76rem">↑ Importar JSON</button>
+      </div>
+      <button class="btn btn-g" onclick="document.getElementById('settings_modal').showModal()" style="width:100%;padding:10px 8px;font-size:.72rem;background:rgba(16,14,24,.72)">⚙ Ajustes &amp; Datos</button>
     </div>
-    <button class="btn btn-g" onclick="document.getElementById('settings_modal').showModal()" style="width:100%;padding:10px 8px;font-size:.72rem;margin-bottom:18px">⚙ Ajustes &amp; Datos</button>
-    <p style="font-family:var(--fm);font-size:.58rem;color:var(--border);text-align:center;margin-bottom:8px;letter-spacing:.08em">← Desliza izquierda para eliminar · Derecha para cerrar</p>
-    <div id="home-roster"></div>
+    <div class="home-panel">
+      <p style="font-family:var(--fm);font-size:.58rem;color:var(--muted);text-align:center;margin-bottom:10px;letter-spacing:.08em">← Desliza para eliminar</p>
+      <div id="home-roster"></div>
+    </div>
     <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--rim);display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
       <button class="btn btn-g" style="font-size:.68rem" onclick="app.toast('Selecciona un archivo .json de reglas','info');setTimeout(()=>document.getElementById('json_rules_input').click(),80)" aria-label="Importar reglas desde archivo JSON">↑ Importar Reglas</button>
       <button class="btn btn-g" style="font-size:.68rem" onclick="app.openDatabaseEditor()">Editor de Reglas</button>
@@ -2057,133 +2029,105 @@ body.port-border-none .port-card-edit{
     </nav>
   </div>
 </div><!-- /app-screen -->
-<dialog id="settings_modal" class="modal" aria-labelledby="settings_modal_title" style="max-width:min(540px,96vw)">
-  <div class="mhd">
-    <span class="mttl" id="settings_modal_title">Ajustes &amp; Datos</span>
-    <button class="bcls" onclick="document.getElementById('settings_modal').close()" aria-label="Cerrar ajustes">✕</button>
-  </div>
-  <div class="mbd" style="display:flex;flex-direction:column;gap:0;padding:0">
-
-    <!-- ── PERSONAJE ── -->
-    <div class="stg-section">
-      <div class="stg-hdr">Personaje</div>
-      <div class="stg-row">
-        <button class="btn btn-g stg-btn" onclick="app.saveChar();document.getElementById('settings_modal').close()">↓ Guardar</button>
-        <button class="btn btn-g stg-btn" onclick="app.exportJSON()">↑ Exportar JSON</button>
-      </div>
-    </div>
-
-    <!-- ── APARIENCIA ── -->
-    <div class="stg-section">
-      <div class="stg-hdr">Apariencia</div>
-
-      <!-- Theme -->
-      <div class="stg-item stg-item--col">
-        <span class="stg-lbl">Tema</span>
-        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:6px">
-          <button class="fs-btn theme-btn" data-theme="deco"      onclick="app.setTheme('deco')"      title="Art Déco"   style="padding:6px 2px;font-size:.56rem">Déco</button>
-          <button class="fs-btn theme-btn" data-theme="blood"     onclick="app.setTheme('blood')"     title="Sangre"     style="padding:6px 2px;font-size:.56rem">Sangre</button>
-          <button class="fs-btn theme-btn" data-theme="void"      onclick="app.setTheme('void')"      title="Vacío"      style="padding:6px 2px;font-size:.56rem">Vacío</button>
-          <button class="fs-btn theme-btn" data-theme="arcane"    onclick="app.setTheme('arcane')"    title="Arcano"     style="padding:6px 2px;font-size:.56rem">Arcano</button>
-          <button class="fs-btn theme-btn" data-theme="parchment" onclick="app.setTheme('parchment')" title="Pergamino"  style="padding:6px 2px;font-size:.56rem">Pergamino</button>
-        </div>
-      </div>
-
+<dialog id="settings_modal" class="modal" aria-labelledby="settings_modal_title">
+  <div class="mhd"><span class="mttl" id="settings_modal_title">Ajustes &amp; Datos</span><button class="bcls" onclick="document.getElementById('settings_modal').close()" aria-label="Cerrar ajustes">✕</button></div>
+  <div class="mbd" style="display:flex;flex-direction:column;gap:14px">
+    <div>
+      <div class="dvdr">Interfaz</div>
       <!-- Font size -->
-      <div class="stg-item">
-        <span class="stg-lbl">Fuente</span>
-        <div style="display:flex;gap:5px">
-          <button class="fs-btn" id="fs_small"  onclick="app.setFontSize('small')"  title="Pequeño"    style="font-size:11px;min-width:36px">A</button>
-          <button class="fs-btn" id="fs_normal" onclick="app.setFontSize('normal')" title="Normal"     style="font-size:14px;min-width:36px">A</button>
-          <button class="fs-btn" id="fs_large"  onclick="app.setFontSize('large')"  title="Grande"     style="font-size:17px;min-width:36px">A</button>
-          <button class="fs-btn" id="fs_xlarge" onclick="app.setFontSize('xlarge')" title="Muy Grande" style="font-size:20px;min-width:36px">A</button>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Tamaño de Fuente</span>
+        <div style="display:flex;gap:5px;align-items:center">
+          <button class="fs-btn" id="fs_small"  onclick="app.setFontSize('small')"  title="Pequeño"    style="font-size:11px">A</button>
+          <button class="fs-btn" id="fs_normal" onclick="app.setFontSize('normal')" title="Normal"     style="font-size:14px">A</button>
+          <button class="fs-btn" id="fs_large"  onclick="app.setFontSize('large')"  title="Grande"     style="font-size:17px">A</button>
+          <button class="fs-btn" id="fs_xlarge" onclick="app.setFontSize('xlarge')" title="Muy Grande" style="font-size:20px">A</button>
         </div>
       </div>
-
       <!-- Scroll preserve -->
-      <div class="stg-item">
-        <span class="stg-lbl">Recordar scroll</span>
-        <button id="scroll_preserve_btn" class="toggle-btn" onclick="app.toggleScrollPreserve()" aria-pressed="false" aria-label="Recordar posición de scroll al volver"></button>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px">
+        <div>
+          <span id="scroll_preserve_lbl" style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Recordar posición al volver</span>
+          <div style="font-family:var(--fm);font-size:.6rem;color:var(--border);margin-top:2px">Mantiene el scroll de cada sección al cambiar de pestaña</div>
+        </div>
+        <button id="scroll_preserve_btn" class="toggle-btn" onclick="app.toggleScrollPreserve()" aria-pressed="false" title="Activar/desactivar recordar posición de scroll" aria-label="Activar recordar posición al volver"></button>
       </div>
     </div>
-
-    <!-- ── FONDO ── -->
-    <div class="stg-section">
-      <div class="stg-hdr">Fondo de Pantalla</div>
-      <div class="stg-item">
-        <span class="stg-lbl">Inicio</span>
-        <div style="display:flex;gap:4px">
-          <button class="btn btn-g" style="font-size:.62rem;padding:6px 10px" onclick="app.toast('Selecciona una imagen','info');setTimeout(()=>document.getElementById('bg_home_input').click(),80)">↑ Subir</button>
-          <button id="bg_home_clear" class="btn btn-p" style="font-size:.62rem;padding:6px 10px;display:none" onclick="app.setBgImage('home','')">✕ Quitar</button>
+    <!-- ── RETRATO ── -->
+    <div>
+      <div class="dvdr">Retrato</div>
+      <!-- Confirm portrait button -->
+      <button class="bcnf" id="confirm_portrait_btn" onclick="app.confirmPortraitSettings()" style="margin-top:0;margin-bottom:12px">✓ Aplicar al Personaje</button>
+      <!-- Per-char prefs notice -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
+        <div>
+          <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Guardar ajustes con personaje</span>
+          <div style="font-family:var(--fm);font-size:.6rem;color:var(--border);margin-top:2px">Tamaño, forma y fuente se restauran al cargar este personaje</div>
         </div>
+        <button id="per_char_prefs_btn" class="toggle-btn" onclick="app.togglePerCharPrefs()" aria-pressed="false" aria-label="Guardar ajustes visuales por personaje"></button>
       </div>
-      <div class="stg-item">
-        <span class="stg-lbl">Personaje</span>
-        <div style="display:flex;gap:4px">
-          <button class="btn btn-g" style="font-size:.62rem;padding:6px 10px" onclick="app.toast('Selecciona una imagen','info');setTimeout(()=>document.getElementById('bg_app_input').click(),80)">↑ Subir</button>
-          <button id="bg_app_clear" class="btn btn-p" style="font-size:.62rem;padding:6px 10px;display:none" onclick="app.setBgImage('app','')">✕ Quitar</button>
-        </div>
+      <!-- Border toggle -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
+        <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Desactivar Borde Premium</span>
+        <button id="port_border_btn" class="toggle-btn" onclick="app.togglePortraitBorder()" aria-pressed="true" aria-label="Cambiar entre borde premium y borde sutil del retrato"></button>
       </div>
-    </div>
-
-    <!-- ── RETRATO (por personaje) ── -->
-    <div class="stg-section">
-      <div class="stg-hdr">
-        Retrato
-        <span style="font-family:var(--fm);font-size:.52rem;color:var(--muted);font-weight:400;letter-spacing:0;text-transform:none;margin-left:6px">por personaje</span>
-      </div>
-
       <!-- Size -->
-      <div class="stg-item stg-item--col">
-        <span class="stg-lbl">Tamaño</span>
-        <div style="display:flex;gap:4px;margin-top:6px">
-          <button class="fs-btn ps-btn" data-size="xs" onclick="app.setPortraitSize('xs')" style="font-size:.58rem;flex:1">XS</button>
-          <button class="fs-btn ps-btn" data-size="s"  onclick="app.setPortraitSize('s')"  style="font-size:.58rem;flex:1">S</button>
-          <button class="fs-btn ps-btn active" data-size="m"  onclick="app.setPortraitSize('m')"  style="font-size:.58rem;flex:1">M</button>
-          <button class="fs-btn ps-btn" data-size="l"  onclick="app.setPortraitSize('l')"  style="font-size:.58rem;flex:1">L</button>
-          <button class="fs-btn ps-btn" data-size="xl" onclick="app.setPortraitSize('xl')" style="font-size:.58rem;flex:1">XL</button>
+      <div style="margin-bottom:10px">
+        <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:7px">Tamaño</span>
+        <div style="display:flex;gap:5px">
+          <button class="fs-btn ps-btn" data-size="xs" onclick="app.setPortraitSize('xs')" title="Muy pequeño"  style="font-size:.6rem;flex:1;padding:5px 2px">XS</button>
+          <button class="fs-btn ps-btn" data-size="s"  onclick="app.setPortraitSize('s')"  title="Pequeño"      style="font-size:.6rem;flex:1;padding:5px 2px">S</button>
+          <button class="fs-btn ps-btn active" data-size="m"  onclick="app.setPortraitSize('m')"  title="Mediano"      style="font-size:.6rem;flex:1;padding:5px 2px">M</button>
+          <button class="fs-btn ps-btn" data-size="l"  onclick="app.setPortraitSize('l')"  title="Grande"       style="font-size:.6rem;flex:1;padding:5px 2px">L</button>
+          <button class="fs-btn ps-btn" data-size="xl" onclick="app.setPortraitSize('xl')" title="Muy grande"   style="font-size:.6rem;flex:1;padding:5px 2px">XL</button>
         </div>
       </div>
-
       <!-- Shape -->
-      <div class="stg-item stg-item--col">
-        <span class="stg-lbl">Forma</span>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:6px">
-          <button class="fs-btn psh-btn active" data-shape="rect"    onclick="app.setPortraitShape('rect')"    style="font-size:.58rem">Rect</button>
-          <button class="fs-btn psh-btn"        data-shape="rounded" onclick="app.setPortraitShape('rounded')" style="font-size:.58rem">Suave</button>
-          <button class="fs-btn psh-btn"        data-shape="arch"    onclick="app.setPortraitShape('arch')"    style="font-size:.58rem">Arco</button>
-          <button class="fs-btn psh-btn"        data-shape="circle"  onclick="app.setPortraitShape('circle')"  style="font-size:.58rem">Círculo</button>
+      <div>
+        <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:7px">Forma</span>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">
+          <button class="fs-btn psh-btn active" data-shape="rect"    onclick="app.setPortraitShape('rect')"    title="Rectangular">Rect</button>
+          <button class="fs-btn psh-btn"        data-shape="rounded" onclick="app.setPortraitShape('rounded')" title="Redondeado">Suave</button>
+          <button class="fs-btn psh-btn"        data-shape="arch"    onclick="app.setPortraitShape('arch')"    title="Arco superior">Arco</button>
+          <button class="fs-btn psh-btn"        data-shape="circle"  onclick="app.setPortraitShape('circle')"  title="Círculo">Círculo</button>
         </div>
       </div>
-
-      <!-- Border -->
-      <div class="stg-item">
-        <span class="stg-lbl">Borde sutil</span>
-        <button id="port_border_btn" class="toggle-btn" onclick="app.togglePortraitBorder()" aria-pressed="false" aria-label="Cambiar estilo de borde del retrato"></button>
-      </div>
-
-      <!-- Apply -->
-      <div style="padding:10px 14px 4px">
-        <button class="bcnf" id="confirm_portrait_btn" onclick="app.confirmPortraitSettings()" style="margin-top:0">✓ Guardar en Personaje</button>
+    </div>
+    <div>
+      <div class="dvdr">Fondo de Pantalla</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div>
+          <div style="font-family:var(--fd);font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Inicio</div>
+          <div style="display:flex;gap:4px">
+            <button class="btn btn-g" style="flex:1;font-size:.6rem;padding:6px 4px" onclick="document.getElementById('bg_home_input').click()">↑ Subir</button>
+            <button id="bg_home_clear" class="btn btn-p" style="font-size:.6rem;padding:6px 4px;display:none" onclick="app.setBgImage('home','')">✕</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--fd);font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px">Personaje</div>
+          <div style="display:flex;gap:4px">
+            <button class="btn btn-g" style="flex:1;font-size:.6rem;padding:6px 4px" onclick="document.getElementById('bg_app_input').click()">↑ Subir</button>
+            <button id="bg_app_clear" class="btn btn-p" style="font-size:.6rem;padding:6px 4px;display:none" onclick="app.setBgImage('app','')">✕</button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- ── REGLAS ── -->
-    <div class="stg-section">
-      <div class="stg-hdr">Reglas del Juego</div>
-      <div class="stg-row">
-        <button class="btn btn-g stg-btn" onclick="document.getElementById('json_rules_input').click()">↑ Importar JSON</button>
-        <button class="btn btn-gold stg-btn" onclick="app.openDatabaseEditor();document.getElementById('settings_modal').close()">⚙ Editor de Reglas</button>
+    <div>
+      <div class="dvdr">Tema Visual</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="fs-btn theme-btn" data-theme="deco" onclick="app.setTheme('deco')" title="Art Déco" style="flex:1;padding:6px 2px;font-size:.58rem">Art Déco</button>
+        <button class="fs-btn theme-btn" data-theme="blood" onclick="app.setTheme('blood')" title="Sangre" style="flex:1;padding:6px 2px;font-size:.58rem">Sangre</button>
+        <button class="fs-btn theme-btn" data-theme="void" onclick="app.setTheme('void')" title="Vacío" style="flex:1;padding:6px 2px;font-size:.58rem">Vacío</button>
+        <button class="fs-btn theme-btn" data-theme="arcane" onclick="app.setTheme('arcane')" title="Arcano" style="flex:1;padding:6px 2px;font-size:.58rem">Arcano</button>
+        <button class="fs-btn theme-btn" data-theme="parchment" onclick="app.setTheme('parchment')" title="Pergamino" style="flex:1;padding:6px 2px;font-size:.58rem">Pergamino</button>
       </div>
     </div>
-
-    <!-- ── CERRAR ── -->
-    <div style="padding:12px 14px 16px">
-      <button class="bcnf" onclick="document.getElementById('settings_modal').close()" style="margin-top:0">✓ Cerrar</button>
-    </div>
+    <div><div class="dvdr">Reglas del Juego</div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn btn-g" style="width:100%" onclick="document.getElementById('json_rules_input').click()">↑ Importar Reglas (JSON)</button><button class="btn btn-gold" style="width:100%" onclick="app.openDatabaseEditor()">⚙ Editor de Base de Datos</button></div></div>
+    <div><div class="dvdr">Personaje</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><button class="btn btn-g" onclick="app.saveChar();document.getElementById('settings_modal').close()">💾 Guardar</button><button class="btn btn-g" onclick="app.exportJSON()">↓ Exportar JSON</button></div></div>
+    <button class="bcnf" style="width:100%;margin-top:4px" onclick="document.getElementById('settings_modal').close()">✓ Confirmar</button>
   </div>
 </dialog>
-<dialog id="db_editor_modal" class="modal" aria-labelledby="db_editor_title" style="max-width:min(1000px,96vw);height:min(96dvh,calc(97svh - env(safe-area-inset-top,0px)));max-height:none">
+<dialog id="db_editor_modal" class="modal" aria-labelledby="db_editor_title" style="max-width:min(1000px,96vw);height:min(94dvh,calc(95svh - env(safe-area-inset-top,0px)));max-height:none">
   <div class="mhd" style="background:var(--panel)">
     <span class="mttl" style="color:var(--ice)" id="db_editor_title">Editor de Reglas</span>
     <button class="bcls" onclick="document.getElementById('db_editor_modal').close()" aria-label="Cerrar editor de reglas">✕</button>
@@ -2231,7 +2175,7 @@ body.port-border-none .port-card-edit{
     </div>
   </div>
 </dialog>
-<dialog id="talent_modal" class="modal" aria-labelledby="talent_modal_title" style="max-width:min(960px,96vw);height:min(92dvh,calc(94svh - env(safe-area-inset-top,0px)))">
+<dialog id="talent_modal" class="modal" aria-labelledby="talent_modal_title" style="max-width:min(960px,96vw);height:min(85dvh,calc(90svh - env(safe-area-inset-top,0px)))">
   <div class="mhd"><span class="mttl" id="talent_modal_title">Gestor de Talentos</span><button class="bcls" onclick="app.closeTalentManager()" aria-label="Cerrar gestor de talentos">✕</button></div>
   <div class="mbd tml" style="padding:0">
     <div class="tms" id="tm_categories"></div>
@@ -2282,7 +2226,6 @@ body.port-border-none .port-card-edit{
 </dialog>
 
 <script>
-
 
 
 
@@ -6284,6 +6227,9 @@ const app = {
   // Safety net: if something hangs, dismiss loader after 5s regardless
   setTimeout(dismissLoader, TIMING.LOADER_TIMEOUT);
 })();
+
+
+
 
 
 
