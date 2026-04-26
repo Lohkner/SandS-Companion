@@ -3780,8 +3780,8 @@ const app = {
     const overlay = document.createElement('div');
     const isBody  = container === document.body;
     overlay.style.cssText = isBody
-      ? 'position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:10500;display:flex;align-items:center;justify-content:center;padding:16px;'
-      : 'position:absolute;inset:0;background:rgba(0,0,0,.8);z-index:10500;display:flex;align-items:center;justify-content:center;padding:16px;border-radius:inherit';
+      ? 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10500;display:flex;align-items:center;justify-content:center;padding:16px;touch-action:none;'
+      : 'position:absolute;inset:0;background:rgba(0,0,0,.82);z-index:10500;display:flex;align-items:center;justify-content:center;padding:16px;border-radius:inherit;touch-action:none;';
 
     const card = document.createElement('div');
     card.style.cssText = 'background:var(--panel);border:1px solid var(--border);border-radius:var(--rl);padding:20px 18px;max-width:min(320px,90vw);width:100%;text-align:center;position:relative;z-index:10501;box-shadow:0 8px 40px rgba(0,0,0,.9)';
@@ -3799,12 +3799,12 @@ const app = {
 
     const cancelBtn = document.createElement('button');
     cancelBtn.className = 'btn btn-g';
-    cancelBtn.style.cssText = 'flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:44px';
+    cancelBtn.style.cssText = 'flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:48px;';
     cancelBtn.textContent = 'Cancelar';
 
     const okBtn = document.createElement('button');
     okBtn.className = 'btn btn-p';
-    okBtn.style.cssText = 'flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:44px;font-size:.62rem';
+    okBtn.style.cssText = 'flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:48px;font-size:.62rem;';
     okBtn.textContent = confirmLabel;
 
     btnRow.appendChild(cancelBtn);
@@ -3819,41 +3819,46 @@ const app = {
     }
     container.appendChild(overlay);
 
+    // ── Capture-phase document blocker ─────────────────────────────
+    // Any event that does NOT originate inside our card gets killed at
+    // the document level before it can reach anything on the page.
+    // This is the only reliable way to prevent tap bleed-through on iOS.
+    const BLOCKED = ['touchstart','touchmove','touchend','touchcancel',
+                     'pointerdown','pointermove','pointerup','pointercancel',
+                     'mousedown','mousemove','mouseup','click'];
+    const captureBlock = (e) => {
+      if (!overlay.isConnected) return; // overlay already gone — release
+      if (!card.contains(e.target))    { e.stopPropagation(); e.preventDefault(); }
+    };
+    BLOCKED.forEach(evt =>
+      document.addEventListener(evt, captureBlock, {capture:true, passive:false})
+    );
+
     let handled = false;
-    const close = (cancelled, e) => {
+    const cleanup = () => {
+      BLOCKED.forEach(evt =>
+        document.removeEventListener(evt, captureBlock, {capture:true})
+      );
+    };
+
+    const close = (cancelled) => {
       if (handled) return;
       handled = true;
-      // Stop the event from reaching anything behind the overlay
-      if (e) { e.stopPropagation(); e.preventDefault(); }
-      // Freeze overlay so nothing behind gets touched while it's still in DOM
-      overlay.style.pointerEvents = 'none';
-      // Defer removal by one frame — lets the browser finish the current event
-      // dispatch before the overlay leaves the DOM, preventing tap bleed-through
-      requestAnimationFrame(() => {
-        overlay.remove();
+      overlay.remove();
+      // Remove capture blocker AFTER overlay is gone — a second rAF ensures
+      // the synthesised iOS click that follows pointerup has already been
+      // swallowed by captureBlock (overlay still connected during that tick)
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        cleanup();
         if (cancelled && onCancel) onCancel();
-      });
+      }));
     };
 
-    const addBtn = (btn, cancelled, fn) => {
-      const handler = (e) => {
-        if (!btn.contains(e.target)) return;
-        close(cancelled, e);
-        if (!cancelled) fn();
-      };
-      btn.addEventListener('pointerup', handler, {passive:false});
-      btn.addEventListener('click',     handler, {passive:false});
-    };
-    addBtn(cancelBtn, true,  () => {});
-    addBtn(okBtn,     false, onConfirm);
-
-    // Block all pointer/touch events on the backdrop (not on the card/buttons)
-    const eatBackdrop = (e) => {
-      if (!card.contains(e.target)) { e.stopPropagation(); e.preventDefault(); }
-    };
-    overlay.addEventListener('pointerdown', eatBackdrop, {passive:false});
-    overlay.addEventListener('touchstart',  eatBackdrop, {passive:false});
-    overlay.addEventListener('touchend',    eatBackdrop, {passive:false});
+    cancelBtn.addEventListener('pointerup', (e) => { e.stopPropagation(); close(true);  }, {passive:false});
+    okBtn    .addEventListener('pointerup', (e) => { e.stopPropagation(); close(false); onConfirm(); }, {passive:false});
+    // click as fallback for desktop
+    cancelBtn.addEventListener('click', (e) => { e.stopPropagation(); close(true);  }, {passive:false});
+    okBtn    .addEventListener('click', (e) => { e.stopPropagation(); close(false); onConfirm(); }, {passive:false});
 
     overlay.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { close(true); return; }
