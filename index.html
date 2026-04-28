@@ -273,9 +273,30 @@ body{
   background-size:cover;background-position:center top;
   overscroll-behavior-y:contain;
 }
+/* Subtle radial constellation atmosphere */
+#home-screen::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(1px 1px at 15% 20%, rgba(200,169,110,.35) 0%, transparent 0%),
+    radial-gradient(1px 1px at 45% 12%, rgba(200,169,110,.25) 0%, transparent 0%),
+    radial-gradient(1px 1px at 72% 35%, rgba(200,169,110,.3)  0%, transparent 0%),
+    radial-gradient(1px 1px at 88% 18%, rgba(200,169,110,.2)  0%, transparent 0%),
+    radial-gradient(1px 1px at 30% 55%, rgba(200,169,110,.2)  0%, transparent 0%),
+    radial-gradient(1px 1px at 60% 70%, rgba(200,169,110,.15) 0%, transparent 0%),
+    radial-gradient(1px 1px at 8%  80%, rgba(200,169,110,.2)  0%, transparent 0%),
+    radial-gradient(1px 1px at 92% 65%, rgba(200,169,110,.25) 0%, transparent 0%);
+  opacity:var(--bg-overlay-op,1);
+}
 
 /* ── Header (title + deco unchanged) ── */
 .home-hdr{text-align:center;padding:clamp(36px,8vw,64px) 24px 24px;position:relative}
+/* Atmospheric glow behind title */
+.home-hdr::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:320px;height:160px;border-radius:50%;
+  background:radial-gradient(ellipse 60% 50% at 50% 30%,rgba(200,169,110,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
 .home-title{
   font-family:var(--ft);font-size:clamp(1.5rem,5.5vw,2.8rem);
   color:var(--gold);letter-spacing:.14em;line-height:1.15;
@@ -497,7 +518,8 @@ body{
   color:var(--muted);letter-spacing:.08em;
   transition:color .5s;margin-top:2px;opacity:.75;
 }
-.last-saved.fresh{color:var(--sage)!important;opacity:1}
+@keyframes savedPulse{0%{text-shadow:0 0 0 rgba(63,160,108,0)}50%{text-shadow:0 0 8px rgba(63,160,108,.5)}100%{text-shadow:none}}
+.last-saved.fresh{color:var(--sage)!important;opacity:1;animation:savedPulse .8s ease forwards}
 .last-saved.unsaved{color:var(--ember)!important;opacity:1}
 .last-saved.unsaved::before{content:'● ';font-size:.4rem;vertical-align:middle}
 
@@ -593,12 +615,13 @@ body{
 .nbtn:active .nico{transform:scale(.82);transition:transform 0s}
 .nbtn .nico{transition:transform .12s cubic-bezier(.34,1.56,.64,1)}
 .nbtn.active{color:var(--gold)}
-/* Active indicator — thin gold line at top */
+/* Active indicator — thin gold line at top with expanded glow */
 .nbtn.active::before{
-  content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
+  content:'';position:absolute;top:0;left:20%;right:20%;height:2px;
   background:linear-gradient(90deg,transparent,var(--goldb) 30%,var(--goldb) 70%,transparent);
-  box-shadow:0 0 8px rgba(200,169,110,.5),0 0 20px rgba(200,169,110,.15);
+  box-shadow:0 0 10px rgba(200,169,110,.6),0 0 24px rgba(200,169,110,.2);
   animation:tabIn .16s cubic-bezier(.22,.61,.36,1) forwards;
+  border-radius:0 0 2px 2px;
 }
 @keyframes tabIn{from{opacity:0;transform:scaleX(.2)}to{opacity:1;transform:scaleX(1)}}
 
@@ -778,7 +801,7 @@ input[type=radio]:checked::after{transform:scale(1)}
 
 @media(hover:hover){.sbox:hover::after{opacity:1}}
 .sbox:active{transform:scale(.88);border-color:rgba(200,169,110,.5)}
-.sbox .mod{font-family:var(--fd);font-size:1.2rem;font-weight:700;color:var(--goldb);line-height:1;text-shadow:0 0 12px rgba(200,169,110,.3)}
+.sbox .mod{font-family:var(--fd);font-size:1.25rem;font-weight:700;color:var(--goldb);line-height:1;text-shadow:0 0 18px rgba(200,169,110,.4),0 1px 0 rgba(0,0,0,.8)}
 .sbox .val{font-family:var(--fm);font-size:.68rem;color:var(--dim);margin-top:3px;border-top:1px solid var(--rim);padding-top:2px}
 .sbox .lbl{font-family:var(--fd);font-size:.54rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
 
@@ -826,8 +849,17 @@ input[type=radio]:checked::after{transform:scale(1)}
 .fin:focus{outline:none;background:rgba(255,255,255,.06)!important;border-radius:2px!important}
 
 /* Progress bar */
-.lbar{height:2px;background:var(--rim);border-radius:1px;overflow:hidden;margin-top:4px}
+.lbar{height:3px;background:var(--rim);border-radius:2px;overflow:hidden;margin-top:4px}
 .lfill{height:100%;background:linear-gradient(90deg,var(--gold),var(--goldb));width:0%;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* Resource flash animation */
+@keyframes resBump{
+  0%  {transform:scale(1)}
+  35% {transform:scale(1.18)}
+  65% {transform:scale(.94)}
+  100%{transform:scale(1)}
+}
+.res-fin.bump{animation:resBump .22s cubic-bezier(.34,1.56,.64,1)}
 
 /* RESOURCE BOXES */
 .res-box{border-radius:var(--rl);padding:8px 5px;text-align:center;height:100%;box-sizing:border-box}
@@ -943,6 +975,8 @@ input[type=radio]:checked::after{transform:scale(1)}
 .abtn:active{transform:scale(.96)}
 .abtn-a:active{background:rgba(168,42,58,.18)}
 .abtn-d:active{background:rgba(200,169,110,.14)}
+@media(hover:hover){.abtn-a:hover{background:rgba(168,42,58,.1)}}
+@media(hover:hover){.abtn-d:hover{background:rgba(200,169,110,.08)}}
 .abtn-icon{width:30px;height:30px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.7rem;font-family:var(--fd);font-weight:700}
 .abtn-a .abtn-icon{background:rgba(168,42,58,.2);border:1px solid rgba(168,42,58,.35);color:#d06070}
 .abtn-d .abtn-icon{background:rgba(200,169,110,.12);border:1px solid rgba(200,169,110,.22);color:var(--gold)}
@@ -1501,15 +1535,15 @@ details[open] > summary::before { content: '▾'; }
   pointer-events:none;align-items:center;
 }
 .toast{
-  background:var(--panel);color:var(--bright);
-  padding:10px 16px;border-radius:var(--r);
-  border:1px solid rgba(61,50,84,.6);
+  background:rgba(20,18,30,.92);color:var(--bright);
+  padding:10px 16px;border-radius:var(--rl);
+  border:1px solid rgba(61,50,84,.7);
   font-family:var(--fm);font-size:.74rem;
-  box-shadow:0 8px 32px rgba(0,0,0,.7);
+  box-shadow:0 8px 32px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.03);
   display:flex;align-items:center;gap:9px;
   animation:slideUp .28s cubic-bezier(.175,.885,.32,1.275) forwards;
   min-width:160px;max-width:300px;
-  backdrop-filter:blur(16px);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
 }
 .toast.crit{border-color:var(--blood);background:rgba(110,21,37,.4)}
 .toast.terror{border-color:var(--ember);background:rgba(110,21,37,.25)}
@@ -2293,6 +2327,9 @@ body.port-border-none .port-card-edit{
                 <div class="g2" style="gap:5px;margin-bottom:6px">
                   <div><span class="fl">Nivel</span><input type="number" id="char_lvl" value="1" min="1" max="10" onchange="app.calc();app.updateXpHint()" inputmode="numeric" aria-label="Nivel del personaje"></div>
                   <div><span class="fl">XP <span id="xp_next_lbl" style="font-size:.58rem;color:var(--muted);font-style:normal;letter-spacing:0;text-transform:none"></span></span><input type="number" id="char_xp" value="0" min="0" oninput="app.updateXpHint()" inputmode="numeric" aria-label="Puntos de experiencia"></div>
+                </div>
+                <div id="xp_bar_wrap" style="margin-bottom:6px;display:none">
+                  <div class="lbar" style="margin-top:0"><div id="xp_bar_fill" class="lfill" style="background:linear-gradient(90deg,var(--ice),var(--gold))"></div></div>
                 </div>
                 <div style="margin-bottom:6px">
                   <span class="fl">Alineamiento</span>
@@ -3460,6 +3497,8 @@ const app = {
   _weaponAtkData: [0, 0],
   _editingCustomItem: null,
   _charLoading: false,   // suppresses _markUnsaved during load/clear
+  _finalStats: {FUE:8,DES:8,CON:8,INT:8,SAB:8,CAR:8},  // P1 fix: cached final stat scores
+  _finalMods:  {FUE:0,DES:0,CON:0,INT:0,SAB:0,CAR:0},  // P1 fix: cached final modifiers
 
   init() {
     // Load rules — fallback to DEFAULT_DB if storage is corrupt
@@ -3489,6 +3528,18 @@ const app = {
     this._restoreBgImages();
     // Long-press repeat on resource +/- buttons
     this._initResLongPress();
+
+    // Mark unsaved on manual resource edits (type directly in cur_pv etc.)
+    ['cur_pv','cur_adr','cur_ing','cur_carne'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', () => this._markUnsaved());
+    });
+
+    // Live calc on notes changes
+    const notes = document.getElementById('char_notes');
+    if (notes) notes.addEventListener('input', () => this._markUnsaved());
+    const concept = document.getElementById('char_concept');
+    if (concept) concept.addEventListener('input', () => this._markUnsaved());
   },
 
   showScreen(id) {
@@ -4361,17 +4412,30 @@ const app = {
     const lvl  = parseInt(document.getElementById('char_lvl')?.value) || 1;
     const xp   = parseInt(document.getElementById('char_xp')?.value)  || 0;
     const lbl  = document.getElementById('xp_next_lbl');
-    if (!lbl) return;
-    if (lvl >= 10) { lbl.textContent = '(máx nivel)'; lbl.style.color = 'var(--gold)'; return; }
-    const need = XP_TABLE[lvl] || 0;
-    const left = need - xp;
-    if (left <= 0) {
-      lbl.textContent = '¡Sube de nivel!';
-      lbl.style.color = 'var(--sage)';
-    } else {
-      lbl.textContent = `(faltan ${left.toLocaleString('es')})`;
-      lbl.style.color = 'var(--muted)';
+    const bar  = document.getElementById('xp_bar_fill');
+    const barW = document.getElementById('xp_bar_wrap');
+    if (lvl >= 10) {
+      if (lbl) { lbl.textContent = '(máx nivel)'; lbl.style.color = 'var(--gold)'; lbl.style.fontWeight = '700'; }
+      if (barW) barW.style.display = 'none';
+      return;
     }
+    const need = XP_TABLE[lvl] || 0;
+    const prev = lvl > 1 ? (XP_TABLE[lvl-1] || 0) : 0;
+    const left = need - xp;
+    const pct  = need > prev ? Math.min(100, Math.max(0, ((xp - prev) / (need - prev)) * 100)) : 100;
+    if (lbl) {
+      if (left <= 0) {
+        lbl.textContent = '¡Sube de nivel!';
+        lbl.style.color = 'var(--sage)';
+        lbl.style.fontWeight = '700';
+      } else {
+        lbl.textContent = `(faltan ${left.toLocaleString('es')})`;
+        lbl.style.color = left < need * 0.2 ? 'var(--gold)' : 'var(--muted)';
+        lbl.style.fontWeight = '';
+      }
+    }
+    if (bar)  bar.style.width = pct + '%';
+    if (barW) barW.style.display = lvl < 10 ? '' : 'none';
   },
 
   buildAlignmentPicker() {
@@ -4531,6 +4595,10 @@ const app = {
     const mods = {};
     STATS.forEach(s => mods[s] = this.getMod(final[s]));
 
+    // Cache final stats for helpers (calcInventory, _calcWeapon) — P1 bug fix
+    this._finalStats = {...final};
+    this._finalMods  = {...mods};
+
     // Archetype
     const arqKey = $('sel_arq').value;
     const arq = this.DB.archetypes?.[arqKey];
@@ -4649,8 +4717,15 @@ const app = {
     const inv = this.calcInventory();
     $('res_carga').textContent = `${inv.current}/${inv.max}`;
     const pct = inv.max > 0 ? Math.min(100, (inv.current/inv.max)*100) : 0;
-    $('carga_bar').style.width = pct+'%';
-    $('carga_bar').style.background = pct > 100 ? 'var(--blood)' : 'var(--gold)';
+    const bar = $('carga_bar');
+    if (bar) {
+      bar.style.width = pct+'%';
+      bar.style.background = inv.current > inv.max
+        ? 'linear-gradient(90deg,var(--blood),var(--ember))'
+        : inv.current >= inv.max * 0.8
+          ? 'linear-gradient(90deg,var(--gold),var(--ember))'
+          : 'linear-gradient(90deg,var(--gold),var(--goldb))';
+    }
     const warn = $('carga_warn');
     warn.style.display = inv.current > inv.max ? 'block' : 'none';
     if ($('load_summary_display'))
@@ -4700,10 +4775,12 @@ const app = {
       : baseDmg;
     this._weaponDmgData[n-1] = {formula: formulaWithMod, name: wData.name, dmgMod, dmgModStr};
 
-    // Requirements
+    // Requirements — use final attribute scores (includes descriptor bonuses)
+    const fueFinal = this._finalStats?.FUE ?? (parseInt(document.getElementById('base_FUE')?.value)||8);
+    const desFinal = this._finalStats?.DES ?? (parseInt(document.getElementById('base_DES')?.value)||8);
     let alert = '';
-    if (wData.req_FUE > 0 && (parseInt(document.getElementById('base_FUE')?.value)||8) < wData.req_FUE) alert = `⚠ Requiere FUE ${wData.req_FUE}`;
-    if (wData.req_DES > 0 && (parseInt(document.getElementById('base_DES')?.value)||8) < wData.req_DES) alert += `${alert?' · ':''}⚠ Requiere DES ${wData.req_DES}`;
+    if (wData.req_FUE > 0 && fueFinal < wData.req_FUE) alert = `⚠ Requiere FUE ${wData.req_FUE}`;
+    if (wData.req_DES > 0 && desFinal < wData.req_DES) alert += `${alert?' · ':''}⚠ Requiere DES ${wData.req_DES}`;
     if (alertEl) alertEl.textContent = alert;
   },
 
@@ -4890,8 +4967,10 @@ const app = {
   },
 
   calcInventory() {
-    // Slots = puntuación FUE (entero) + 5 del Morral gratuito (S&S v5.0 Cap.II)
-    return { current: this.inventory.reduce((s,i)=>s+(i.slots||0),0), max: (parseInt(document.getElementById('base_FUE')?.value)||8)+5 };
+    // Slots = puntuación FUE FINAL (incluye bonificaciones de descriptor) + 5 del Morral gratuito
+    // _finalStats se actualiza en calc() antes de llamar calcInventory — siempre es consistente
+    const fueFinal = this._finalStats?.FUE ?? (parseInt(document.getElementById('base_FUE')?.value)||8);
+    return { current: this.inventory.reduce((s,i)=>s+(i.slots||0),0), max: fueFinal + 5 };
   },
 
   syncCombatOptions() {
@@ -5117,9 +5196,15 @@ const app = {
     // Flash feedback
     cur.style.transition = 'color .15s';
     cur.style.color = delta > 0 ? 'var(--sage)' : 'var(--blood)';
-    setTimeout(() => { cur.style.color = ''; }, TIMING.RES_FLASH);
+    // Bump animation
+    cur.classList.remove('bump');
+    void cur.offsetWidth;
+    cur.classList.add('bump');
+    setTimeout(() => { cur.style.color = ''; cur.classList.remove('bump'); }, TIMING.RES_FLASH);
     // Haptic feedback on supported devices
     if (navigator.vibrate) navigator.vibrate(8);
+    // Mark unsaved
+    this._markUnsaved();
   },
 
   /** Attach long-press repeat behavior to all .res-btn elements.
