@@ -3085,55 +3085,60 @@ const DEFAULT_DB = {
      mods: bonificadores aplicados automáticamente al calcular.          */
   descriptors:{
     "humano":{name:"Humano",pr:4,
-      txt:"Versátiles y adaptables. Distribuyen sus 4 PR libremente: +1 a dos atributos distintos.",
-      bonus:"+1 a dos Atributos a elección (2 PR + 2 PR)",
-      grant:["Versatilidad Humana: +1 a dos atributos de libre elección"],
+      txt:"El Versátil. Adaptación y ambición. +1 a dos atributos distintos.",
+      bonus:"+1 a dos Atributos a elección",
+      grant:["Legado: Grado 0 en una habilidad adicional + un idioma extra","Elección: Ingenio Práctico (repite 1 tirada de 1d20 fallida por conflicto, 1/Descanso Largo) o Resiliencia Implacable (+1 PV por nivel)"],
       mods:{}},
-    "elfo":{name:"Elfo",pr:4,
-      txt:"Gráciles, de larga vida y con afinidad innata con la naturaleza y la magia.",
-      bonus:"+1 DES, +1 SAB",
-      grant:["Visión en Penumbra 60 pies","Resistencia a Encantos y Sueño Mágico"],
-      mods:{DES:1,SAB:1}},
     "enano":{name:"Enano",pr:4,
-      txt:"Robustos y tenaces. Forjados bajo tierra. Resistencia excepcional a venenos.",
-      bonus:"+2 CON, −1 CAR",
-      grant:["Visión en Oscuridad 60 pies","Ventaja en Sal. CON vs Venenos","Conocimiento de Piedra (Ventaja Arcano/Historia sobre estructuras subterráneas)"],
-      mods:{CON:2,CAR:-1}},
-    "mediano":{name:"Mediano",pr:4,
-      txt:"Pequeños y extraordinariamente afortunados. 1/combate repiten cualquier dado.",
-      bonus:"+1 DES, +1 SAB",
-      grant:["Suerte del Mediano: 1/combate repetir un dado (toma el segundo)","Ventaja en Sigilo en entornos urbanos"],
-      mods:{DES:1,SAB:1}},
-    "semiorco":{name:"Semiorco",pr:4,
-      txt:"Sangre orca. Resistencia legendaria. 1/día sobreviven con 1 PV cuando caerían.",
-      bonus:"+2 FUE, −1 INT",
-      grant:["Implacable: 1/día sobrevivir con 1 PV","Ventaja en Intimidación"],
-      mods:{FUE:2,INT:-1}},
-    "elfo_sombrio":{name:"Elfo Sombrío",pr:4,
-      txt:"Desterrados de las ciudades arbóreas. Afinidad Mística Innata (2 PR): acceden a la Fuente sin Despertar.",
-      bonus:"+1 DES, +1 CAR",
-      grant:["Visión en Oscuridad Total 30 pies","Afinidad Mística Innata: 2 Trucos + 1 Poder Niv.1 + +6 Ingenio permanente"],
-      mods:{DES:1,CAR:1},innate_magic:true},
-    "tiefling":{name:"Tiefling",pr:4,
-      txt:"Sangre infernal. Resistencia al fuego. Afinidad Mística Innata (2 PR).",
-      bonus:"+1 INT, +1 CAR",
-      grant:["Resistencia al Daño de Fuego (mitad)","Afinidad Mística Innata: 2 Trucos + 1 Poder Niv.1 + +6 Ingenio permanente"],
-      mods:{INT:1,CAR:1},innate_magic:true},
+      txt:"El Robusto. Robusto y testarudo. Forjado bajo tierra.",
+      bonus:"+2 CON, +1 FUE",
+      grant:["Corazón de la Roca: Ventaja en Salvaciones contra Veneno y Miedo","Detección Ancestral: Visión en Oscuridad 60 pies + detecta trampas y construcciones en piedra","Elección: Furia de la Forja (martillos/hachas +1 daño) o Guardia de la Montaña (+1 CA con armadura)"],
+      mods:{CON:2,FUE:1}},
+    "elfo":{name:"Elfo",pr:4,
+      txt:"El Místico. Antiguos y arcanos.",
+      bonus:"+2 DES, +1 SAB",
+      grant:["Inmunidad Feérica: Ventaja contra Encantamiento y Sueño","Visión Élfica: Oscuridad 90 pies + Grado 1 en Proeza Física","Elección: Afinidad Arcana (Afinidad Mística Innata) o Hoja Feérica (espada larga/arcos +1 daño)"],
+      mods:{DES:2,SAB:1},innate_optional:true},
+    "medio_elfo":{name:"Medio Elfo",pr:4,
+      txt:"El Intermediario. Desarraigo y flexibilidad.",
+      bonus:"+1 a dos atributos distintos",
+      grant:["Visión Mixta: Oscuridad 60 pies","El Intermediario: +2 a Reacción al mediar entre dos grupos o culturas","Elección: Empatía Experta (Grado 0 Perspicacia e Influencia) o Herencia Mixta (Grado 0 Conocimiento + 2 idiomas)"],
+      mods:{}},
+    "infernal":{name:"Infernal",pr:4,
+      txt:"El Corrupto. Pacto y estigma.",
+      bonus:"+2 CAR, +1 INT o DES",
+      grant:["Resistencia del Abismo: Resistencia al Fuego + Ventaja contra Miedo","Visión Infernal: ve en oscuridad total, incluso mágica","Elección: Lengua de la Mentira / Resistencia Infernal / Afinidad Sacrílega (Afinidad Mística Innata)"],
+      mods:{CAR:2,INT:1},innate_optional:true},
+    "sintetico":{name:"Sintético",pr:4,
+      txt:"El Lógico. Constructo sintético y racional.",
+      bonus:"+1 CON",
+      grant:["Construcción: Inmune a Veneno y Enfermedad; Descanso Largo en 4 horas","Red Lógica: 6 Ingenio → Ventaja en Tecnología e Investigación al conectarse a un dispositivo","Interfaz: instala Módulos de Mejora o chips","Elección: Protocolo Coloso (+2 FUE, desarmado 1d6+FUE Cont.) o Protocolo Hostigador (+2 DES, +10 pies velocidad)"],
+      mods:{CON:1}},
+    "aesir":{name:"Aesir",pr:4,
+      txt:"El Celestial. Deber y destino.",
+      bonus:"+2 CAR, +1 SAB o FUE",
+      grant:["Voluntad Inquebrantable: Ventaja contra Miedo y Encantamiento","Sello Divino: +2 a Reacción con religiosos; refugio en templos aliados","Elección: Aura Radiante / Sangre Sagrada / Divinidad Mística (Afinidad Mística Innata)"],
+      mods:{CAR:2,SAB:1},innate_optional:true},
+    "mutante":{name:"Mutante",pr:4,
+      txt:"La Aberración. Radioactivo y alterado.",
+      bonus:"+2 a un atributo, +1 CON",
+      grant:["Inmunidad Tóxica: Resistencia al Veneno + Ventaja contra toxinas y radiación","Elige DOS Mutaciones: Regeneración Lenta / Piel Blindada (+1 CA) / Garras (1d6 Cort.) / Apéndices Extra / Resistencia Elemental / Sentidos Agudos / Aberración Mística (Afinidad Mística Innata)"],
+      mods:{CON:1},innate_optional:true},
+    "medio_orco":{name:"Medio Orco",pr:4,
+      txt:"El Salvaje. Furia y músculo.",
+      bonus:"+2 FUE, +1 CON",
+      grant:["Implacable: 1/Descanso Largo, si un golpe te llevaría a 0 PV te quedas en 1","Respeto por la Fuerza: Ventaja en Influencia con culturas marciales","Elección: Entrenamiento Marcial (todas las armas) o Ataques Salvajes (relanza el dado de daño al máximo)"],
+      mods:{FUE:2,CON:1}},
     "draconido":{name:"Dracónido",pr:4,
-      txt:"Descendientes de dragones. Aliento elemental y resistencia al tipo correspondiente.",
-      bonus:"+2 FUE, +1 CAR, −1 DES",
-      grant:["Aliento Elemental (2 PA · 2d6 · tipo a elegir · Sal.DES CD13 mitad)","Resistencia al tipo elemental elegido"],
-      mods:{FUE:2,CAR:1,DES:-1}},
-    "nativo_estelar":{name:"Nativo Estelar",pr:4,
-      txt:"Nacidos en colonias del espacio profundo. Adaptados a microgravedad y radiación.",
-      bonus:"+1 INT, +1 CON",
-      grant:["Orientación Espacial: nunca se pierde en vacío o zonas sin luz","Resistencia a Radiación (Ventaja Sal. vs efectos radiactivos)"],
-      mods:{INT:1,CON:1}},
-    "dhampir":{name:"Dhampir",pr:4,
-      txt:"Híbridos vivo/no-muerto. Percepción sobrenatural del peligro, resistencia a necrosis.",
-      bonus:"+1 DES, +1 CAR, −1 CON",
-      grant:["Visión en Oscuridad 60 pies","Resistencia a Daño Necrótico","Desventaja en Percepción bajo luz solar intensa"],
-      mods:{DES:1,CAR:1,CON:-1}}
+      txt:"El Heredero. Aliento y escamas.",
+      bonus:"+2 FUE, +1 CAR",
+      grant:["Resistencia Elemental a un tipo (Ácido, Fuego, Frío, Rayo o Veneno)","Presencia Imponente: criaturas de NA inferior sufren Desventaja en Moral","Elección: Arma de Aliento (cono 2d6, Ud6) / Escamas Protectoras (+1 CA + Oscuridad 60 pies) / Tesoro Ancestral"],
+      mods:{FUE:2,CAR:1}},
+    "cambiante":{name:"Cambiante",pr:4,
+      txt:"El Feral. Feral e instintivo.",
+      bonus:"+2 FUE o DES, +1 CON",
+      grant:["Garras Naturales: desarmado 1d6+FUE Cortante","Instinto de Manada: comunicación básica con bestias + Ventaja en Percepción o Supervivencia","Elección: Furia Salvaje o Velocidad y Sentidos (+10 pies velocidad + Oscuridad 60 pies)"],
+      mods:{FUE:2,CON:1}}
   },
 
   /* ══ ARQUETIPOS — Manual Cap.II Paso 3 ══
@@ -3143,32 +3148,32 @@ const DEFAULT_DB = {
        Sagaz:  PV=(4+MOD_CON)×N   Adr=max(MOD_FUE,MOD_DES)+N+2    Ing=max(MOD_INT,MOD_SAB,MOD_CAR)+N+12  */
   archetypes:{
     "audaz":{name:"Audaz",
-      txt:"El Luchador. Maestría total en armas y armaduras. Puede ignorar requisitos de FUE para equiparse.",
+      txt:"El Luchador. Todas las armas y armaduras. Ignora requisitos de FUE para equiparse.",
       pv:8,adr_bonus:8,ing_bonus:2,speed:30,prof:2,
       armorProf:["light","medium","heavy"],
       edges:["Físico","Mental"],
-      skills:["Proeza Física","Intimidación","Percepción","Supervivencia"],
+      skills:["Proeza Física","Intimidación","Percepción","Supervivencia","Perspicacia","Engaño"],
       skills_count:2,
-      feature1:"Veterano de Mil Batallas: +1 CA mientras vistes armadura.",
-      feature2:"Inercia de Guerra: al reducir un enemigo a 0 PV, gasta 0 PA para un segundo ataque inmediato."},
+      feature1:"Veterano de Guerra (◆): +1 CA permanente mientras vistes cualquier armadura.",
+      feature2:"Inercia de Guerra (⚡ 0 PA): al reducir un enemigo a 0 PV, ataque adicional gratuito a otro objetivo. 1/turno."},
     "sutil":{name:"Sutil",
-      txt:"El Especialista Versátil. Armas ligeras y 1 mediana, armaduras ligeras. Filo Flexible exclusivo.",
+      txt:"El Experto. Armas ligeras + 1 mediana, armaduras ligeras. Filo Flexible exclusivo.",
       pv:6,adr_bonus:5,ing_bonus:5,speed:30,prof:2,
       armorProf:["light"],
       edges:["Flexible","Físico","Mental"],
       skills:["Sigilo","Engaño","Investigación","Percepción","Supervivencia","Proeza Física","Tecnología"],
       skills_count:3,
-      feature1:"Acción Astuta: por 3 pts Ingenio, realiza Esconderse / Desconectar / Usar Objeto como 0 PA.",
-      feature2:"Polifacético: no sufre Desventaja Técnica en Habilidades Generales sin Grado de Maestría."},
+      feature1:"Acción Astuta (⚡ 3 Ingenio): Esconderse / Desconectar / Usar Objeto como 0 PA. 1/turno.",
+      feature2:"Polifacético (◆): intenta Habilidades Especializadas sin Grado como si tuviera Grado 0 (sin Desventaja Técnica)."},
     "sagaz":{name:"Sagaz",
-      txt:"El Adepto del Conocimiento. Armas simples, sin armadura. Altísima reserva de Ingenio.",
+      txt:"El Adepto. Solo armas simples, sin armadura base. Altísima reserva de Ingenio.",
       pv:4,adr_bonus:2,ing_bonus:12,speed:30,prof:2,
       armorProf:[],
       edges:["Mental","Físico"],
-      skills:["Arcano","Historia","Medicina","Naturaleza","Perspicacia","Investigación","Religión"],
+      skills:["Arcano","Historia","Medicina","Naturaleza","Perspicacia","Investigación","Religión","Artesanía"],
       skills_count:4,
-      feature1:"Sentido de la Fuente: detecta emanaciones mágicas/tecnológicas a 60 pies de forma pasiva.",
-      feature2:"Dominio de Axiomas: lanza 1 Truco de su Fuente por 0 PA (en lugar de 1 PA), una vez por turno."}
+      feature1:"Sentido de la Fuente (◆): detecta emanaciones mágicas/tecnológicas a 60 pies de forma pasiva.",
+      feature2:"Dominio de Axiomas (◆): 1 Truco por 0 PA, 1/turno. · Misticismo Innato: Canal Arcano abierto sin slot, una Fuente con 2 Trucos + 1 Axioma Nv1. · Paso Arcano: +5 pies al usar el Truco gratuito."}
   },
 
   /* ══ TRASFONDOS — Manual Cap.II Paso 4 ══
@@ -3180,7 +3185,7 @@ const DEFAULT_DB = {
       grant:["Red Militar (Ud8)"],
       defecto:"No toleras el desorden. Obedeces la cadena de mando incluso cuando está equivocada.",
       skills:["Proeza Física","Intimidación","Perspicacia","Tecnología","Supervivencia","Medicina"]},
-    "picaro":{name:"Pícaro",
+    "ladron":{name:"Ladrón",
       txt:"Operativo del bajo mundo.",
       grant:["Bajo Mundo (Ud6)"],
       defecto:"Alguien importante te busca. Siempre huyes de tus deudas.",
@@ -3241,22 +3246,35 @@ const DEFAULT_DB = {
      Propiedades: Ligera · Versátil · Alcance · A distancia
                   Munición(Ud10) · Pesada · Lanzar · Sigilo    */
   weapons:{
-    "garras":    {name:"Desarmado",       dmg:"1d4", type:"light",  slots:0, notes:"Ligera · Daño contundente · Sin coste de slots"},
-    "daga":      {name:"Daga",            dmg:"1d4", type:"light",  slots:1, notes:"Ligera · Lanzar (20/60 pies) · Sigilo"},
-    "espada_corta":{name:"Espada Corta",  dmg:"1d6", type:"light",  slots:1, notes:"Ligera · Mano secundaria"},
-    "hacha_mano":{name:"Hacha de Mano",   dmg:"1d6", type:"light",  slots:1, notes:"Ligera · Lanzar (20/60 pies)"},
-    "mazo":      {name:"Maza",            dmg:"1d6", type:"medium", slots:2, notes:"Versátil · Contundente · Ignora RD no-muertos"},
-    "baston":    {name:"Bastón",          dmg:"1d6", type:"light",  slots:1, notes:"Versátil · Puede ser foco mágico"},
-    "espada_larga":{name:"Espada Larga",  dmg:"1d8", type:"medium", slots:2, notes:"Versátil (a dos manos: +1d4)"},
-    "hacha_batalla":{name:"Hacha de Batalla",dmg:"1d8",type:"medium",slots:2,notes:"Versátil (a dos manos: +1d4)"},
-    "martillo_guerra":{name:"Martillo de Guerra",dmg:"1d8",type:"medium",slots:2,notes:"Versátil · Pesada (req.FUE 13 para Ataque Pesado)"},
-    "lanza":     {name:"Lanza",           dmg:"1d8", type:"reach",  slots:2, notes:"Alcance 10 pies · Lanzar (20/60 pies)"},
-    "arco_corto":{name:"Arco Corto",      dmg:"1d6", type:"ranged", slots:2, notes:"A distancia · Munición Ud10 · 80/320 pies"},
-    "arco_largo":{name:"Arco Largo",      dmg:"1d8", type:"ranged", slots:2, notes:"A distancia · Munición Ud10 · 150/600 pies · Pesada req.FUE 13"},
-    "ballesta_mano":{name:"Ballesta de Mano",dmg:"1d6",type:"ranged",slots:1,notes:"A distancia · Munición Ud10 · 30/120 pies · Una mano"},
-    "ballesta_pesada":{name:"Ballesta Pesada",dmg:"1d10",type:"ranged",slots:3,notes:"A distancia · Munición Ud10 · 100/400 pies · Pesada · Recargar 1 PA"},
-    "pistola":   {name:"Pistola",         dmg:"1d8", type:"ranged", slots:1, notes:"A distancia · Munición Ud10 · 30/90 pies"},
-    "rifle":     {name:"Rifle",           dmg:"1d10",type:"ranged", slots:2, notes:"A distancia · Munición Ud10 · 80/320 pies · Pesada · Ráfaga +1d6/+2PA"}
+    "desarmado":  {name:"Desarmado",        dmg:"1d4", type:"light",  slots:0, notes:"Contundente · Sin coste de slots"},
+    "garrote":    {name:"Garrote",          dmg:"1d4", type:"light",  slots:1, notes:"Simple · Ligera · Contundente"},
+    "daga":       {name:"Daga",             dmg:"1d4", type:"light",  slots:1, notes:"Simple · Ligera · Sutil · Arrojadiza (20/60)"},
+    "hoz":        {name:"Hoz",              dmg:"1d4", type:"light",  slots:1, notes:"Simple · Ligera · Cortante"},
+    "lanza_corta":{name:"Lanza corta",      dmg:"1d6", type:"medium", slots:1, notes:"Simple · Versátil · Arrojadiza (20/60)"},
+    "baston":     {name:"Bastón",           dmg:"1d6", type:"medium", slots:1, notes:"Simple · Versátil · Dos Manos · Foco mágico"},
+    "hacha_mano": {name:"Hacha de mano",    dmg:"1d6", type:"light",  slots:1, notes:"Simple · Ligera · Arrojadiza (20/60)"},
+    "maza_ligera":{name:"Maza ligera",      dmg:"1d6", type:"light",  slots:1, notes:"Simple · Ligera · Contundente"},
+    "espada_corta":{name:"Espada corta",    dmg:"1d6", type:"light",  slots:1, notes:"Marcial · Ligera · Sutil · Perforante"},
+    "espada_larga":{name:"Espada larga",    dmg:"1d8", type:"medium", slots:1, notes:"Marcial · Versátil (2 manos: 1d10) · Cortante"},
+    "espadon":    {name:"Espadón",          dmg:"2d6", type:"medium", slots:2, notes:"Marcial · Pesada · Dos Manos · Cortante", req_FUE:13},
+    "hacha_batalla":{name:"Hacha de batalla",dmg:"1d8",type:"medium", slots:1, notes:"Marcial · Versátil (2 manos: 1d10) · Cortante"},
+    "hacha_grande":{name:"Hacha grande",    dmg:"1d12",type:"medium", slots:2, notes:"Marcial · Pesada · Dos Manos · Cortante", req_FUE:13},
+    "martillo_guerra":{name:"Martillo de guerra",dmg:"1d8",type:"medium",slots:1,notes:"Marcial · Versátil · Contundente"},
+    "mazo_grande":{name:"Mazo grande",      dmg:"2d6", type:"medium", slots:2, notes:"Marcial · Pesada · Dos Manos · Contundente", req_FUE:13},
+    "lanza":      {name:"Lanza",            dmg:"1d8", type:"reach",  slots:2, notes:"Marcial · Versátil · Alcance 10 pies · Perforante"},
+    "alabarda":   {name:"Alabarda",         dmg:"1d10",type:"reach",  slots:2, notes:"Marcial · Pesada · Alcance · Dos Manos · Cortante", req_FUE:13},
+    "espada_ropera":{name:"Espada ropera",  dmg:"1d8", type:"light",  slots:1, notes:"Marcial · Sutil · Penetrante · Perforante"},
+    "latigo":     {name:"Látigo",           dmg:"1d4", type:"reach",  slots:1, notes:"Marcial · Alcance · Sutil · Cortante"},
+    "mangual":    {name:"Mangual",          dmg:"1d8", type:"medium", slots:1, notes:"Marcial · Fiable · Contundente"},
+    "arco_corto": {name:"Arco corto",       dmg:"1d6", type:"ranged", slots:1, notes:"A distancia · Munición Ud10 · Dos Manos · 80/320"},
+    "arco_largo": {name:"Arco largo",       dmg:"1d8", type:"ranged", slots:2, notes:"A distancia · Munición Ud10 · Pesada · Dos Manos · 150/600", req_FUE:13},
+    "ballesta_pesada":{name:"Ballesta pesada",dmg:"1d10",type:"ranged",slots:2,notes:"A distancia · Munición Ud10 · Pesada · Dos Manos · 100/400", req_FUE:13},
+    "ballesta_mano":{name:"Ballesta de mano",dmg:"1d6",type:"ranged", slots:1, notes:"A distancia · Ligera · Munición Ud10 · 30/120"},
+    "jabalina":   {name:"Jabalina",         dmg:"1d6", type:"medium", slots:1, notes:"Arrojadiza · Versátil · 30/120"},
+    "pistola":    {name:"Pistola estándar", dmg:"1d8", type:"ranged", slots:1, notes:"Magitec · A distancia · Munición Ud10 · 60/240"},
+    "rifle":      {name:"Rifle de asalto",  dmg:"2d6", type:"ranged", slots:2, notes:"Magitec · A distancia · Munición Ud10 · Pesada · Dos Manos · 150/600", req_FUE:13},
+    "pistola_plasma":{name:"Pistola de plasma",dmg:"2d6",type:"ranged",slots:1,notes:"Magitec · A distancia · Munición Ud10 · Energía · 60/180"},
+    "sable_energia":{name:"Sable de energía",dmg:"1d10",type:"medium",slots:1,notes:"Magitec · Sutil · Penetrante · Energía"}
   },
 
   /* ══ ARMADURAS — Apéndice A (tabla exacta del manual) ══
@@ -3266,162 +3284,48 @@ const DEFAULT_DB = {
        heavy      → CA base (sin DES)                       */
   armors:{
     "ninguna":      {name:"Sin Armadura",      ca:10,type:"none",  slots:0,notes:"CA=10+MOD DES. Sin restricciones."},
-    "cuero":        {name:"Cuero",             ca:11,type:"light", slots:1,notes:"CA=11+MOD DES. Sin restricciones."},
-    "cuero_tachonado":{name:"Cuero Tachonado", ca:12,type:"light", slots:1,notes:"CA=12+MOD DES. Sin restricciones."},
-    "cota_malla":   {name:"Cota de Malla",     ca:13,type:"medium",slots:2,notes:"CA=13+MOD DES(máx+2). Req.FUE 11. Desventaja Sigilo."},
-    "semicoraza":   {name:"Semicoraza",        ca:14,type:"medium",slots:2,notes:"CA=14+MOD DES(máx+2). Req.FUE 11. Desventaja Sigilo."},
-    "coraza_completa":{name:"Coraza Completa", ca:15,type:"medium",slots:2,notes:"CA=15+MOD DES(máx+2). Req.FUE 13. Desventaja Sigilo."},
-    "armadura_placas":{name:"Armadura de Placas",ca:17,type:"heavy",slots:3,notes:"CA=17 (sin DES). Req.FUE 15. Desventaja Sigilo."},
-    "traje_combate":{name:"Traje de Combate",  ca:13,type:"light", slots:1,notes:"Magitecnología. CA=13+MOD DES. Absorbe 1 pt daño/turno."}
+    "cuero_tachonado":{name:"Cuero Tachonado", ca:12,type:"light", slots:1,notes:"CA=12+MOD DES. Sin penalizaciones."},
+    "cota_escamas": {name:"Cota de Escamas",   ca:13,type:"medium",slots:2,notes:"CA=13+MOD DES(máx+2). Req.FUE 11. Desventaja Sigilo.",req_FUE:11},
+    "cota_malla":   {name:"Cota de Malla",     ca:13,type:"medium",slots:2,notes:"CA=13+MOD DES(máx+2). Req.FUE 11. Desventaja Sigilo + lanzamiento.",req_FUE:11},
+    "coraza_completa":{name:"Coraza Completa", ca:15,type:"medium",slots:2,notes:"CA=15+MOD DES(máx+2). Req.FUE 13. Desventaja Sigilo + lanzamiento.",req_FUE:13},
+    "armadura_placas":{name:"Armadura de Placas",ca:17,type:"heavy",slots:3,notes:"CA=17 (sin DES). Req.FUE 15. Desventaja Sigilo + lanzamiento.",req_FUE:15}
   },
 
   /* ══ ESCUDOS — Apéndice A (manual: un solo tipo, +2 CA) */
   shields:{
-    "escudo":{name:"Escudo",slots:1,bonus:2,notes:"+2 CA · Ocupa la mano secundaria · 10 po"}
+    "escudo":{name:"Escudo",slots:1,bonus:2,notes:"+2 CA · Ocupa la mano secundaria · 10 pp"},
+    "escudo_torre":{name:"Escudo de Torre",slots:2,bonus:3,notes:"+3 CA · Req.FUE 13 · Desventaja en Proeza Física · 50 pp",req_FUE:13}
   },
 
   /* ══ TALENTOS — Manual Cap.III: Catálogo de Vectores ══
      4 Vectores (Impacto, Transformación, Vínculo, Entorno)
      + Generales. Requisitos siempre de atributo o nivel.    */
   talents:{
-    "impacto":[
-      {id:"golpe_demoledor",name:"Golpe Demoledor",
-       desc:"Ataque Normal (2 PA) + 2 pts Adrenalina: +1d8 daño extra y Sal. FUE (CD 12+MOD FUE) o Derribado.",
+    "combate":[
+      {id:"golpe_devastador",name:"Golpe Devastador",
+       desc:"Ataque (2 PA) + 2 Adrenalina: +1d8 daño y Salvación FUE (CD 12+MOD FUE) o el objetivo queda Derribado. Talento de prueba.",
        req:"FUE 13+ · Cualquier Arquetipo",
        grades:[
-         {g:1,d:"2 Adr → +1d8 daño. Sal. FUE o Derribado."},
-         {g:2,d:"Nivel 3+: +2d8. CD 14+MOD FUE. Si ya Derribado → Desgarro (DoT Ud6, −2 CA)."},
-         {g:3,d:"Nivel 6+: Fallo de Sal. → todos los enemigos en 10 pies retroceden (misma Sal. o Derribados)."}
-       ]},
-      {id:"descarga_energia",name:"Descarga de Energía",
-       desc:"2 PA · 4 pts Ingenio. Proyectil a 60 pies: 2d6 daño elemental (Fuego/Frío/Relámpago, elige al lanzar). Req. Despertar Sobrenatural.",
-       req:"SAB o INT 13+ · Despertar Sobrenatural",
-       grades:[
-         {g:1,d:"2d6 a 1 objetivo (60 pies). Tipo elemental a elección."},
-         {g:2,d:"Nivel 3+: 3d6. Segundo objetivo a 10 pies del primero sin coste extra."},
-         {g:3,d:"Nivel 7+: Como Reacción (0 PA) cuando un enemigo falla un ataque. Daño 1d6."}
-       ]},
-      {id:"veneno_precision",name:"Veneno de Precisión",
-       desc:"1 PA de preparación: aplica veneno a un arma. Próximo ataque exitoso → Toxicidad (DoT Ud8 · 1d6 químico/turno). 1 dosis/Descanso Corto.",
-       req:"DES 12+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"1 dosis/Descanso Corto. Toxicidad (DoT Ud8)."},
-         {g:2,d:"Nivel 4+: 2 dosis/Descanso Corto. En crítico: Ud10."},
-         {g:3,d:"Nivel 8+: Primera degradación del Ud → Trauma adicional (Desventaja FUE, sin Sal.)."}
-       ]}
-    ],
-    "transformacion":[
-      {id:"furia_corporal",name:"Furia Corporal",
-       desc:"1 PA · 4 pts Adrenalina. Furia activa (Ud6): +2 a ataques CaC y +1d4 daño. Al entrar: PV temp. = MOD CON × 2 (mín. 2).",
-       req:"FUE 12+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"+2 ataque CaC, +1d4 daño. PV temp.=MOD CON×2. Duración Ud6."},
-         {g:2,d:"Nivel 3+: Ud8. Ataques frontales que te impacten: −2 a su dado de daño."},
-         {g:3,d:"Nivel 7+: Activar como Reacción (0 PA) al recibir daño. Coste Adrenalina a la mitad (mín. 1)."}
-       ]},
-      {id:"forma_alterada",name:"Forma Alterada",
-       desc:"2 PA · 6 pts Ingenio. Forma alternativa durante Ud6: 1 beneficio físico (escalar 30 pies, visión nocturna, garras 1d6…). Req. Despertar Sobrenatural.",
-       req:"SAB o INT 13+ · Despertar Sobrenatural",
-       grades:[
-         {g:1,d:"1 beneficio físico. Duración Ud6."},
-         {g:2,d:"Nivel 4+: 2 beneficios, Ud8, coste baja a 4 pts Ingenio."},
-         {g:3,d:"Nivel 8+: 2 formas preparadas. Cambiar entre formas activas: 1 PA."}
-       ]},
-      {id:"interfaz_neural",name:"Interfaz Neural",
-       desc:"1 PA · 3 pts Ingenio. Conecta a sistema tecnológico adyacente (Ud6): Ventaja en Tecnología y control mental sin PA.",
-       req:"INT 13+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"Ud6. Sistema tecnológico adyacente."},
-         {g:2,d:"Nivel 3+: Ud8. Alcance 30 pies. IAs con Desventaja; éxito = acceso total."},
-         {g:3,d:"Nivel 6+: El sistema atacante tiene Desventaja contra ti. Transferir conexión: 1 PA."}
-       ]}
-    ],
-    "vinculo":[
-      {id:"toque_restaurador",name:"Toque Restaurador",
-       desc:"2 PA · 4 pts Ingenio. Aliado adyacente recupera 2d6 + MOD SAB o CAR PV. No usable en uno mismo durante combate.",
-       req:"SAB o CAR 12+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"2d6+MOD a aliado adyacente."},
-         {g:2,d:"Nivel 3+: Reacción (0 PA) cuando aliado cae a 0 PV. Coste×2. Aliado queda con 1 PV."},
-         {g:3,d:"Nivel 7+: 1/Descanso Largo, restaura 1 pto de Flesh en lugar de PV."}
-       ]},
-      {id:"companero_vinculado",name:"Compañero Vinculado",
-       desc:"Descanso Largo: estableces vínculo con una criatura/entidad. Compañero NA 1 (10 PV, CA 12, +2 ataque, 1d6 daño). Actúa al gastar 1 PA.",
-       req:"SAB o CAR 13+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"Compañero NA 1. 1 PA para dar una orden. 1 compañero máximo."},
-         {g:2,d:"Nivel 5+: NA 3 (30 PV, CA 14, +5 ataque, 1d10). 2 órdenes/turno. 1 acción especial."}
-       ]},
-      {id:"despertar",name:"Despertar Sobrenatural",
-       desc:"Acceso a la Fuente de Poder. Elige: Erudición (INT 13+) · Pacto (CAR 13+) · Herencia (CAR 13+) · Divinidad (SAB/CAR 13+) · Naturaleza (SAB 13+) · Psiónica (INT/SAB 13+). +6 Ingenio permanente.",
-       req:"INT, SAB o CAR 13+ según Fuente elegida",
-       grades:[
-         {g:1,d:"Acceso a Axiomas de tu Fuente. CD Axioma = 8+PB+MOD Fuente. +6 Ingenio permanente."}
-       ]},
-      {id:"pacto_sobrenatural",name:"Pacto Sobrenatural",
-       desc:"Pacto con entidad sobrenatural menor. Beneficio constante menor (define con DJ) a cambio de una Demanda periódica.",
-       req:"CAR 14+ · Despertar Sobrenatural · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"Beneficio constante menor + Demanda por sesión."},
-         {g:2,d:"Nivel 4+: Beneficio mejora. Invocar (3 PA, 8 Ing): NA 2, Ud6 rondas."},
-         {g:3,d:"Nivel 8+: Con Voluntad Autónoma, la entidad usa sus 3 PA propios. Demanda mensual."}
-       ]},
-      {id:"voluntad_autonoma",name:"Voluntad Autónoma",
-       desc:"El Compañero tira su propia iniciativa (1d20+DES) y actúa con 3 PA propios. Cada orden directa: +1 Tensión (máx 3). Con 3 Tensión actúa solo 1 turno.",
-       req:"SAB o CAR 15+ · Nivel 5+ · Compañero Vinculado G2",
-       grades:[
-         {g:1,d:"3 PA e iniciativa propia. Órdenes directas acumulan Tensión (máx 3). Reinicia en Descanso Corto."}
-       ]}
-    ],
-    "entorno":[
-      {id:"terreno_hostil",name:"Terreno Hostil",
-       desc:"2 PA · 4 pts Ingenio o Adrenalina. Zona 15 pies durante Ud6: enemigos −10 pies de velocidad y Desventaja en Proeza Física.",
-       req:"INT o SAB 12+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"Zona 15 pies, Ud6. −10 vel. + Desventaja Proeza Física."},
-         {g:2,d:"Nivel 4+: Efecto adicional: niebla (Desventaja a distancia) · suelo inestable (Sal.DES o Derribado) · calor (1d4 fuego/turno)."},
-         {g:3,d:"Nivel 7+: 2 zonas simultáneas con un solo coste. Pueden solaparse y acumularse."}
-       ]},
-      {id:"barrera_instinto",name:"Barrera de Instinto",
-       desc:"Reacción (0 PA) · 3 pts Adrenalina o Ingenio. Reduce daño del ataque activador en 1d8 + el mayor entre MOD FUE y MOD SAB. Dura hasta tu próximo turno, absorbe un segundo impacto.",
-       req:"SAB 13+ o FUE 14+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"Reacción. Reduce 1d8+MOD. Dura hasta próximo turno; colapsa al 2.º impacto."},
-         {g:2,d:"Nivel 4+: 2d8+MOD. Dura Ud4 rondas."},
-         {g:3,d:"Nivel 8+: Al colapsar, pulso de área 10 pies: mitad daño absorbido (Sal.DES para cuarta parte)."}
+         {g:1,d:"2 Adr → +1d8 daño. Salvación FUE o Derribado."},
+         {g:2,d:"Nivel 3+: +2d8. CD 14+MOD FUE. Si ya está Derribado → Desgarro (DoT Ud6, −2 CA)."},
+         {g:3,d:"Nivel 6+: al fallar la Salvación, todos los enemigos en 10 pies hacen la misma Salvación o caen Derribados."}
        ]}
     ],
     "general":[
-      {id:"segundo_viento",name:"Segundo Viento",
-       desc:"1/encuentro · 1 PA: recupera 1d8 + MOD CON PV y 4 pts de la Reserva que elijas. Sin Ración.",
-       req:"CON 12+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"1/encuentro. 1d8+MOD CON PV + 4 pts Reserva a elegir."},
-         {g:2,d:"Nivel 5+: 2.ª vez/encuentro. El 2.º uso recupera la mitad (redondea arriba)."}
-       ]},
-      {id:"alerta",name:"Alerta",
-       desc:"+5 a la Iniciativa. Inmune a ser Sorprendido mientras no estés incapacitado.",
-       req:"Cualquier Arquetipo",
-       grades:[{g:1,d:"+5 Iniciativa. No puedes ser sorprendido."}]},
-      {id:"maestria_objetos",name:"Maestría en Objetos Mágicos",
-       desc:"+1 ranura de sintonización (base: 3 simultáneos). Objetos sintonizados: −1 pto coste activación (mín. 1).",
-       req:"INT o SAB 12+ · Cualquier Arquetipo",
-       grades:[
-         {g:1,d:"+1 ranura sintonización. −1 coste activación objetos sintonizados."},
-         {g:2,d:"Nivel 3+: +1 ranura más. Identificar objeto: Descanso Corto en lugar de Largo."}
-       ]},
       {id:"golpe_furtivo",name:"Golpe Furtivo",
-       desc:"+1d6 daño cuando tienes Ventaja en el ataque O hay un aliado adyacente al objetivo (y sin Desventaja propia). Una vez por turno.",
+       desc:"+1d6 de daño cuando tienes Ventaja en el ataque o un aliado es adyacente al objetivo (y tú sin Desventaja). Una vez por turno. Talento de prueba.",
        req:"Cualquier Arquetipo",
        grades:[
          {g:1,d:"+1d6 daño (Ventaja o aliado adyacente). 1/turno."},
          {g:2,d:"+2d6 daño."},
-         {g:3,d:"+3d6 daño. 1/turno sin Ventaja si el aliado tiene el flanqueo."}
+         {g:3,d:"+3d6 daño. 1/turno sin Ventaja si el aliado mantiene el flanqueo."}
        ]},
-      {id:"def_nat",name:"Defensa Natural",
-       desc:"Sin armadura: CA = 10 + MOD DES + MOD CON.",
-       req:"CON 13+ · Cualquier Arquetipo",
-       grades:[{g:1,d:"Sin armadura: CA = 10 + MOD DES + MOD CON."}]}
+      {id:"despertar",name:"Iniciado Místico",
+       desc:"Abre el Canal Arcano. Elige una Fuente (Erudición INT · Pacto CAR · Herencia CAR · Divinidad SAB/CAR · Naturaleza SAB · Psiónica INT/SAB) y obtén 2 Trucos + 1 Axioma Nv1. +6 Ingenio permanente. Talento de prueba.",
+       req:"INT, SAB o CAR 13+ según la Fuente elegida",
+       grades:[
+         {g:1,d:"Canal Arcano abierto. CD de Axioma = 8 + PB + MOD de la Fuente. +6 Ingenio permanente."}
+       ]}
     ]
   },
 
@@ -3491,9 +3395,12 @@ const TIMING = {
    Versioned persistence with migration support
 ══════════════════════════════════════════ */
 const STORAGE = {
-  SCHEMA_VERSION: 1,
+  SCHEMA_VERSION: 2,
+  /** Bump when DEFAULT_DB rules data changes so cached rules refresh automatically. */
+  RULES_DATA_VERSION: '5.2-app',
   KEYS: {
     rules:          'sands_rules',
+    rulesVer:       'sands_rules_ver',
     roster:         'sands_roster',
     font:           'ss_font_size',
     scrollPreserve: 'ss_scroll_preserve',
@@ -3502,9 +3409,18 @@ const STORAGE = {
     version:        'sands_schema_v'
   },
 
-  /** Load rules DB – falls back to DEFAULT_DB */
+  /** Load rules DB – falls back to DEFAULT_DB. Auto-refreshes when the
+      bundled rules data is newer than what's cached, so updated formulas
+      reach returning users without touching their saved characters. */
   loadRules() {
     try {
+      const storedVer = localStorage.getItem(this.KEYS.rulesVer);
+      if (storedVer !== this.RULES_DATA_VERSION) {
+        // Stale or absent cache → adopt the bundled rules and stamp the version.
+        localStorage.removeItem(this.KEYS.rules);
+        localStorage.setItem(this.KEYS.rulesVer, this.RULES_DATA_VERSION);
+        return structuredClone(DEFAULT_DB);
+      }
       const raw = localStorage.getItem(this.KEYS.rules);
       if (!raw) return structuredClone(DEFAULT_DB);
       const parsed = JSON.parse(raw);
@@ -3516,7 +3432,11 @@ const STORAGE = {
 
   /** Save rules DB – handles storage quota */
   saveRules(db) {
-    try { localStorage.setItem(this.KEYS.rules, JSON.stringify(db)); return true; }
+    try {
+      localStorage.setItem(this.KEYS.rules, JSON.stringify(db));
+      localStorage.setItem(this.KEYS.rulesVer, this.RULES_DATA_VERSION);
+      return true;
+    }
     catch (err) { return false; }
   },
 
@@ -7331,9 +7251,10 @@ const app = {
     this.goToPage(0);
     this._pageScrolls = {}; // limpiar posiciones guardadas obsoletas
 
-    // 1. Stats (3d6 cada uno)
+    // 1. Stats — Método A (v5.2): 4d6, descarta el menor
     STATS.forEach(s => {
-      const roll = [0,1,2].reduce((sum, _) => sum + Math.floor(Math.random()*6)+1, 0);
+      const dice = [0,0,0,0].map(() => Math.floor(Math.random()*6)+1).sort((a,b)=>a-b);
+      const roll = dice[1] + dice[2] + dice[3]; // suma los 3 mayores
       const el = document.getElementById('base_'+s); if(el) el.value = roll;
     });
 
@@ -7400,9 +7321,11 @@ const app = {
     const armors = Object.entries(this.DB.armors||{}).filter(([k])=>k!=='laminar');
     if (armors.length) { const [k,v]=armors[Math.floor(Math.random()*armors.length)]; this.inventory.push({uid:Date.now()+1,name:v.name,slots:v.slots||1,type:'armors',dbKey:k,dbData:v}); }
     if (weapons.length) { const [k,v]=weapons[Math.floor(Math.random()*weapons.length)]; this.inventory.push({uid:Date.now()+2,name:v.name,slots:v.slots||1,type:'weapons',dbKey:k,dbData:v}); }
-    this.inventory.push({uid:Date.now()+3,name:'Raciones (3)',slots:1,type:'misc'});
-    this.inventory.push({uid:Date.now()+4,name:'Antorchas (5)',slots:1,type:'misc'});
-    this.gold = Math.floor(Math.random()*20)+10;
+    this.inventory.push({uid:Date.now()+3,name:'Raciones (×5) · Ud8',slots:1,type:'misc'});
+    this.inventory.push({uid:Date.now()+4,name:'Antorchas (×5) · Ud6',slots:1,type:'misc'});
+    this.inventory.push({uid:Date.now()+5,name:'Morral / Mochila (+5 slots)',slots:1,type:'misc'});
+    // Monedas iniciales: 4d6 × 10 pp (promedio Sutil; afinar según Arquetipo)
+    this.gold = ([0,0,0,0].reduce(s=>s+Math.floor(Math.random()*6)+1,0)) * 10;
     this.syncCombatOptions();
 
     // 12. Equipar
