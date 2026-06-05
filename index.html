@@ -3379,29 +3379,31 @@ const DEFAULT_DB = {
      + Generales. Requisitos siempre de atributo o nivel.    */
   talents:{
     "combate":[
-      {id:"golpe_devastador",name:"Golpe Devastador",
-       desc:"Ataque (2 PA) + 2 Adrenalina: +1d8 daño y Salvación FUE (CD 12+MOD FUE) o el objetivo queda Derribado. Talento de prueba.",
-       req:"FUE 13+ · Cualquier Arquetipo",
+      {id:"golpe_tactico",name:"Golpe Táctico",
+       desc:"Al impactar, gasta 2 Adrenalina para añadir un efecto táctico: Empujar 10 pies, Derribar o Sacudir. Un efecto por ataque. (Talento de prueba)",
+       req:"FUE 13+ o DES 13+ · Nivel 1",
        grades:[
-         {g:1,d:"2 Adr → +1d8 daño. Salvación FUE o Derribado."},
-         {g:2,d:"Nivel 3+: +2d8. CD 14+MOD FUE. Si ya está Derribado → Desgarro (DoT Ud6, −2 CA)."},
-         {g:3,d:"Nivel 6+: al fallar la Salvación, todos los enemigos en 10 pies hacen la misma Salvación o caen Derribados."}
+         {g:1,d:"Al impactar, 2 Adrenalina → un efecto: Empujar 10 pies (Salv. FUE), Derribar (Salv. FUE) o Sacudir (Salv. CON, Desventaja en su próximo ataque). Decisión tras el impacto, antes del daño."},
+         {g:2,d:"Nivel 3+: los efectos no cuestan Adrenalina una vez por turno. CD = 12 + MOD FUE/DES (la mayor). Añade Marcar (Desventaja del objetivo al atacar a tus aliados hasta tu próximo turno)."},
+         {g:3,d:"Nivel 6+: dos efectos en el mismo ataque (pagas Adrenalina una vez). Al Derribar: ataque adicional de 1 PA contra el caído sin coste de Adrenalina."}
+       ]}
+    ],
+    "letalidad":[
+      {id:"golpe_furtivo",name:"Golpe Furtivo",
+       desc:"Al atacar con Ventaja, o con un aliado adyacente al objetivo y tú sin Desventaja: +2d6 de daño. Una vez por turno. (Talento de prueba)",
+       req:"DES 13+ · Nivel 1",
+       grades:[
+         {g:1,d:"Con Ventaja, o aliado adyacente al objetivo y tú sin Desventaja: +2d6 daño. Una vez por turno."},
+         {g:2,d:"Nivel 3+: el daño sube a +3d6. Puede aplicarse en el turno de otro al atacar con Reacción. Si reduce al objetivo a 0 PV: recuperas 3 Adrenalina."},
+         {g:3,d:"Nivel 6+: el daño sube a +5d6. Gasta 8 Adrenalina antes de atacar (Golpe Maestro): si impactas y el objetivo tiene menos de la mitad de sus PV, maximizas los dados de Golpe Furtivo (no los del arma)."}
        ]}
     ],
     "general":[
-      {id:"golpe_furtivo",name:"Golpe Furtivo",
-       desc:"+1d6 de daño cuando tienes Ventaja en el ataque o un aliado es adyacente al objetivo (y tú sin Desventaja). Una vez por turno. Talento de prueba.",
-       req:"Cualquier Arquetipo",
+      {id:"iniciado_mistico",name:"Iniciado Místico",
+       desc:"Abre el acceso al sistema mágico. Elige una Fuente (Erudición, Pacto, Herencia, Divinidad, Naturaleza o Psiónica): obtienes su Rasgo de Origen, 2 Trucos y 1 Axioma Nv1, y aprendes Axiomas Nv1–3. (Talento de prueba)",
+       req:"INT, SAB o CAR 13+ · Cualquier Arquetipo · Nivel 1",
        grades:[
-         {g:1,d:"+1d6 daño (Ventaja o aliado adyacente). 1/turno."},
-         {g:2,d:"+2d6 daño."},
-         {g:3,d:"+3d6 daño. 1/turno sin Ventaja si el aliado mantiene el flanqueo."}
-       ]},
-      {id:"despertar",name:"Iniciado Místico",
-       desc:"Abre el Canal Arcano. Elige una Fuente (Erudición INT · Pacto CAR · Herencia CAR · Divinidad SAB/CAR · Naturaleza SAB · Psiónica INT/SAB) y obtén 2 Trucos + 1 Axioma Nv1. +6 Ingenio permanente. Talento de prueba.",
-       req:"INT, SAB o CAR 13+ según la Fuente elegida",
-       grades:[
-         {g:1,d:"Canal Arcano abierto. CD de Axioma = 8 + PB + MOD de la Fuente. +6 Ingenio permanente."}
+         {g:1,d:"Elige una Fuente de Poder y obtén su Rasgo de Origen + 2 Trucos + 1 Axioma Nv1. Permite aprender Axiomas Nv1–3 de tu Fuente. CD de Axioma = 8 + PB + MOD del Atributo de la Fuente. Prerrequisito de Despertar Sobrenatural en Arquetipos no nativos."}
        ]}
     ]
   },
@@ -3420,7 +3422,7 @@ const DEFAULT_PORTRAIT = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/200
 const STATS = ['FUE','DES','CON','INT','SAB','CAR'];
 
 /** Proficiency bonus thresholds by level */
-const PROF_THRESHOLDS = [[9,4],[5,3],[1,2]]; // S&S v5.0: Nv1-4→+2, Nv5-8→+3, Nv9-10→+4
+const PROF_THRESHOLDS = [[9,4],[5,3],[1,2]]; // S&S: Nv1-4→+2, Nv5-8→+3, Nv9-10→+4 (PB solo en Salvaciones elegidas y ataques; NO en tiradas de habilidad)
 
 /** XP required to reach each level (index = current level) */
 const XP_TABLE = [0, 300, 900, 2100, 4500, 9000, 16000, 28000, 44000, 62000];
@@ -3474,7 +3476,7 @@ const TIMING = {
 const STORAGE = {
   SCHEMA_VERSION: 2,
   /** Bump when DEFAULT_DB rules data changes so cached rules refresh automatically. */
-  RULES_DATA_VERSION: '5.2-app',
+  RULES_DATA_VERSION: '5.2-app-r2',
   KEYS: {
     rules:          'sands_rules',
     rulesVer:       'sands_rules_ver',
@@ -4478,7 +4480,7 @@ const app = {
   },
 
   getMod(val) {
-    // Tabla S&S v5.0 (Cap.0 pág.1) — NO es floor((val-10)/2)
+    // Tabla de modificadores de atributo S&S — NO es floor((val-10)/2)
     // 3→-3 · 4-5→-2 · 6-8→-1 · 9-11→0 · 12-14→+1 · 15-16→+2 · 17-18→+3 · 19-20→+4
     if (val <= 3)  return -3;
     if (val <= 5)  return -2;
@@ -4705,9 +4707,12 @@ const app = {
     const ingScore = Math.max(final.INT||8, final.SAB||8, final.CAR||8);
     let maxIng = ingScore + lvl + (arq?.ing_bonus||0);
 
-    // Talent bonuses
+    // Talent bonuses (v5.2): Despertar Sobrenatural otorga +6 Ingenio permanente.
+    // Iniciado Místico abre el Canal pero NO suma Ingenio. La Afinidad Mística
+    // Innata de ciertos Descriptores suma +3 si se elige (no automática).
     const hasTalent = (id) => !!document.querySelector(`input[name="chk_talents_hidden"][data-id="${id}"]`);
-    if (hasTalent('despertar')) maxIng += 6;
+    if (hasTalent('despertar_sobrenatural') || hasTalent('despertar')) maxIng += 6;
+    if (hasTalent('poderio_arcano')) maxIng += 0; // Poderío no añade Ingenio base
 
     $('max_pv').textContent = maxPv;
     $('max_adr').textContent = Math.max(0, maxAdr);
