@@ -52,10 +52,13 @@
   --void-rgb: 5,4,10;
 
   /* Typography */
-  --ft: 'Cinzel Decorative', serif;
-  --fd: 'Cinzel', serif;
-  --fb: 'Spectral', serif;
-  --fm: 'JetBrains Mono', monospace;
+  /* Typography — primary webfonts with strong offline fallbacks.
+     If Google Fonts can't load (no connection / firewall), these system
+     serif & mono stacks preserve the display/serif character of the UI. */
+  --ft: 'Cinzel Decorative', 'Trajan Pro', 'Cormorant Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --fd: 'Cinzel', 'Optima', 'Cormorant Garamond', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --fb: 'Spectral', 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  --fm: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, 'Liberation Mono', monospace;
 
   /* Shadows */
 
@@ -1954,7 +1957,7 @@ body.port-border-none .port-card-edit{
 /* ─────────────────────────────────────────
    TALENT PANEL
    ───────────────────────────────────────── */
-#talent_panel .fs-body{flex-direction:row}
+#talent_panel .fs-body{flex-direction:column}
 
 /* Category rail — left sidebar on tablet, top chips on mobile */
 #talent_panel .tms{
@@ -1975,6 +1978,55 @@ body.port-border-none .port-card-edit{
   scrollbar-width:none;
 }
 #talent_panel .tmct::-webkit-scrollbar{display:none}
+
+/* ── Talent search + filter toolbar ── */
+#talent_panel .tm-toolbar{
+  flex-shrink:0;display:flex;flex-direction:column;gap:6px;
+  padding:8px 10px;background:var(--void);
+  border-bottom:1px solid rgba(61,50,84,.3);
+}
+#talent_panel .tm-search{
+  width:100%;font-family:var(--fb);font-size:.82rem;
+  background:var(--raised);color:var(--text);
+  border:1px solid rgba(61,50,84,.55);border-radius:var(--r);
+  padding:8px 10px;outline:none;
+  transition:border-color .15s,background .15s;
+}
+#talent_panel .tm-search:focus{border-color:rgba(200,169,110,.55);background:var(--panel)}
+#talent_panel .tm-search::placeholder{color:var(--muted)}
+#talent_panel .tm-filters{display:flex;gap:6px;flex-wrap:wrap}
+.tm-fchip{
+  font-family:var(--fd);font-size:.6rem;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);
+  background:rgba(61,50,84,.18);border:1px solid rgba(61,50,84,.4);
+  border-radius:2px;padding:5px 10px;cursor:pointer;
+  display:inline-flex;align-items:center;gap:5px;
+  transition:background .14s,border-color .14s,color .14s;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+@media(hover:hover){.tm-fchip:hover{border-color:rgba(61,50,84,.7);color:var(--text)}}
+.tm-fchip.active{
+  color:var(--goldb);background:rgba(200,169,110,.12);
+  border-color:rgba(200,169,110,.4);
+}
+.tm-fchip .tm-fchip-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--rim);
+  transition:background .14s,box-shadow .14s;
+}
+.tm-fchip.active .tm-fchip-dot{background:var(--gold);box-shadow:0 0 6px rgba(200,169,110,.5)}
+/* Requirement state on talent cards */
+.tc.tc-locked{opacity:.62}
+.tc .tc-req{
+  display:inline-flex;align-items:center;gap:4px;margin-top:5px;
+  font-family:var(--fm);font-size:.58rem;line-height:1.3;
+  color:var(--dim);
+}
+.tc.tc-locked .tc-req{color:var(--blood)}
+.tc .tc-req-ok{color:var(--sage)}
+.tm-empty{
+  color:var(--muted);margin-top:28px;text-align:center;
+  font-style:italic;font-size:.8rem;padding:0 16px;
+}
 
 /* Count badge in footer */
 .talent-count-badge{
@@ -2153,6 +2205,7 @@ body.port-border-none .port-card-edit{
 @media(max-width:480px){
   /* Talent: categories become horizontal scrollable chips */
   #talent_panel .fs-body{flex-direction:column}
+  #talent_panel .tm-cols{flex-direction:column}
   #talent_panel .tms{
     width:auto;flex-shrink:0;border-right:none;
     border-bottom:1px solid rgba(61,50,84,.4);
@@ -2192,7 +2245,14 @@ body.port-border-none .port-card-edit{
 }
 
 </style>
-<!-- Fonts injected via JS so they never block window.load or app init -->
+<!-- Fonts injected via JS so they never block window.load or app init.
+     OFFLINE/SELF-HOST: to guarantee the display fonts work with no connection,
+     download the .woff2 files for Cinzel, Cinzel Decorative, Spectral and
+     JetBrains Mono, place them next to this file, add @font-face rules, and
+     cache them in sw.js. Until then, the CSS fallback stacks above keep the
+     serif/display character intact offline. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <script>
 (function(){
   const l = document.createElement('link');
@@ -2236,7 +2296,7 @@ body.port-border-none .port-card-edit{
 <div id="toast-ct" role="status" aria-live="polite" aria-atomic="false"></div>
 <div id="toast-ct-err" role="alert" aria-live="assertive" aria-atomic="true" style="position:fixed;bottom:calc(var(--nav) + var(--safe-b) + 12px);left:50%;transform:translateX(-50%);z-index:998;pointer-events:none"></div>
 <div id="dice-overlay">
-  <div class="dice-backdrop" id="dice-backdrop" onclick="app.closeDiceOverlay()"></div>
+  <div class="dice-backdrop" id="dice-backdrop" data-action="closeDiceOverlay"></div>
   <div class="dice-card" id="dice-card">
     <div class="dice-label" id="dice-label">Tirada</div>
     <div class="dice-faces-row" id="dice-faces-row">
@@ -2248,14 +2308,14 @@ body.port-border-none .port-card-edit{
       <span class="dice-total" id="dice-total">—</span>
     </div>
     <span class="dice-badge" id="dice-badge" style="display:none"></span>
-    <button class="dice-close-btn" id="dice-close-btn" onclick="app.closeDiceOverlay()" aria-label="Cerrar resultado de dados">✕ Cerrar</button>
+    <button class="dice-close-btn" id="dice-close-btn" data-action="closeDiceOverlay" aria-label="Cerrar resultado de dados">✕ Cerrar</button>
     <div style="font-family:var(--fm);font-size:.5rem;color:var(--border);letter-spacing:.08em;margin-top:2px">↓ desliza para cerrar</div>
   </div>
 </div>
 <input type="file" id="img_input" accept="image/*" style="display:none" onchange="app.startCrop(this)">
 <div id="apt_panel" class="fs-panel" role="region" aria-label="Gestor de aptitudes">
   <div class="fs-hdr">
-    <button class="fs-hdr-back" onclick="app.closeAptManager()" aria-label="Volver"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="fs-hdr-back" data-action="closeAptManager" aria-label="Volver"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="fs-hdr-center">
       <span class="fs-hdr-ttl" id="apt_manager_title">Gestor de Trucos</span>
       <span class="fs-hdr-sub" id="apt_manager_sub">Selecciona los trucos del personaje</span>
@@ -2287,7 +2347,7 @@ body.port-border-none .port-card-edit{
             <span class="mft-count" id="apt_sel_count">0</span>
           </div>
           <button class="bmini br" style="font-size:.56rem;padding:3px 8px;min-height:30px"
-            onclick="app._aptClearAll()">✕ Limpiar</button>
+            data-action="_aptClearAll">✕ Limpiar</button>
         </div>
         <div class="apt-col-body" id="apt_selected_list">
           <p id="apt_selected_empty" style="display:none;text-align:center;color:var(--muted);
@@ -2304,7 +2364,7 @@ body.port-border-none .port-card-edit{
     <div class="fs-footer-info">
       <span id="apt_type_label" style="color:var(--muted)">—</span>
     </div>
-    <button class="btn btn-gold" onclick="app.closeAptManager()">✓ Confirmar</button>
+    <button class="btn btn-gold" data-action="closeAptManager">✓ Confirmar</button>
   </div>
 </div>
 <input type="file" id="bg_home_input" accept="image/*" style="display:none" onchange="app.loadBgImage('home',this)">
@@ -2324,7 +2384,7 @@ body.port-border-none .port-card-edit{
 
     <!-- Primary actions -->
     <div class="home-actions-primary">
-      <button class="home-btn-new" onclick="app.newChar()" aria-label="Crear nuevo personaje">
+      <button class="home-btn-new" data-action="newChar" aria-label="Crear nuevo personaje">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Nuevo Personaje
       </button>
@@ -2358,7 +2418,7 @@ body.port-border-none .port-card-edit{
         Importar Reglas
       </button>
       <div class="home-footer-sep"></div>
-      <button class="home-footer-btn" onclick="app.openDatabaseEditor()" aria-label="Editor de base de datos">
+      <button class="home-footer-btn" data-action="openDatabaseEditor" aria-label="Editor de base de datos">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
         Editor de Reglas
       </button>
@@ -2369,14 +2429,14 @@ body.port-border-none .port-card-edit{
 <div id="app-screen" class="screen hidden">
   <div class="app-shell" role="main">
     <header class="app-hdr">
-      <button class="app-hdr-back" onclick="app.goHome()" title="Volver" aria-label="Volver al inicio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+      <button class="app-hdr-back" data-action="goHome" title="Volver" aria-label="Volver al inicio"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
       <div style="flex:1;text-align:center;min-width:0">
         <span class="app-hdr-ttl">Stars &amp; Sorcery</span>
         <div class="last-saved" id="last_saved_lbl"></div>
       </div>
-      <button class="app-hdr-save" onclick="app.saveChar()" aria-label="Guardar personaje" title="Guardar">Guardar</button>
+      <button class="app-hdr-save" data-action="saveChar" aria-label="Guardar personaje" title="Guardar">Guardar</button>
       <div class="sdial" id="sdial">
-        <button class="sdial-btn" onclick="app.toggleDial()" title="Acciones" aria-label="Abrir menú de acciones" aria-expanded="false" id="sdial_btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+        <button class="sdial-btn" data-action="toggleDial" title="Acciones" aria-label="Abrir menú de acciones" aria-expanded="false" id="sdial_btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
         <div class="sdial-menu" id="sdial_menu">
           <button class="sdial-item" onclick="app.randomize();app.toggleDial()" title="Personaje aleatorio" aria-label="Generar personaje aleatorio"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="4"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="16" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="8" cy="16" r="1.2" fill="currentColor" stroke="none"/><circle cx="16" cy="16" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></button>
           <button class="sdial-item sdial-danger" onclick="app.confirmClear();app.toggleDial()" title="Resetear hoja" aria-label="Resetear hoja de personaje"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
@@ -2418,7 +2478,7 @@ body.port-border-none .port-card-edit{
                   </div>
                 </div>
                 <div style="margin-bottom:4px"><span class="fl">Biografía</span><textarea id="char_concept" placeholder="Bio del personaje…" style="min-height:44px;font-size:.8rem"></textarea></div>
-                <button class="bcnf" onclick="app.confirmPersonal()">✓ Confirmar</button>
+                <button class="bcnf" data-action="confirmPersonal">✓ Confirmar</button>
               </div>
             </div>
             <!-- SUMMARY MODE -->
@@ -2641,7 +2701,7 @@ body.port-border-none .port-card-edit{
                 <span id="talent_count_main" style="color:var(--gold);font-weight:700">0</span><span style="color:var(--rim)">/3</span>
               </div>
             </div>
-            <div style="text-align:center;margin-bottom:6px"><button class="btn btn-g" onclick="app.openTalentManager()">Abrir Gestor de Talentos</button></div>
+            <div style="text-align:center;margin-bottom:6px"><button class="btn btn-g" data-action="openTalentManager">Abrir Gestor de Talentos</button></div>
             <div id="talents_summary_view" style="display:none"><div id="talents_summary_list" style="display:flex;flex-direction:column;gap:4px"></div></div>
           </div>
 
@@ -2785,12 +2845,12 @@ body.port-border-none .port-card-edit{
                   <div><span class="fl">Categ.</span><select id="inv_db_category" aria-label="Categoría del objeto" onchange="app.updateDbSelect()" style="font-size:.75rem"><option value="weapons">Armas</option><option value="armors">Armaduras</option><option value="shields">Escudos</option><option value="misc">Misc.</option></select></div>
                   <div><span class="fl">Objeto</span><select id="inv_db_item" aria-label="Objeto a añadir" style="font-size:.75rem"></select></div>
                   <div></div>
-                  <button class="btn btn-p" style="font-size:.67rem;padding:6px 9px;align-self:end" onclick="app.addFromDB()">+ Añadir</button>
+                  <button class="btn btn-p" style="font-size:.67rem;padding:6px 9px;align-self:end" data-action="addFromDB">+ Añadir</button>
                 </div>
               </div>
               <div class="coin" style="margin-bottom:8px"><label>Oro (PO)</label><input type="number" id="gold_coins_edit" value="0" min="0" onchange="app.syncGold('edit')" inputmode="numeric" aria-label="Monedas de oro"></div>
               <div id="inv_backpack_list" style="display:flex;flex-direction:column;gap:4px"></div>
-              <div style="text-align:center;margin-top:8px"><button class="bedit" onclick="app.addCustomItem()">+ Objeto Personalizado</button></div>
+              <div style="text-align:center;margin-top:8px"><button class="bedit" data-action="addCustomItem">+ Objeto Personalizado</button></div>
               <button class="bcnf" onclick="app.confirmSection('equipment')">✓ Confirmar</button>
             </div>
             <div id="equipment_summary_view" style="display:none">
@@ -2818,7 +2878,7 @@ body.port-border-none .port-card-edit{
               <span class="leth-summary-badge" id="campana_leth_badge" data-tier="1">
                 <span id="campana_leth_label">Letalidad 1 — +1 PV/nivel</span>
               </span>
-              <button class="bedit" id="campana_edit_btn" onclick="app.editCampana()">✏ Editar</button>
+              <button class="bedit" id="campana_edit_btn" data-action="editCampana">✏ Editar</button>
             </div>
             <!-- Edit view -->
             <div id="campana_edit" style="display:none;margin-top:8px">
@@ -2844,7 +2904,7 @@ body.port-border-none .port-card-edit{
                 </button>
               </div>
               <p style="font-family:var(--fm);font-size:.62rem;color:var(--muted);margin-top:8px;font-style:italic;line-height:1.45">PV adicionales a partir del Nivel 2. No afectan al Nivel 1.</p>
-              <button class="bcnf" onclick="app.confirmCampana()">✓ Confirmar</button>
+              <button class="bcnf" data-action="confirmCampana">✓ Confirmar</button>
             </div>
           </div>
           <div class="panel"><div class="ph"><span class="pt" id="detail_desc_title">Linaje: —</span></div><div id="detail_desc_body"><p style="color:var(--muted);font-size:.8rem;font-style:italic">Selecciona un Linaje.</p></div></div>
@@ -2894,26 +2954,26 @@ body.port-border-none .port-card-edit{
           <span id="scroll_preserve_lbl" style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Recordar posición al volver</span>
           <div style="font-family:var(--fm);font-size:.6rem;color:var(--border);margin-top:2px">Mantiene el scroll de cada sección al cambiar de pestaña</div>
         </div>
-        <button id="scroll_preserve_btn" class="toggle-btn" onclick="app.toggleScrollPreserve()" aria-pressed="false" title="Activar/desactivar recordar posición de scroll" aria-label="Activar recordar posición al volver"></button>
+        <button id="scroll_preserve_btn" class="toggle-btn" data-action="toggleScrollPreserve" aria-pressed="false" title="Activar/desactivar recordar posición de scroll" aria-label="Activar recordar posición al volver"></button>
       </div>
     </div>
     <!-- ── RETRATO ── -->
     <div>
       <div class="dvdr">Retrato</div>
       <!-- Confirm portrait button -->
-      <button class="bcnf" id="confirm_portrait_btn" onclick="app.confirmPortraitSettings()" style="margin-top:0;margin-bottom:12px">✓ Aplicar al Personaje</button>
+      <button class="bcnf" id="confirm_portrait_btn" data-action="confirmPortraitSettings" style="margin-top:0;margin-bottom:12px">✓ Aplicar al Personaje</button>
       <!-- Per-char prefs notice -->
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
         <div>
           <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Guardar ajustes con personaje</span>
           <div style="font-family:var(--fm);font-size:.6rem;color:var(--border);margin-top:2px">Tamaño, forma y fuente se restauran al cargar este personaje</div>
         </div>
-        <button id="per_char_prefs_btn" class="toggle-btn" onclick="app.togglePerCharPrefs()" aria-pressed="false" aria-label="Guardar ajustes visuales por personaje"></button>
+        <button id="per_char_prefs_btn" class="toggle-btn" data-action="togglePerCharPrefs" aria-pressed="false" aria-label="Guardar ajustes visuales por personaje"></button>
       </div>
       <!-- Border toggle -->
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
         <span style="font-family:var(--fd);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">Desactivar Borde Premium</span>
-        <button id="port_border_btn" class="toggle-btn" onclick="app.togglePortraitBorder()" aria-pressed="true" aria-label="Cambiar entre borde premium y borde sutil del retrato"></button>
+        <button id="port_border_btn" class="toggle-btn" data-action="togglePortraitBorder" aria-pressed="true" aria-label="Cambiar entre borde premium y borde sutil del retrato"></button>
       </div>
       <!-- Size -->
       <div style="margin-bottom:10px">
@@ -2966,20 +3026,20 @@ body.port-border-none .port-card-edit{
         <button class="fs-btn theme-btn" data-theme="parchment" onclick="app.setTheme('parchment')" title="Pergamino" style="flex:1;padding:6px 2px;font-size:.58rem">Pergamino</button>
       </div>
     </div>
-    <div><div class="dvdr">Reglas del Juego</div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn btn-g" style="width:100%" onclick="document.getElementById('json_rules_input').click()">↑ Importar Reglas (JSON)</button><button class="btn btn-gold" style="width:100%" onclick="app.openDatabaseEditor()">⚙ Editor de Base de Datos</button></div></div>
-    <div><div class="dvdr">Personaje</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><button class="btn btn-g" onclick="app.saveChar();document.getElementById('settings_modal').close()">💾 Guardar</button><button class="btn btn-g" onclick="app.exportJSON()">↓ Exportar JSON</button></div></div>
+    <div><div class="dvdr">Reglas del Juego</div><div style="display:flex;flex-direction:column;gap:6px"><button class="btn btn-g" style="width:100%" onclick="document.getElementById('json_rules_input').click()">↑ Importar Reglas (JSON)</button><button class="btn btn-gold" style="width:100%" data-action="openDatabaseEditor">⚙ Editor de Base de Datos</button></div></div>
+    <div><div class="dvdr">Personaje</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><button class="btn btn-g" onclick="app.saveChar();document.getElementById('settings_modal').close()">💾 Guardar</button><button class="btn btn-g" data-action="exportJSON">↓ Exportar JSON</button></div></div>
     <button class="bcnf" style="width:100%;margin-top:4px" onclick="document.getElementById('settings_modal').close()">✓ Confirmar</button>
   </div>
 </dialog>
 <div id="db_panel" class="fs-panel" role="region" aria-label="Editor de reglas">
   <div class="fs-hdr" style="background:linear-gradient(180deg,rgba(10,8,24,.97) 0%,var(--raised) 100%)">
-    <button class="fs-hdr-back" onclick="app.closeDatabaseEditor()" aria-label="Volver"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="fs-hdr-back" data-action="closeDatabaseEditor" aria-label="Volver"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="fs-hdr-center">
       <span class="fs-hdr-ttl" style="color:var(--ice)" id="db_editor_title">Editor de Reglas</span>
       <span class="fs-hdr-sub">Base de datos del sistema de juego</span>
     </div>
     <div class="fs-hdr-actions">
-      <button class="btn btn-g" style="font-size:.58rem;padding:5px 10px;min-height:36px;color:var(--dim)" onclick="app.exportRulesDB()" aria-label="Exportar reglas">↓ Exportar</button>
+      <button class="btn btn-g" style="font-size:.58rem;padding:5px 10px;min-height:36px;color:var(--dim)" data-action="exportRulesDB" aria-label="Exportar reglas">↓ Exportar</button>
     </div>
   </div>
 
@@ -3011,20 +3071,37 @@ body.port-border-none .port-card-edit{
 </div>
 <div id="talent_panel" class="fs-panel" role="region" aria-label="Gestor de talentos">
   <div class="fs-hdr">
-    <button class="fs-hdr-back" onclick="app.closeTalentManager()" aria-label="Volver"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="fs-hdr-back" data-action="closeTalentManager" aria-label="Volver"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
     <div class="fs-hdr-center">
       <span class="fs-hdr-ttl" id="talent_modal_title">Gestor de Talentos</span>
       <span class="fs-hdr-sub">Elige hasta 3 talentos para el personaje</span>
     </div>
     <div class="fs-hdr-actions">
-      <button class="btn btn-g" style="font-size:.6rem;padding:5px 10px;min-height:36px;color:var(--blood);border-color:rgba(168,42,58,.4)" onclick="app.clearTalents()">✕ Limpiar</button>
+      <button class="btn btn-g" style="font-size:.6rem;padding:5px 10px;min-height:36px;color:var(--blood);border-color:rgba(168,42,58,.4)" data-action="clearTalents">✕ Limpiar</button>
     </div>
   </div>
 
   <div class="fs-body">
-    <div class="tms" id="tm_categories" style="overflow-y:auto"></div>
-    <div class="tmct" id="tm_list">
-      <p style="color:var(--muted);margin-top:28px;text-align:center;font-style:italic;font-size:.8rem">Selecciona una categoría.</p>
+    <div class="tm-toolbar">
+      <input class="tm-search" id="tm_search" type="search"
+        placeholder="Buscar talento…" autocomplete="off" spellcheck="false"
+        oninput="app._talentFilter()" aria-label="Buscar talento por nombre o efecto">
+      <div class="tm-filters">
+        <button type="button" class="tm-fchip" id="tm_filter_eligible"
+          onclick="app._toggleTalentFilter('eligible', this)" aria-pressed="false">
+          <span class="tm-fchip-dot"></span>Solo los que cumplo
+        </button>
+        <button type="button" class="tm-fchip" id="tm_filter_arq"
+          onclick="app._toggleTalentFilter('arq', this)" aria-pressed="false">
+          <span class="tm-fchip-dot"></span>Mi Arquetipo
+        </button>
+      </div>
+    </div>
+    <div class="tm-cols" style="flex:1;min-height:0;display:flex;overflow:hidden">
+      <div class="tms" id="tm_categories" style="overflow-y:auto"></div>
+      <div class="tmct" id="tm_list">
+        <p class="tm-empty">Selecciona una categoría.</p>
+      </div>
     </div>
   </div>
 
@@ -3032,14 +3109,14 @@ body.port-border-none .port-card-edit{
     <div class="fs-footer-info">
       Talentos: <span class="mft-count" id="talent_count_modal">0</span><span style="color:var(--border)">/3</span>
     </div>
-    <button class="btn btn-gold" onclick="app.closeTalentManager()">✓ Confirmar</button>
+    <button class="btn btn-gold" data-action="closeTalentManager">✓ Confirmar</button>
   </div>
 </div>
 <dialog id="crop_modal" class="modal" aria-labelledby="crop_modal_title">
   <div class="crl">
     <div class="mhd">
       <span class="mttl" id="crop_modal_title">✦ Ajustar Retrato</span>
-      <button class="bcls" onclick="app.cancelCrop()" aria-label="Cancelar recorte de retrato">✕</button>
+      <button class="bcls" data-action="cancelCrop" aria-label="Cancelar recorte de retrato">✕</button>
     </div>
     <div class="crws" id="crop_ws"
       onmousedown="app.cropDragStart(event)"
@@ -3061,11 +3138,11 @@ body.port-border-none .port-card-edit{
         <div class="cr-actions">
           <button class="cr-rot-btn" onclick="app.cropRotate(-90)">↺ −90°</button>
           <button class="cr-rot-btn" onclick="app.cropRotate(90)">↻ +90°</button>
-          <button class="cr-fit-btn" onclick="app.cropFit()">⊡ Fit</button>
+          <button class="cr-fit-btn" data-action="cropFit">⊡ Fit</button>
         </div>
       </div>
       <div class="cr-apply-row">
-        <button class="bsave" onclick="app.applyCrop()">✓ Aplicar Retrato</button>
+        <button class="bsave" data-action="applyCrop">✓ Aplicar Retrato</button>
       </div>
     </div>
   </div>
@@ -3499,6 +3576,16 @@ const app = {
   _finalMods:  {FUE:0,DES:0,CON:0,INT:0,SAB:0,CAR:0},  // P1 fix: cached final modifiers
 
   init() {
+    // ── Event delegation for [data-action] (Mejora 6) ──
+    // A single listener dispatches simple no-arg calls to app methods.
+    // CSP-friendlier and lighter than dozens of inline onclick handlers.
+    document.addEventListener('click', e => {
+      const el = e.target.closest('[data-action]');
+      if (!el) return;
+      const fn = el.getAttribute('data-action');
+      if (fn && typeof this[fn] === 'function') this[fn]();
+    });
+
     // Load rules — fallback to DEFAULT_DB if storage is corrupt
     try {
       this.DB = STORAGE.loadRules();
@@ -4855,7 +4942,7 @@ const app = {
         </div>
         <div style="display:flex;gap:8px;margin-top:12px">
           <button class="btn btn-g" style="flex:1" onclick="document.getElementById('custom_item_overlay').remove()">Cancelar</button>
-          <button class="btn btn-p" style="flex:1" onclick="app.saveCustomItem()">✓ Guardar</button>
+          <button class="btn btn-p" style="flex:1" data-action="saveCustomItem">✓ Guardar</button>
         </div>
       </div>`;
     overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
@@ -5250,7 +5337,7 @@ const app = {
     });
   },
 
-  toast(msg, type = 'info') {
+  toast(msg, type = 'info', action = null) {
     const t = { '💾':'ok','ok':'ok','OK':'ok','✦':'ok','Error':'err','error':'err','⚠':'err' }[type] ?? 'info';
 
     // ── Deduplication: if an identical message is already visible, skip ──
@@ -5294,14 +5381,26 @@ const app = {
       toast.style.cssText = 'position:relative;left:auto;transform:none';
     }
     toast.appendChild(wrap);
+    // Optional action: make the toast tappable and keep it on screen longer.
+    if (typeof action === 'function') {
+      toast.style.cursor = 'pointer';
+      toast.setAttribute('role', 'button');
+      toast.setAttribute('tabindex', '0');
+      const fire = () => { try { action(); } catch(e){} toast.remove(); };
+      toast.addEventListener('click', fire);
+      toast.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); } });
+    }
     c.appendChild(toast);
 
+    const visibleFor = (typeof action === 'function')
+      ? TIMING.TOAST_VISIBLE * 4   // give the user time to act on prompts
+      : TIMING.TOAST_VISIBLE;
     setTimeout(() => {
       toast.style.opacity = '0';
       toast.style.transform = 'translateY(8px)';
       toast.style.transition = '.3s';
       setTimeout(() => toast.remove(), TIMING.TOAST_FADE);
-    }, TIMING.TOAST_VISIBLE);
+    }, visibleFor);
   },
 
   initTalentManager() {
@@ -5311,7 +5410,10 @@ const app = {
       const btn = document.createElement('button'); btn.className='catbtn'; btn.type='button';
       btn.setAttribute('data-cat', k);
       btn.textContent = k.charAt(0).toUpperCase()+k.slice(1);
-      btn.addEventListener('click', () => this.showTalentCategory(k, btn));
+      btn.addEventListener('click', () => {
+        const sb = document.getElementById('tm_search'); if (sb) sb.value = '';
+        this.showTalentCategory(k, btn);
+      });
       cc.appendChild(btn);
     });
   },
@@ -5322,6 +5424,14 @@ const app = {
     const panel = document.getElementById('talent_panel');
     panel.classList.add('fs-open');
     document.body.style.overflow = 'hidden';
+    // Fresh stats for requirement checks; reset search box (keep filter chips sticky)
+    this.calc();
+    const sb = document.getElementById('tm_search'); if (sb) sb.value = '';
+    this._talentFilters = this._talentFilters || { eligible:false, arq:false };
+    const ec = document.getElementById('tm_filter_eligible');
+    const ac = document.getElementById('tm_filter_arq');
+    if (ec) { ec.classList.toggle('active', this._talentFilters.eligible); ec.setAttribute('aria-pressed', String(this._talentFilters.eligible)); }
+    if (ac) { ac.classList.toggle('active', this._talentFilters.arq); ac.setAttribute('aria-pressed', String(this._talentFilters.arq)); }
     const firstKey = Object.keys(this.DB.talents)[0];
     if (this.activeTalentCat) {
       const btn = document.querySelector(`#tm_categories .catbtn[data-cat="${this.activeTalentCat}"]`);
@@ -5349,16 +5459,185 @@ const app = {
     }
   },
 
+  /* ── Requirement parsing & eligibility (Mejora 2) ──
+     Parses free-text `req` like "FUE 13+ · Nivel 5+ · Despertar Sobrenatural"
+     into checkable atoms. Returns {atoms:[{kind,attr,val,raw,met}], met:bool,
+     unmet:[strings]}. Soft validation — informs, never blocks. */
+  _parseTalentReq(reqText) {
+    const out = { atoms: [], met: true, unmet: [] };
+    if (!reqText) return out;
+    // Ensure final stats are available
+    const stats = this._finalStats || (() => {
+      const s = {}; STATS.forEach(k => s[k] = parseInt(document.getElementById('base_'+k)?.value)||8); return s;
+    })();
+    const lvl = parseInt(document.getElementById('char_lvl')?.value) || 1;
+    // Talents the character currently has (by name + id)
+    const haveNames = new Set(
+      [...document.querySelectorAll('input[name="chk_talents_hidden"]')].map(h => (h.value||'').toLowerCase())
+    );
+    const haveIds = new Set(
+      [...document.querySelectorAll('input[name="chk_talents_hidden"]')].map(h => h.getAttribute('data-id')).filter(Boolean)
+    );
+    // Split on · / • first; then split remaining chunks on commas that
+    // separate distinct requirements (a comma followed by a Level/attr token),
+    // while keeping attribute lists like "INT, SAB o CAR 13+" intact.
+    const rawParts = reqText.split(/[·•\u00B7]/).map(p => p.trim()).filter(Boolean);
+    const parts = [];
+    rawParts.forEach(chunk => {
+      // Break "DES 16+, Nv3+" → ["DES 16+","Nv3+"] but not "INT, SAB o CAR 13+"
+      const segs = chunk.split(/,\s*(?=(?:Nivel|Nv)\.?\s*\d|(?:FUE|DES|CON|INT|SAB|CAR)\s*\d)/i)
+                        .map(s => s.trim()).filter(Boolean);
+      segs.forEach(s => parts.push(s));
+    });
+    parts.forEach(part => {
+      let m;
+      // Attribute alternatives where EACH has its own threshold:
+      //   "FUE 13+ o DES 13+"  /  "FUE 14+ / DES 12+"
+      const altPairs = [...part.matchAll(/\b(FUE|DES|CON|INT|SAB|CAR)\s*(\d+)\+?/gi)];
+      const hasConnector = /\b(FUE|DES|CON|INT|SAB|CAR)\b[^·]*\b[\/o]\b[^·]*\b(FUE|DES|CON|INT|SAB|CAR)\s*\d/i.test(part);
+
+      if (altPairs.length >= 2 && hasConnector) {
+        // Satisfied if ANY one attribute meets its own threshold.
+        const met = altPairs.some(p => (stats[p[1].toUpperCase()] || 0) >= parseInt(p[2]));
+        out.atoms.push({ kind:'attr', raw: part, met });
+        if (!met) { out.met = false; out.unmet.push(altPairs.map(p => `${p[1].toUpperCase()} ${p[2]}+`).join(' o ')); }
+      }
+      // Shared-threshold form: "INT, SAB o CAR 13+"  /  "FUE/DES 13+"  /  "SAB o CAR 13+"
+      // One trailing threshold applies to a list of attributes joined by , / o.
+      else if (/\b(?:FUE|DES|CON|INT|SAB|CAR)\b[\s,\/o]*(?:\b(?:FUE|DES|CON|INT|SAB|CAR)\b[\s,\/o]*)*\d+\+?/i.test(part)
+               && (m = part.match(/(\d+)\+?\s*$/) || part.match(/(\d+)\+?/))) {
+        const need = parseInt(m[1]);
+        // collect every attribute token that appears before the number
+        const upto = part.slice(0, part.indexOf(m[1]) + m[1].length);
+        const attrs = [...upto.matchAll(/\b(FUE|DES|CON|INT|SAB|CAR)\b/gi)].map(x => x[1].toUpperCase());
+        if (attrs.length) {
+          const best = Math.max(...attrs.map(a => stats[a] || 0));
+          const met = best >= need;
+          out.atoms.push({ kind:'attr', raw: part, met });
+          if (!met) { out.met = false; out.unmet.push(`${[...new Set(attrs)].join('/')} ${need}+`); }
+        } else {
+          out.atoms.push({ kind:'info', raw: part, met:true });
+        }
+      }
+      // Level: "Nivel 5+" / "Nv3+"
+      else if ((m = part.match(/\b(?:Nivel|Nv)\.?\s*(\d+)\+?/i))) {
+        const need = parseInt(m[1]);
+        const met = lvl >= need;
+        out.atoms.push({ kind:'level', raw: part, met });
+        if (!met) { out.met = false; out.unmet.push(`Nivel ${need}+`); }
+      }
+      // Prerequisite talent (e.g., "Despertar Sobrenatural", "Iniciado Místico", "Pacto de la Hoja G1")
+      else if (/^[A-ZÁÉÍÓÚÑ]/.test(part) && !/cualquier arquetipo/i.test(part)) {
+        // strip trailing "G1"/grade hints and parentheticals for the name match
+        const baseName = part.replace(/\bG\d\b/g,'').replace(/\([^)]*\)/g,'').trim().toLowerCase();
+        // Reserva/condición special-cases we can't verify → treat as informational, not blocking
+        const informational = /reserva|sin armadura|sin despertar|restringido|racial|atributo de fuente|atributo clave|requisito/i.test(part);
+        if (informational || baseName.length < 4) {
+          out.atoms.push({ kind:'info', raw: part, met:true });
+        } else {
+          const tid = this._slugify ? this._slugify(baseName) : baseName.replace(/[^a-z0-9]+/g,'_');
+          const met = haveNames.has(baseName) || haveIds.has(tid);
+          out.atoms.push({ kind:'talent', raw: part, met });
+          if (!met) { out.met = false; out.unmet.push(part.replace(/\s+/g,' ').trim()); }
+        }
+      } else {
+        out.atoms.push({ kind:'info', raw: part, met:true });
+      }
+    });
+    return out;
+  },
+
+  /** Lightweight slug used to match prerequisite talent names to ids. */
+  _slugify(s) {
+    return (s||'').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+  },
+
+  /** Is a talent available to the currently selected Arquetipo?
+      Heuristic: certain category families are gated to a core Arquetipo,
+      but the system is open by design, so we only flag the explicit
+      "NÚCLEO DURO" / arquetipo mentions found in `req`. */
+  _talentMatchesArq(t) {
+    const arqKey = document.getElementById('sel_arq')?.value || '';
+    const arqName = (this.DB.archetypes?.[arqKey]?.name || '').toLowerCase();
+    const blob = `${t.req||''}`.toLowerCase();
+    // If req names a specific arquetipo, require a match; otherwise it's open to all.
+    const named = ['audaz','sutil','sagaz'].filter(a => blob.includes(a));
+    if (named.length === 0) return true;            // open to everyone
+    return named.includes(arqName);
+  },
+
+  /** Toggle a talent filter chip and re-render. */
+  _toggleTalentFilter(which, btn) {
+    this._talentFilters = this._talentFilters || { eligible:false, arq:false };
+    this._talentFilters[which] = !this._talentFilters[which];
+    if (btn) {
+      btn.classList.toggle('active', this._talentFilters[which]);
+      btn.setAttribute('aria-pressed', String(this._talentFilters[which]));
+    }
+    this._renderTalentList();
+  },
+
+  /** Search input handler — debounced re-render. */
+  _talentFilter() {
+    if (!this._debouncedTalentRender) {
+      this._debouncedTalentRender = this._debounce(() => this._renderTalentList(), 90);
+    }
+    this._debouncedTalentRender();
+  },
+
   showTalentCategory(key, btn) {
     this.activeTalentCat = key;
     document.querySelectorAll('#tm_categories .catbtn').forEach(b=>b.classList.remove('active'));
     if (btn) btn.classList.add('active');
-    const list = document.getElementById('tm_list'); list.innerHTML='';
-    const talents = this.DB.talents[key]; if (!talents) return;
-    talents.forEach(t => {
+    this._renderTalentList();
+  },
+
+  /** Central renderer: respects active category, text search and filter chips. */
+  _renderTalentList() {
+    const list = document.getElementById('tm_list'); if (!list) return;
+    list.innerHTML = '';
+    if (!this.DB.talents) return;
+    this._talentFilters = this._talentFilters || { eligible:false, arq:false };
+    const q = (document.getElementById('tm_search')?.value || '').trim().toLowerCase();
+    const searching = q.length > 0;
+
+    // When searching, scan ALL categories; otherwise just the active one.
+    let entries = [];
+    if (searching) {
+      Object.entries(this.DB.talents).forEach(([cat, arr]) =>
+        (arr||[]).forEach(t => entries.push([cat, t])));
+    } else {
+      const cat = this.activeTalentCat;
+      (this.DB.talents[cat] || []).forEach(t => entries.push([cat, t]));
+    }
+
+    // Apply text + filter chips
+    const matchText = t => {
+      if (!searching) return true;
+      const hay = `${t.name} ${t.desc||''} ${(t.grades||[]).map(g=>g.d).join(' ')}`.toLowerCase();
+      return hay.includes(q);
+    };
+    let rows = entries.filter(([,t]) => matchText(t));
+    if (this._talentFilters.arq) rows = rows.filter(([,t]) => this._talentMatchesArq(t));
+    if (this._talentFilters.eligible) rows = rows.filter(([,t]) => this._parseTalentReq(t.req).met);
+
+    if (!rows.length) {
+      const p = document.createElement('p'); p.className = 'tm-empty';
+      p.textContent = searching ? 'Ningún talento coincide con la búsqueda.' :
+        (this._talentFilters.eligible || this._talentFilters.arq)
+          ? 'Ningún talento de esta categoría pasa los filtros activos.'
+          : 'Esta categoría está vacía.';
+      list.appendChild(p);
+      return;
+    }
+
+    rows.forEach(([cat, t]) => {
       const sel = !!document.querySelector(`input[name="chk_talents_hidden"][value="${t.name}"]`);
-      const card = document.createElement('div'); card.className=`tc${sel?' sel':''}`;
-      // Build talent card via DOM to avoid XSS from DB content
+      const reqInfo = this._parseTalentReq(t.req);
+      const card = document.createElement('div');
+      card.className = `tc${sel?' sel':''}${reqInfo.met?'':' tc-locked'}`;
       const chkEl = document.createElement('input');
       chkEl.type = 'checkbox'; chkEl.value = t.name;
       if (t.id) chkEl.setAttribute('data-id', t.id);
@@ -5367,6 +5646,14 @@ const app = {
       chkEl.addEventListener('change', () => app.toggleTalent(chkEl, t.name, t.id||''));
       const infoDiv = document.createElement('div');
       const h4 = document.createElement('h4'); h4.textContent = t.name; infoDiv.appendChild(h4);
+      // When searching, show which category the talent belongs to
+      if (searching) {
+        const tag = document.createElement('span');
+        tag.className = 'js-grade-block';
+        tag.style.color = 'var(--gold)';
+        tag.textContent = cat.charAt(0).toUpperCase()+cat.slice(1);
+        infoDiv.appendChild(tag);
+      }
       const p = document.createElement('p'); p.textContent = t.desc||''; infoDiv.appendChild(p);
       (t.grades||[]).forEach(g => {
         const sp = document.createElement('span');
@@ -5374,6 +5661,14 @@ const app = {
         sp.textContent = `G${g.g}: ${g.d}`;
         infoDiv.appendChild(sp);
       });
+      // Requirement line
+      if (t.req) {
+        const rq = document.createElement('span');
+        rq.className = 'tc-req' + (reqInfo.met ? ' tc-req-ok' : '');
+        rq.textContent = (reqInfo.met ? '✓ ' : '⚠ ') +
+          (reqInfo.met ? `Requisitos: ${t.req}` : `Te falta: ${reqInfo.unmet.join(' · ')}`);
+        infoDiv.appendChild(rq);
+      }
       card.appendChild(chkEl); card.appendChild(infoDiv);
       card.addEventListener('click', e => {
         if (e.target.type === 'checkbox') return;
@@ -5400,6 +5695,10 @@ const app = {
       card?.classList.add('sel');
     } else { hidden?.remove(); card?.classList.remove('sel'); }
     this.updateTalentCount(); this.calc();
+    // Re-render so requirement states that depend on other talents (prereqs) refresh
+    if (document.getElementById('talent_panel')?.classList.contains('fs-open')) {
+      this._renderTalentList();
+    }
   },
 
   clearTalents() {
@@ -6253,7 +6552,11 @@ const app = {
     });
   },
 
-  saveRulesToLocal() { STORAGE.saveRules(this.DB); },
+  saveRulesToLocal() {
+    const ok = STORAGE.saveRules(this.DB);
+    if (!ok) this.toast('No se pudieron guardar las reglas: almacenamiento lleno.','err');
+    return ok;
+  },
 
   exportRulesDB() {
     const a = document.createElement('a');
@@ -7324,8 +7627,11 @@ const app = {
     this.inventory.push({uid:Date.now()+3,name:'Raciones (×5) · Ud8',slots:1,type:'misc'});
     this.inventory.push({uid:Date.now()+4,name:'Antorchas (×5) · Ud6',slots:1,type:'misc'});
     this.inventory.push({uid:Date.now()+5,name:'Morral / Mochila (+5 slots)',slots:1,type:'misc'});
-    // Monedas iniciales: 4d6 × 10 pp (promedio Sutil; afinar según Arquetipo)
-    this.gold = ([0,0,0,0].reduce(s=>s+Math.floor(Math.random()*6)+1,0)) * 10;
+    // Monedas iniciales por Arquetipo (v5.2): Audaz 5d6, Sutil 4d6, Sagaz 3d6 — ×10 pp
+    const arqKeyRand = document.getElementById('sel_arq')?.value || 'sutil';
+    const coinDice = { audaz:5, sutil:4, sagaz:3 }[arqKeyRand] || 4;
+    let coinRoll = 0; for (let c=0;c<coinDice;c++) coinRoll += Math.floor(Math.random()*6)+1;
+    this.gold = coinRoll * 10;
     this.syncCombatOptions();
 
     // 12. Equipar
@@ -7386,9 +7692,36 @@ const app = {
     setTimeout(dismissLoader, TIMING.LOADER_DISMISS);
   }
 
-  // Register SW independently (non-blocking, no relation to app init)
+  // Register SW independently (non-blocking, no relation to app init).
+  // Update-aware: when a new SW takes control, prompt the user to reload so
+  // they actually receive the latest version instead of a stale cache.
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      // A new worker is installing → watch it.
+      reg.addEventListener('updatefound', () => {
+        const nw = reg.installing;
+        if (!nw) return;
+        nw.addEventListener('statechange', () => {
+          // Installed + an existing controller means this is an UPDATE, not first install.
+          if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+            try {
+              app.toast('Nueva versión disponible — toca para actualizar', 'info', () => {
+                nw.postMessage && nw.postMessage({ type: 'SKIP_WAITING' });
+                location.reload();
+              });
+            } catch(e) { /* toast may not support action; ignore */ }
+          }
+        });
+      });
+      // Check for updates each launch.
+      reg.update && reg.update();
+    }).catch(() => {});
+
+    // When the controlling worker changes, reload once to pick up new assets.
+    let _reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (_reloaded) return; _reloaded = true; location.reload();
+    });
   }
 
   // Fire as soon as DOM is ready — app needs DOM only, not external resources
