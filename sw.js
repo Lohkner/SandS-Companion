@@ -1,129 +1,87 @@
-/* ═══════════════════════════════════════════
-   Stars & Sorcery Companion — Service Worker
-   Version: 1.0.0
-   Strategies:
-     Shell/CSS/JS/Fonts → Cache-First
-     Images             → Stale-While-Revalidate
-     Navigation         → Network-first with shell fallback
-═══════════════════════════════════════════ */
+/* ============================================================
+   S&S Companion — Service Worker (versioned, update-safe)
+   ------------------------------------------------------------
+   WHY A VERSION: bump CACHE_VERSION on every release. The old
+   cache is deleted on activate, so users always get fresh assets
+   instead of a stale shell. This is the #1 fix for "I updated the
+   app but users still see the old version".
 
-/* ─── Cache version ─────────────────────────────────────────────────────────
-   Bump BUILD_TS when deploying a new version; all three cache names change
-   automatically so stale caches are evicted on the next activation.
-   ─────────────────────────────────────────────────────────────────────────── */
-const BUILD_TS       = '20250415';          // update on each deploy
-const SHELL_VERSION  = `shell-v1-${BUILD_TS}`;
-const STATIC_VERSION = `static-v1-${BUILD_TS}`;
-const IMG_VERSION    = `img-v1-${BUILD_TS}`;
-const ALL_CACHES     = [SHELL_VERSION, STATIC_VERSION, IMG_VERSION];
+   STRATEGY:
+   - HTML / navigation  → network-first (fresh app shell when online,
+     cached fallback when offline).
+   - Other assets       → stale-while-revalidate (instant load, quiet
+     background refresh).
+   ============================================================ */
 
-/* App shell: these files must open the app offline */
-const SHELL_URLS = [
+const CACHE_VERSION = 'sands-v5-2-1';   // ← bump this on each deploy
+const CACHE_NAME    = CACHE_VERSION;
+
+/* Pre-cache the minimum needed to boot offline. Add your real
+   asset filenames here (icons, self-hosted fonts, etc.). */
+const PRECACHE = [
   './',
   './index.html',
-  './manifest.json'
+  './manifest.json',
+  './Bind_Pact_Weapon.webp',
 ];
 
-/* ── INSTALL: precache app shell ── */
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(SHELL_VERSION)
-      .then(cache => cache.addAll(SHELL_URLS))
-      .then(() => self.skipWaiting()) // activate immediately when user accepts update
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(PRECACHE).catch(() => {}))
+      // Do NOT auto-skipWaiting; we wait for the user's "update" tap.
   );
 });
 
-/* ── ACTIVATE: delete old caches ── */
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(k => !ALL_CACHES.includes(k))
-          .map(k => caches.delete(k))
-      )
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     ).then(() => self.clients.claim())
   );
 });
 
-/* ── FETCH: routing ── */
-self.addEventListener('fetch', event => {
-  const { request } = event;
-  const url = new URL(request.url);
-
-  // Ignore non-GET and cross-origin requests
-  if (request.method !== 'GET') return;
-  if (url.origin !== self.location.origin) return;
-
-  // Decide strategy by resource type
-  const dest = request.destination;
-
-  if (dest === 'image') {
-    // Stale-While-Revalidate for images
-    event.respondWith(staleWhileRevalidate(IMG_VERSION, request));
-  } else if (dest === 'style' || dest === 'script' || dest === 'font') {
-    // Cache-First for static assets
-    event.respondWith(cacheFirst(STATIC_VERSION, request));
-  } else if (dest === 'document' || dest === '') {
-    // Navigation: network-first with shell fallback
-    event.respondWith(networkFirstWithShellFallback(request));
-  }
+/* The page posts this when the user taps "update". */
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
-/* ── STRATEGY: Cache-First ── */
-async function cacheFirst(cacheName, request) {
-  const cached = await caches.match(request);
-  if (cached) return cached;
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());
-    }
-    return response;
-  } catch {
-    return new Response('Offline', { status: 503 });
-  }
+function isHTMLRequest(req) {
+  return req.mode === 'navigate' ||
+         (req.headers.get('accept') || '').includes('text/html');
 }
 
-/* ── STRATEGY: Stale-While-Revalidate ── */
-async function staleWhileRevalidate(cacheName, request) {
-  const cache  = await caches.open(cacheName);
-  const cached = await cache.match(request);
+self.addEventListener('fetch', event => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
 
-  const fetchPromise = fetch(request).then(response => {
-    if (response.ok) cache.put(request, response.clone());
-    return response;
-  }).catch(() => null);
-
-  return cached || await fetchPromise || new Response('Offline', { status: 503 });
-}
-
-/* ── STRATEGY: Network-First with shell fallback ── */
-async function networkFirstWithShellFallback(request) {
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(SHELL_VERSION);
-      cache.put(request, response.clone());
-    }
-    return response;
-  } catch {
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    // Return shell as fallback
-    const shell = await caches.match('./index.html');
-    if (shell) return shell;
-    return new Response(
-      '<html><body style="background:#07060a;color:#d8cce8;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center"><div><h2 style="color:#c8a96e">Sin conexión</h2><p>La aplicación no está disponible offline en este momento.</p></div></body></html>',
-      { headers: { 'Content-Type': 'text/html' } }
+  // Network-first for the app shell / navigations.
+  if (isHTMLRequest(req)) {
+    event.respondWith(
+      fetch(req)
+        .then(res => {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then(c => c.put(req, copy)).catch(() => {});
+          return res;
+        })
+        .catch(() => caches.match(req).then(r => r || caches.match('./index.html')))
     );
+    return;
   }
-}
 
-/* ── MESSAGE: skipWaiting on demand ── */
-self.addEventListener('message', event => {
-  if (event.data?.type === 'SKIP_WAITING') {
-    self.skipWaiting();
+  // Stale-while-revalidate for everything else (same-origin).
+  if (new URL(req.url).origin === self.location.origin) {
+    event.respondWith(
+      caches.match(req).then(cached => {
+        const network = fetch(req).then(res => {
+          if (res && res.status === 200) {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then(c => c.put(req, copy)).catch(() => {});
+          }
+          return res;
+        }).catch(() => cached);
+        return cached || network;
+      })
+    );
   }
 });
