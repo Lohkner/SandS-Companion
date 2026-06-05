@@ -3582,6 +3582,11 @@ const app = {
     // A single listener dispatches simple no-arg calls to app methods.
     // CSP-friendlier and lighter than dozens of inline onclick handlers.
     document.addEventListener('click', e => {
+      // Guard: if a confirm overlay is open (or just closed and is still
+      // intercepting the iOS-synthesised click), ignore clicks that don't
+      // originate inside it. Prevents tap bleed-through to buttons (e.g.
+      // "Guardar") sitting behind the modal.
+      if (this._confirmOpen) return;
       const el = e.target.closest('[data-action]');
       if (!el) return;
       const fn = el.getAttribute('data-action');
@@ -3915,6 +3920,7 @@ const app = {
    *                      calling from inside one so the overlay renders above it.
    */
   _confirm(title, body, confirmLabel, onConfirm, container = document.body, onCancel = null) {
+    this._confirmOpen = true;
     const overlay = document.createElement('div');
     const isBody  = container === document.body;
     overlay.style.cssText = isBody
@@ -3991,6 +3997,10 @@ const app = {
       requestAnimationFrame(() => requestAnimationFrame(() => {
         overlay.remove();
         cleanup();
+        // Release the data-action guard one more frame later, so the
+        // iOS-synthesised click (fired ~300ms after pointerup) has already
+        // been swallowed by captureBlock before the dispatcher re-enables.
+        setTimeout(() => { this._confirmOpen = false; }, 350);
         if (cancelled && onCancel) onCancel();
       }));
     };
