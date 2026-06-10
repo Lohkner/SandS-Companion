@@ -13,7 +13,7 @@
      background refresh).
    ============================================================ */
 
-const CACHE_VERSION = 'sands-v5-2-1';   // ← bump this on each deploy
+const CACHE_VERSION = 'sands-v5-2-2-r3';   // ← bump this on each deploy
 const CACHE_NAME    = CACHE_VERSION;
 
 /* Pre-cache the minimum needed to boot offline. Add your real
